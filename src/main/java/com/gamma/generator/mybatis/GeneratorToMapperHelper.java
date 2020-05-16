@@ -38,8 +38,8 @@ public class GeneratorToMapperHelper {
 		if(!filePath.exists()){
 			filePath.mkdirs();
 		}
-		String fullBeanPackage =  config.getBeanPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getBeanName();
-		String fullModelPackage = config.getModelPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getModelName();
+		String fullBeanPackage =  config.getBeanPackage()+"."+nameBean.getBeanName();
+		String fullModelPackage = config.getModelPackage()+"."+nameBean.getModelName();
 		
 		
 		BufferedWriter bw = FileTools.writerFiterByUTF8(fileAddr,nameBean.getMapperName());
@@ -134,9 +134,9 @@ public class GeneratorToMapperHelper {
 		bw.write("import java.util.List;"); 
 		bw.newLine();
 		bw.newLine();
-		bw.write("import "+config.getBeanPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getBeanName()+";"); 
+		bw.write("import "+config.getBeanPackage()+"."+nameBean.getBeanName()+";");
 		bw.newLine();
-		bw.write("import "+config.getModelPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getModelName()+";");
+		bw.write("import "+config.getModelPackage()+"."+nameBean.getModelName()+";");
 		bw.newLine();
 		bw.write("import tk.mybatis.mapper.common.Mapper;");
 		bw.newLine();

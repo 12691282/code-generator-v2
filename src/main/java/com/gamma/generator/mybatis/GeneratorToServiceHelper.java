@@ -32,7 +32,7 @@ public class GeneratorToServiceHelper {
 	
 	private static void toGeneratorServiceInterface(ModelGeneratorConfig config)throws IOException  {
 		NameCollectionBean nameBean = config.getNameBean();
-		String pageAddr = config.getBasePackage() + ".service."+nameBean.getLowerHeadWordClassName();
+		String pageAddr = config.getBasePackageModelName() + ".service";
 		String fileAddr = config.getPath()+"/"+pageAddr.replace(".","/")+"/";
 		File filePath = new File(fileAddr);
 		if(!filePath.exists()){
@@ -44,7 +44,7 @@ public class GeneratorToServiceHelper {
 		bw.write("package " + pageAddr+";");
 		bw.newLine();
 		bw.newLine();
-		bw.write("import "+config.getBeanPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getBeanName()+";");
+		bw.write("import "+config.getBeanPackage()+"."+nameBean.getBeanName()+";");
 		bw.newLine();
 		bw.newLine();
 		bw.write("import com.github.pagehelper.PageInfo;");
@@ -81,7 +81,7 @@ public class GeneratorToServiceHelper {
 	
 	private static void toGeneratorServiceInterfaceImplements(ModelGeneratorConfig config) throws IOException {
 		NameCollectionBean nameBean = config.getNameBean();
-		String pageAddr = config.getBasePackage() + ".service."+nameBean.getLowerHeadWordClassName()+".impl";
+		String pageAddr = config.getBasePackageModelName() + ".service.impl";
 		String fileAddr = config.getPath()+"/"+pageAddr.replace(".","/")+"/";
 		File filePath = new File(fileAddr);
 		if(!filePath.exists()){
@@ -96,19 +96,19 @@ public class GeneratorToServiceHelper {
 		bw.write("package " + pageAddr+";");
 		bw.newLine();
 		bw.newLine();
-		bw.write("import "+config.getBeanPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getBeanName()+";");
+		bw.write("import "+config.getBeanPackage()+"."+nameBean.getBeanName()+";");
 		bw.newLine();
-		bw.write("import "+config.getModelPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getModelName()+";");
+		bw.write("import "+config.getModelPackage()+"."+nameBean.getModelName()+";");
 		bw.newLine();
-		bw.write("import "+config.getBasePackage()+".service."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getServiceName()+";");
+		bw.write("import "+config.getBasePackageModelName()+".service."+nameBean.getServiceName()+";");
 		bw.newLine();
 		bw.write("import "+config.getMapperPackage ()+"."+nameBean.getMapperName()+";");
 		bw.newLine();
-		bw.write("import "+config.getBasePackage()+".base.BaseService;");
+		bw.write("import "+config.getRootPackage()+".base.BaseService;");
 		bw.newLine();
-		bw.write("import "+config.getBasePackage()+".tools.DateUtil;");
+		bw.write("import "+config.getRootPackage()+".tools.DateUtil;");
 		bw.newLine();
-		bw.write("import "+config.getBasePackage()+".tools.IDGeneratorUtil;");
+		bw.write("import "+config.getRootPackage()+".tools.IDGeneratorUtil;");
 		bw.newLine();
 		bw.write("import com.github.pagehelper.Page;");
 		bw.newLine();

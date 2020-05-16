@@ -54,7 +54,7 @@ public class NameCollectionBean {
 	  private  List<TableDetailBean> listBean;
 	  
 		
-		public NameCollectionBean(String tableName) {
+		public NameCollectionBean(String tableName, String daoSuffix) {
 			String clazzName =  ServiceCodeGeneratorUtil.changeTableName(tableName);
 			String lowerHeadWord = ServiceCodeGeneratorUtil.toHeadWordLowerCase(clazzName);
 			
@@ -65,7 +65,7 @@ public class NameCollectionBean {
 			this.setBeanName(clazzName+"Bean");
 			this.setControllerName(clazzName+"Controller");
 			this.setServiceName(clazzName+"Service");
-			this.setMapperName(clazzName+"Mapper");
+			this.setMapperName(clazzName+ServiceCodeGeneratorUtil.toHeadWordUpperCase(daoSuffix));
 			this.setModelName( clazzName+"Model");
 			this.setXmlName(clazzName+"Xml");
 			

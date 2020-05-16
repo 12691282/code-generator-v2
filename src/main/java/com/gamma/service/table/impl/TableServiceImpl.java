@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.gamma.base.BaseService;
@@ -161,18 +162,17 @@ public class TableServiceImpl extends BaseService implements TableService{
 	public String startGeneratorModel(TableConfigBean bean, DatabaseBean dbBean) {
 		ModelGeneratorConfig config = new ModelGeneratorConfig(bean);
 		Connection connection = null;
-		config.mkdir();
-		
+		String[] tableArr = bean.getTableArr();
 		super.getLogger().info("startGeneratorModel config.getPath() : " + config.getPath() + " config.getZipFileName() " + config.getZipFileName());
 
 		//服务端代码生成
 		try {
 				connection =  DataSourceHelper.connectToDatabase(dbBean);
 			
-				for(String table : bean.getTableArr()){
+				for(String table : tableArr){
 					
 					List<TableDetailBean> list = this.fullToListByConnect(table, connection);
-					NameCollectionBean nameBean = new NameCollectionBean(table);
+					NameCollectionBean nameBean = new NameCollectionBean(table, config.getDaoNameSuffix());
 					nameBean.setListBean(list);
 					config.setNameBean(nameBean);
 				

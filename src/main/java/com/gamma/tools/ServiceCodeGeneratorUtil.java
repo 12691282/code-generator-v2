@@ -46,11 +46,14 @@ public class ServiceCodeGeneratorUtil {
 	}
 	
 
-	//转换头字母为大写
+	//转换头字母为小写
 	public static String toHeadWordLowerCase(String temp) {
 		return temp.substring(0,1).toLowerCase()+temp.substring(1);
 	}
-
+	//转换头字母为大写
+	public static String toHeadWordUpperCase(String temp) {
+		return temp.substring(0,1).toUpperCase()+temp.substring(1);
+	}
 
 	private static void outputBaseModel(ModelGeneratorConfig config) throws IOException{
 		File beanFile = new File(config.getPath(),"BaseModel.java");
@@ -187,6 +190,7 @@ public class ServiceCodeGeneratorUtil {
 		bw.write("\t\t\t<p>&copy; lion 2017</p>");bw.newLine();
 		bw.write("\t\t</div>");bw.newLine();
 	}
-	
-	
+
+
+
 }

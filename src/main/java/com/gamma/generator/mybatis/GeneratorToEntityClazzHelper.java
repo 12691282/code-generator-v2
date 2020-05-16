@@ -41,7 +41,7 @@ public class GeneratorToEntityClazzHelper {
 	private static void toGeneratorBeanEntityClazz(ModelGeneratorConfig config)throws IOException  {
 		NameCollectionBean nameBean = config.getNameBean();
 		List<TableDetailBean> listBean= nameBean.getListBean();
-		String pageAddr = config.getBeanPackage() + "."+nameBean.getLowerHeadWordClassName();
+		String pageAddr = config.getBeanPackage();
 		String fileAddr = config.getPath()+"/"+pageAddr.replace(".","/")+"/";
 		File filePath = new File(fileAddr);
 		if(!filePath.exists()){
@@ -157,7 +157,7 @@ public class GeneratorToEntityClazzHelper {
 	private static void toGeneratorModelEntityClazz(ModelGeneratorConfig config) throws IOException {
 		NameCollectionBean nameBean = config.getNameBean();
 		List<TableDetailBean> listBean = nameBean.getListBean();
-		String pageAddr = config.getModelPackage() + "."+nameBean.getLowerHeadWordClassName();
+		String pageAddr = config.getModelPackage();
 		String fileAddr = config.getPath()+"/"+pageAddr.replace(".","/")+"/";
 		File filePath = new File(fileAddr);
 		if(!filePath.exists()){

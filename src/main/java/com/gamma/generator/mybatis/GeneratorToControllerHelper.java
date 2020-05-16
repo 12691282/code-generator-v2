@@ -22,8 +22,8 @@ public class GeneratorToControllerHelper {
 	public static void outputController( ModelGeneratorConfig config) throws IOException {
 		NameCollectionBean nameBean = config.getNameBean();
 		String serviceObj = nameBean.getLowerHeadWordClassName()+"Service";
-		String pageAddr = config.getBasePackage() + ".controller."+nameBean.getLowerHeadWordClassName();
-		String fileAddr = config.getPath()+"/"+pageAddr.replace(".","/")+"/";
+		String codePageAddr = config.getBasePackageModelName() + ".controller";
+		String fileAddr = config.getPath()+"/"+codePageAddr.replace(".","/")+"/";
 		
 		File filePath = new File(fileAddr);
 		if(!filePath.exists()){
@@ -32,20 +32,20 @@ public class GeneratorToControllerHelper {
 		
 		BufferedWriter bw = FileTools.writerFiterByUTF8(fileAddr,nameBean.getControllerName());
 		
-		bw.write("package " + pageAddr+";");
+		bw.write("package " + codePageAddr+";");
 		bw.newLine();
 		bw.newLine();
 		
 		bw.write("import java.util.Map;");
 		bw.newLine();
 		bw.newLine();
-		bw.write("import "+config.getBeanPackage()+"."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getBeanName()+";");
+		bw.write("import "+config.getBeanPackage()+"."+nameBean.getBeanName()+";");
 		bw.newLine();
-		bw.write("import "+config.getBasePackage()+".service."+nameBean.getLowerHeadWordClassName()+"."+nameBean.getServiceName()+";");
+		bw.write("import "+config.getBasePackageModelName()+".service."+nameBean.getServiceName()+";");
 		bw.newLine();
 		bw.write("import com.github.pagehelper.PageInfo;");
 		bw.newLine();
-		bw.write("import "+config.getBasePackage()+".base.BaseController;");
+		bw.write("import "+config.getRootPackage()+".base.BaseController;");
 		bw.newLine();
 		bw.newLine();
 		bw.write("import org.springframework.beans.factory.annotation.Autowired;");
@@ -58,11 +58,16 @@ public class GeneratorToControllerHelper {
 		bw.newLine();
 		bw.write("import org.springframework.ui.Model;");
 		bw.newLine();
+		bw.write("import lombok.extern.slf4j.Slf4j;");
+
+		bw.newLine();
 		ServiceCodeGeneratorUtil.outputAuthor(bw,nameBean.getClazzName()+" Controller");
 		bw.newLine();
-		bw.write("@Controller");
+		bw.write("@RestController");
 		bw.newLine();
 		bw.write("@RequestMapping(\""+nameBean.getLowerHeadWordClassName()+"\")");
+		bw.newLine();
+		bw.write("@Slf4j");
 		bw.newLine();
 		bw.write("public class "+nameBean.getControllerName()+" extends BaseController{");
 		bw.newLine();
@@ -82,6 +87,8 @@ public class GeneratorToControllerHelper {
 		bw.newLine();
 		bw.write("\t\tbean."+nameBean.getBeanPrepareDataMethodName()+"();");
 		bw.newLine();
+		bw.write("\t\t log.info(bean);");
+		bw.newLine();
 		bw.write("\t\tPageInfo pageInfo = " + serviceObj+"."+nameBean.getListMethodName()+"(bean);");
 		bw.newLine();
 		bw.write("\t\tmodel.addAttribute(\""+CommonForPageConfig.DATA_PAGE_OBJECT_NAME+"\", pageInfo); "); 
@@ -100,6 +107,8 @@ public class GeneratorToControllerHelper {
 		bw.write("\t@RequestMapping(\""+CommonForPageConfig.GET_BEANMETHOD_URL+"\")");
 		bw.newLine();
 		bw.write("\tpublic String get"+nameBean.getBeanName()+"ById(Model model,"+nameBean.getBeanName()+" bean){");
+		bw.newLine();
+		bw.write("\t\t log.info(bean);");
 		bw.newLine();
 		bw.write("\t\tif(bean.getId() != null){");
 		bw.newLine();
@@ -126,6 +135,8 @@ public class GeneratorToControllerHelper {
 		bw.write("\t\ttry{");
 		bw.newLine();
 		bw.newLine();
+		bw.write("\t\t log.info(bean);");
+		bw.newLine();
 		bw.write("\t\tbean."+nameBean.getBeanPrepareDataMethodName()+"();");
 		bw.newLine();
 		bw.write("\t\t\t"+serviceObj+"."+nameBean.getAddOrModifyMethodName()+"(bean);");
@@ -151,6 +162,8 @@ public class GeneratorToControllerHelper {
 		bw.newLine();
 		bw.write("\tpublic Map delete"+nameBean.getBeanName()+"("+nameBean.getBeanName()+" bean){");
 		bw.newLine();
+		bw.write("\t\t log.info(bean);");
+		bw.newLine();
 		bw.write("\t\ttry{");
 		bw.newLine();
 		bw.newLine();
@@ -166,7 +179,6 @@ public class GeneratorToControllerHelper {
 		bw.write("\t\treturn super.getSuccessInfo();");
 		bw.newLine();
 		bw.write("\t}");
-		
 		bw.newLine();
 		bw.newLine();
 		bw.write("}");

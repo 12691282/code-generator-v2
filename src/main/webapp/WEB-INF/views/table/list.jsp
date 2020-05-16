@@ -14,7 +14,7 @@
   <div class="container">
 
       <div class="masthead">
-        <h3 class="muted">代码生成系统</h3>
+        <h3 class="muted">代码生成系统 - 前后分离版本-v2</h3>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
@@ -74,7 +74,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">信息配置</h4>
             </div>
-            <div class="form-horizontal" style="height: 600px;padding: 15px;">
+            <div class="form-horizontal" style="height: 330px;padding: 15px;">
             <div class="control-group">
 			    <label class="control-label" for="inputEmail">是否生成base Bean</label>
 			    <div class="controls">
@@ -90,9 +90,9 @@
 			  </div>
 
 			<div class="control-group"><!--模块名称-->
-				<label class="control-label" for="inputEmail">模块名称</label>
+				<label class="control-label" for="inputEmail">基础模块名称</label>
 				<div class="controls">
-					<input type="text" name="modelName" value="">
+					<input type="text" name="baseModelName" value="">
 				</div>
 			</div>
 
@@ -104,43 +104,21 @@
 			    </div>
 			  </div>
             
-              <div class="control-group"><!--bean 路径-->
-			    <label class="control-label" for="inputEmail">bean_package</label>
-			    <div class="controls">
-			      <input type="text" name="beanPackage" value="com.delta.bean">
-			    </div>
-			  </div>
-			  
-			  <div class="control-group"><!--dao 路径 mapper-->
-			    <label class="control-label" for="inputEmail">mapper_package</label>
-			    <div class="controls">
-			      <input type="text" name="mapperPackage" value="com.delta.mybatis.mapper">
-			    </div>
-			  </div>
-
-
 			<div class="control-group">
 				<label class="control-label" for="inputEmail">数据层后缀名称(Dao 或 Mapper 或其他)</label>
 				<div class="controls">
-					<input type="text" name="daoNameSuffix" value="Dao">
+					<input type="text" name="daoNameSuffix" value="dao">
 				</div>
 			 </div>
-			  
-			  
-			  <div class="control-group"><!--原型model package 配置路径-->
-			    <label class="control-label" for="inputEmail">model_package</label>
-			    <div class="controls">
-			      <input type="text" name="modelPackage" value="com.delta.mybaits.model" >
-			    </div>
-			  </div>
-			  
-			  <div class="control-group"><!--mybatis xml 配置路径-->
-			    <label class="control-label" for="inputEmail">xml_package</label>
-			    <div class="controls">
-			      <input type="text" name="xmlPackage"  value="com.delta.xml" >
-			    </div>
-			  </div>
-			  
+
+
+                <div class="control-group"><!--返回类全路径-->
+                    <label class="control-label" for="inputEmail">返回类全路径</label>
+                    <div class="controls">
+                        <input type="text" name="returnClassPath" value="com.delta.common.utils.SystemHttpResponse">
+                    </div>
+                </div>
+
 			  <div class="control-group">
 			  
 				  <label class="control-label" for="inputEmail">
@@ -152,10 +130,10 @@
 						</button>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 							<li role="presentation">
-								<a role="menuitem" tabindex="1" onmouseup="setToPageCss('bootstrap')" href="#">bootstrap</a>
+								<a role="menuitem" tabindex="1" onmouseup="setToPageCss('elementUI')" href="#">bootstrap</a>
 							</li>
 							<li role="presentation">
-								<a role="menuitem" tabindex="-1" onmouseup="setToPageCss('暂缺')"  href="#">暂缺</a>
+								<a role="menuitem" tabindex="-1" onmouseup="setToPageCss('iviewUI')"  href="#">暂缺</a>
 							</li>
 						</ul>
 					 </div>
