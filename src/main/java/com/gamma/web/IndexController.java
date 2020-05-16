@@ -1,0 +1,28 @@
+package com.gamma.web;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.gamma.base.BaseController;
+
+@Controller
+public class IndexController extends BaseController{
+	
+	@RequestMapping("/")
+	public void toIndex(HttpServletResponse response){
+		
+	   try {
+		   response.sendRedirect("/table/list");
+	   } catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	   }
+	}
+	
+
+}

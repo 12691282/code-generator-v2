@@ -1,0 +1,78 @@
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		function showModel(_id) {
+			var url = "getBeanById";
+			if (_id) {
+				url += ("?id=" + _id);
+			}
+			$("#infoModal").modal({
+				remote : url
+			});
+		}
+		
+		//新增模块显示
+		$("#addModel").on("click", function() {
+			showModel();
+			return false;
+		});
+		
+		
+		$("#infoModal").on("hidden", function() {
+			$(this).removeData("modal");
+		});
+
+		$(".query").on("click", function() {
+			$("form[action='list']").submit();
+			return false;
+		});
+		
+		$(".reset").on("click", function() {
+			$("form[action='list']").find("input").val('');
+			return false;
+		});
+
+		$("#addOrUpdateModel").click(function() {
+			
+			$("form[action='addOrModify']").ajaxSubmit({
+	            success: function(_result) { // data 保存提交后返回的数据，一般为 json 数据
+	            	$("#infoModal").hide();
+	            	if(_result && _result.info == "1"){
+	            		Modal.showConfirm(_result.data, function(){
+	            			window.location.href = "list";
+	            		});
+	            	}
+	            }	
+	        });
+		  
+			return false;
+		})
+
+		$("table tbody tr").find(".btn-success").on('click', function() {
+			showModel($(this).val());
+			return false;
+		})
+
+		$("table tbody tr").find(".btn-danger").on('click', function() {
+			var idVal = $(this).val();
+
+			Modal.showConfirm('确定删除该记录？', function() {
+
+				$.post("delete", {
+					id : idVal
+				}, function(msg) {
+					Modal.showMsg(msg.data, function() {
+						if (msg && msg.info == 1) {
+							$(window).attr('location', "list");
+						}
+					});
+				});
+
+			});
+			return false;
+		})
+
+	});
+</script>
+</html>
