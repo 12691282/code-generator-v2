@@ -66,7 +66,7 @@ public class NameCollectionBean {
 			this.setControllerName(clazzName+"Controller");
 			this.setServiceName(clazzName+"Service");
 			this.setMapperName(clazzName+ServiceCodeGeneratorUtil.toHeadWordUpperCase(daoSuffix));
-			this.setModelName( clazzName+"Model");
+			this.setModelName( clazzName+"Entity");
 			this.setXmlName(clazzName+"Xml");
 			
 			this.setListMethodName("get"+clazzName+"ListByBean");

@@ -251,6 +251,11 @@ public final class FileTools {
 		File controllerFile = new File(filePath,fileName+".java");
 		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(controllerFile), "UTF-8"));
 	}
+
+	public static BufferedWriter writerFiterToXML(String filePath,String fileName) throws UnsupportedEncodingException, FileNotFoundException{
+		File controllerFile = new File(filePath,fileName+".xml");
+		return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(controllerFile), "UTF-8"));
+	}
 			
 	    
     public static void main(String[] args) throws Exception{  

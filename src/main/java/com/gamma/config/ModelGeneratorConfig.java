@@ -45,16 +45,14 @@ public class ModelGeneratorConfig {
 	//返回类名称
 	private String returnClassName;
 
-
-
 	private Boolean isBaseBean;
 	  
-	  private Boolean isBaseModel;
+	private Boolean isBaseModel;
 	  
-	  private NameCollectionBean nameBean;
+	private NameCollectionBean nameBean;
 	  
-	  //压缩后的文件地址
-	  private String zipFileName;
+	//压缩后的文件地址
+	private String zipFileName;
 
 
 	//准备配置信息数据
@@ -66,7 +64,8 @@ public class ModelGeneratorConfig {
 		this.setRootPackage(bean.getBasePackage() + "."+ bean.getBaseModelName());
 		this.setBasePackageModelName(bean.getBasePackage() + "."+ bean.getBaseModelName());
 		this.setMapperPackage(this.getBasePackageModelName() + "."+bean.getDaoNameSuffix());
-		this.setModelPackage(this.getBasePackageModelName()+".model");
+		//实体类根路径
+		this.setModelPackage(this.getBasePackageModelName()+".entity");
 		this.setBeanPackage(this.getBasePackageModelName()+".bean");
 
 		String[] classArray =  bean.getReturnClassPath().split("\\.");

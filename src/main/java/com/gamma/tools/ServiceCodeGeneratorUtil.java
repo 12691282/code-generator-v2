@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 
 import org.joda.time.DateTime;
 
@@ -107,8 +108,14 @@ public class ServiceCodeGeneratorUtil {
 		
 		StringBuffer sb = new StringBuffer(tableName.length());
 		tableName = tableName.toLowerCase();
+
 		String[] tables = tableName.split("_");
-		String temp = null;
+		String headStr = tables[0];
+		//如果第一段字长小于2，则不取
+		if(headStr.length() < 2){
+			tables = Arrays.copyOfRange(tables, 1, tables.length);
+		}
+		String temp;
 		for(int i=0;i<tables.length;i++){
 			temp = tables[i].trim();
 			sb.append(temp.substring(0,1)
@@ -165,7 +172,7 @@ public class ServiceCodeGeneratorUtil {
 	
 	public static void outputLogger(BufferedWriter bw,String text) throws IOException{
 		bw.newLine();
-		bw.write("\t\tlogger.info("+text+");");
+		bw.write("\t\tlog.info("+text+");");
 		bw.newLine();
 	}
 	
@@ -179,6 +186,21 @@ public class ServiceCodeGeneratorUtil {
 		bw.write(" *  时间: " +  DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));bw.newLine();
 		bw.write(" *</pre>");bw.newLine();
 		bw.write(" * @author lion");bw.newLine();
+		bw.write(" * @version 1.0");bw.newLine();
+		bw.write("**/");
+		bw.newLine();
+		bw.newLine();
+	}
+
+
+	public static void outputAuthorByName(BufferedWriter bw,String className) throws IOException{
+		bw.newLine();
+		bw.newLine();
+		bw.write("/**");bw.newLine();
+		bw.write(" * @ClassName "+className);bw.newLine();
+		bw.write(" * @Description");bw.newLine();
+		bw.write(" * @Author 李强");bw.newLine();
+		bw.write(" * @Date "+  DateTime.now().toString("yyyy-MM-dd"));bw.newLine();
 		bw.write(" * @version 1.0");bw.newLine();
 		bw.write("**/");
 		bw.newLine();

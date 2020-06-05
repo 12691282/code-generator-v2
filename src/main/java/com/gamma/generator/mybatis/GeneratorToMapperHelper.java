@@ -42,7 +42,7 @@ public class GeneratorToMapperHelper {
 		String fullModelPackage = config.getModelPackage()+"."+nameBean.getModelName();
 		
 		
-		BufferedWriter bw = FileTools.writerFiterByUTF8(fileAddr,nameBean.getMapperName());
+		BufferedWriter bw = FileTools.writerFiterToXML(fileAddr,nameBean.getMapperName());
 		
 		bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		bw.newLine();
@@ -138,11 +138,15 @@ public class GeneratorToMapperHelper {
 		bw.newLine();
 		bw.write("import "+config.getModelPackage()+"."+nameBean.getModelName()+";");
 		bw.newLine();
-		bw.write("import tk.mybatis.mapper.common.Mapper;");
+		bw.write("import com.baomidou.mybatisplus.core.mapper.BaseMapper;");
 		bw.newLine();
-		ServiceCodeGeneratorUtil.outputAuthor(bw,nameBean.getClazzName()+"  mapper 类");
+		bw.write("import org.apache.ibatis.annotations.Mapper;");
 		bw.newLine();
-		bw.write("public interface "+nameBean.getMapperName()+" extends Mapper<"+nameBean.getModelName()+">{");
+		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+"  dao 类");
+		bw.newLine();
+		bw.write("@Mapper");
+		bw.newLine();
+		bw.write("public interface "+nameBean.getMapperName()+" extends BaseMapper<"+nameBean.getModelName()+">{");
 		bw.newLine();
 		bw.newLine();
 		bw.newLine();

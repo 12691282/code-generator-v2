@@ -57,7 +57,7 @@ public class GeneratorToEntityClazzHelper {
 		bw.write("import org.springframework.util.StringUtils;"); 
 		bw.newLine();
 		bw.newLine();
-		ServiceCodeGeneratorUtil.outputAuthor(bw,nameBean.getClazzName()+" bean 实体类");
+		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+" bean 实体类");
 		bw.newLine();
 		bw.write("public class "+nameBean.getBeanName()+"{");
 		bw.newLine();
@@ -171,20 +171,29 @@ public class GeneratorToEntityClazzHelper {
 		bw.newLine();
 		bw.newLine();
 		bw.newLine();
-		bw.write("import javax.persistence.Id;");
 		bw.newLine();
-		bw.write("import javax.persistence.Table;");
+		bw.write("import com.baomidou.mybatisplus.annotation.TableField;");
+		bw.newLine();
+		bw.write("import com.baomidou.mybatisplus.annotation.TableName;");
+		bw.newLine();
+		bw.write("import lombok.Data;");
+		bw.newLine();
+		bw.write("import lombok.ToString;");
 		bw.newLine();
 		bw.write("import java.io.Serializable;");
 		bw.newLine();
-		bw.write("import java.util.Date;");
 		bw.newLine();
-		ServiceCodeGeneratorUtil.outputAuthor(bw,nameBean.getClazzName()+" model 实体类");
+		bw.write("import com.petrochina.bd.modules.common.entity.BaseCollaEntity;");
 		bw.newLine();
-		
-		bw.write("@Table(name=\""+nameBean.getTableName()+"\")");
+		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+" model 实体类");
 		bw.newLine();
-		bw.write("public class "+nameBean.getModelName()+" implements Serializable{");
+		bw.write("@Data");
+		bw.newLine();
+		bw.write("@ToString");
+		bw.newLine();
+		bw.write("@TableName(\""+nameBean.getTableName()+"\")");
+		bw.newLine();
+		bw.write("public class "+nameBean.getModelName()+" extends BaseCollaEntity implements Serializable{");
 		bw.newLine();
 		
 		
@@ -194,17 +203,15 @@ public class GeneratorToEntityClazzHelper {
 				bw.write("\t /**" + tableDetail.getComment() + "**/");
 				bw.newLine();
 			}
-			if("id".equals(tableDetail.getFiled())){
-				bw.write("\t@Id");
-				bw.newLine();
-			}
+			bw.write("\t@TableField(\""+tableDetail.getFiled()+"\")");
+			bw.newLine();
 			bw.write("\tprivate " +  processType(tableDetail.getType()) + " " + tableDetail.getCodeField() + ";");
 			bw.newLine();
 		}
 		
-		generatorField(bw, listBean);
+//		generatorField(bw, listBean);
 		
-		generatorToString(bw, nameBean.getModelName(), listBean);
+//		generatorToString(bw, nameBean.getModelName(), listBean);
 		
 		bw.newLine();
 		bw.write("}");
