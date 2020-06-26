@@ -2,14 +2,11 @@ package com.gamma.service.table.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.gamma.base.BaseService;
@@ -19,18 +16,17 @@ import com.gamma.bean.table.TableConfigBean;
 import com.gamma.bean.table.TableDetailBean;
 import com.gamma.config.ModelGeneratorConfig;
 import com.gamma.service.pageHtml.PageGenerator;
-import com.gamma.service.pageHtml.impl.BootstrapStyleGenerator;
+import com.gamma.service.pageHtml.impl.ElementUIStyleGenerator;
 import com.gamma.service.pageHtml.impl.LayuiStyleGenerator;
 import com.gamma.service.table.TableService;
 import com.gamma.tools.DataSourceHelper;
 import com.gamma.tools.FileTools;
 import com.gamma.tools.ServiceCodeGeneratorUtil;
-import org.springframework.util.StringUtils;
 
 @Service
 public class TableServiceImpl extends BaseService implements TableService{
-	
-	
+
+
 	@Override
 	public DatabaseBean connectDatabase(DatabaseBean bean) {
 		try {
@@ -120,7 +116,7 @@ public class TableServiceImpl extends BaseService implements TableService{
 			
 			pstate = connection.prepareStatement(sql);
 			ResultSet results = pstate.executeQuery(); 
-			TableDetailBean bean = null;
+			TableDetailBean bean;
 			while(results.next()){
 				bean = new TableDetailBean();
 				bean.setFiled(results.getString("FIELD"));
@@ -158,6 +154,9 @@ public class TableServiceImpl extends BaseService implements TableService{
 		return "";
 	}
 
+	@Value("#{'${generateConfig.baseModelFiled}'.split(',')}")
+	private List<String> baseFiledList;
+
 	@Override
 	public String startGeneratorModel(TableConfigBean bean, DatabaseBean dbBean) {
 		ModelGeneratorConfig config = new ModelGeneratorConfig(bean);
@@ -167,17 +166,29 @@ public class TableServiceImpl extends BaseService implements TableService{
 
 		//服务端代码生成
 		try {
-				connection =  DataSourceHelper.connectToDatabase(dbBean);
+			connection =  DataSourceHelper.connectToDatabase(dbBean);
+
+			//读取表注释
+
+				config.setBaseFiledList(baseFiledList);
 			
 				for(String table : tableArr){
-					
+
+					DatabaseMetaData dbmd = connection.getMetaData();
+					ResultSet tableRet = dbmd.getTables(null, "%",table,new String[]{"TABLE"});
+
+					while (tableRet.next()) {
+						String remarks = tableRet.getString("REMARKS");       //表备注
+						config.setTableRemarks(remarks);
+						break;
+					}
 					List<TableDetailBean> list = this.fullToListByConnect(table, connection);
 					NameCollectionBean nameBean = new NameCollectionBean(table, config.getDaoNameSuffix());
 					nameBean.setListBean(list);
 					config.setNameBean(nameBean);
 				
-					ServiceCodeGeneratorUtil.generatorTableToModel(config);
-				
+					ServiceCodeGeneratorUtil.generatorTableToCode(config);
+
 					this.switchPageGenerator(config);
 			
 				}
@@ -213,15 +224,12 @@ public class TableServiceImpl extends BaseService implements TableService{
 		if(pageCss == null){
 			return;
 		}
-		
-		PageGenerator pageGenerator = null;
-		if("bootstrap".equals(pageCss)) {
-			pageGenerator = new BootstrapStyleGenerator(config);
-			pageGenerator.toStart();
-		}else if("layui".equals(pageCss)){
+		//默认elements样式
+		PageGenerator pageGenerator = new ElementUIStyleGenerator(config);
+		if("layui".equals(pageCss)){
 			pageGenerator = new LayuiStyleGenerator(config);
-			pageGenerator.toStart();
 		}
+		pageGenerator.toStart();
 		
 	}
 

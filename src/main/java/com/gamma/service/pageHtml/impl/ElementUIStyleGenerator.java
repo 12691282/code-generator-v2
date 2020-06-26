@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 
 import com.gamma.bean.code.NameCollectionBean;
@@ -19,13 +20,12 @@ import com.gamma.tools.CommonForPageConfig;
 import com.gamma.tools.FileTools;
 import com.gamma.tools.ServiceCodeGeneratorUtil;
 
-public class BootstrapStyleGenerator implements PageGenerator{
-	
-	protected Logger logger =  Logger.getLogger(BootstrapStyleGenerator.class);
+@Slf4j
+public class ElementUIStyleGenerator implements PageGenerator{
 	
 	private ModelGeneratorConfig config;
 
-	public BootstrapStyleGenerator(ModelGeneratorConfig config) {
+	public ElementUIStyleGenerator(ModelGeneratorConfig config) {
 	    this.config = config;
 	}
 
@@ -33,14 +33,10 @@ public class BootstrapStyleGenerator implements PageGenerator{
 	
 	@Override
 	public void toStart() {
-	
-		
 		//生成list jsp页面
 		this.generatorHtmlListPage();
-		
 		//生成info jsp页面
 		this.generatorHtmlInfoPage();
-		
 	}
 	
 	/**
@@ -156,7 +152,7 @@ public class BootstrapStyleGenerator implements PageGenerator{
 
 	/**
 	 * 生成页面头部信息
-	 * @param nameBane
+	 * @param bw
 	 * @throws IOException 
 	 */
 	private BufferedWriter toGeneratorHtmlHeadPart(BufferedWriter bw) throws IOException {
@@ -389,7 +385,7 @@ public class BootstrapStyleGenerator implements PageGenerator{
 	 * @throws IOException
 	 */
 	private void toGeneratorHtmlJavascriptPart(BufferedWriter bw) throws IOException{
-		logger.info("toGeneratorHtmlJavascriptPart");
+		log.info("toGeneratorHtmlJavascriptPart");
 		//获取类加载的根路径   resources下路径
 	    FileTools.readFileToWriter("classpath:text/bootstrap_page_js.txt", bw);
 	}

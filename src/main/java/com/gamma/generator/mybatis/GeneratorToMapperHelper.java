@@ -39,9 +39,7 @@ public class GeneratorToMapperHelper {
 			filePath.mkdirs();
 		}
 		String fullBeanPackage =  config.getBeanPackage()+"."+nameBean.getBeanName();
-		String fullModelPackage = config.getModelPackage()+"."+nameBean.getModelName();
-		
-		
+
 		BufferedWriter bw = FileTools.writerFiterToXML(fileAddr,nameBean.getMapperName());
 		
 		bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -50,7 +48,7 @@ public class GeneratorToMapperHelper {
 		bw.newLine();
 		bw.write("<mapper namespace=\""+config.getMapperPackage()+"."+nameBean.getMapperName()+"\" >");
 		bw.newLine();
-		bw.write("\t<select id=\""+nameBean.getMapperFindByBeanMethodName()+"\" resultType=\""+fullModelPackage+"\" parameterType=\""+fullBeanPackage+"\">");
+		bw.write("\t<select id=\""+nameBean.getMapperFindByBeanMethodName()+"\" resultType=\""+fullBeanPackage+"\" parameterType=\""+fullBeanPackage+"\">");
 		bw.newLine();
 		bw.write("\t\tSELECT ");
 		for(int i=0,size=listBean.size(); i<size; i++){
@@ -157,7 +155,7 @@ public class GeneratorToMapperHelper {
 		bw.newLine();
 		bw.write("\t**/"); 
 		bw.newLine();
-		bw.write("\tList<"+nameBean.getModelName()+"> "+nameBean.getMapperFindByBeanMethodName()+"("+nameBean.getBeanName()+" bean);"); 
+		bw.write("\tList<"+nameBean.getBeanName()+"> "+nameBean.getMapperFindByBeanMethodName()+"("+nameBean.getBeanName()+" bean);");
 		bw.newLine();
 		bw.newLine();
 		bw.newLine();

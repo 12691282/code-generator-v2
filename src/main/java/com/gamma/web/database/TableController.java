@@ -37,7 +37,28 @@ public class TableController extends BaseController{
 
     @Value("${spring.datasource.url}")
     private String url;
-	
+
+	//基础路径
+	@Value("${generateConfig.basePackage}")
+	private String  basePackage;
+
+	//基础模块名称
+	@Value("${generateConfig.baseModelName}")
+	private String  baseModelName;
+
+	//数据层后缀名称(Dao 或 Mapper 或其他)
+	@Value("${generateConfig.daoNameSuffix}")
+	private String daoNameSuffix;
+
+	// Y:生成 N:不生成
+	@Value("${generateConfig.isBaseModel}")
+	private String isBaseModel;
+
+	//baseModel 路径
+	@Value("${generateConfig.baseModelPath}")
+	private String baseModelPath;
+
+
 	@RequestMapping("connectDatabase")
 	@ResponseBody
 	public Map connectDatabase(HttpServletRequest request,DatabaseBean bean){
@@ -65,10 +86,19 @@ public class TableController extends BaseController{
 			HttpSession session = request.getSession();
 			session.setAttribute(session.getId(), bean);
 		}
-		
+
+		TableConfigBean configInfo = new TableConfigBean();
+		configInfo.setBaseModelName(baseModelName);
+		configInfo.setBasePackage(basePackage);
+		configInfo.setDaoNameSuffix(daoNameSuffix);
+		configInfo.setIsBaseModel(isBaseModel);
+		configInfo.setBaseModelPath(baseModelPath);
+
+
 		List list = tableService.getList(bean);
 		model.addAttribute("list", list);
 		model.addAttribute("dbBean", bean);
+		model.addAttribute("configInfo", configInfo);
 		
 		return "/table/list";
 	}
@@ -82,7 +112,6 @@ public class TableController extends BaseController{
 			model.addAttribute("list", list);
 			model.addAttribute("tableName", tableName);
 		}
-		
 		return "/table/detail";
 	}
 	

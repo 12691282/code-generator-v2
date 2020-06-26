@@ -56,7 +56,7 @@ public class GeneratorToControllerHelper {
 		bw.newLine();
 		bw.write("import com.petrochina.bd.common.utils.CnpcHttpResponse;");
 		bw.newLine();
-		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+" Controller");
+		ServiceCodeGeneratorUtil.outputAuthorByName(bw,config.getTableRemarks()+" Controller");
 		bw.newLine();
 		bw.write("@RestController");
 		bw.newLine();
@@ -80,13 +80,13 @@ public class GeneratorToControllerHelper {
 		bw.newLine();
 		bw.write("\tpublic CnpcHttpResponse get"+nameBean.getClazzName()+"List(@RequestBody "+nameBean.getBeanName()+" bean){");
 		bw.newLine();
-		bw.write("\t\t log.info(\""+nameBean.getBeanName()+": {}\",bean);");
+		bw.write("\t\tlog.info(\""+nameBean.getBeanName()+": {}\",bean);");
 		bw.newLine();
-		bw.write("\t\t //开始分页");
+		bw.write("\t\t//开始查询");
 		bw.newLine();
 		bw.write("\t\tPageUtils page = " + serviceObj+"."+nameBean.getListMethodName()+"(bean);");
 		bw.newLine();
-		bw.write("\t\t return CnpcHttpResponse.ok().put(\"page\", page);");
+		bw.write("\t\treturn CnpcHttpResponse.ok().put(\"page\", page);");
 		bw.newLine();
 		bw.write("\t}");
 		bw.newLine();

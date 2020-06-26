@@ -1,18 +1,13 @@
 package com.gamma.config;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.gamma.bean.table.DatabaseBean;
-import lombok.Data;
-import org.joda.time.DateTime;
-import org.springframework.core.io.Resource;
-
 import com.gamma.bean.code.NameCollectionBean;
 import com.gamma.bean.table.TableConfigBean;
-import com.gamma.bean.table.TableDetailBean;
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+
+import java.io.File;
+import java.util.List;
 
 @Data
 public class ModelGeneratorConfig {
@@ -39,24 +34,44 @@ public class ModelGeneratorConfig {
 	  //根路径
 	  private String  rootPackage;
 
-	//返回类全路径
-	private String returnClassPath;
+		//返回类全路径
+	  private String returnClassPath;
 
-	//返回类名称
-	private String returnClassName;
+	  //返回类名称
+	  private String returnClassName;
 
-	private Boolean isBaseBean;
-	  
-	private Boolean isBaseModel;
-	  
-	private NameCollectionBean nameBean;
-	  
-	//压缩后的文件地址
-	private String zipFileName;
+	  private Boolean isBaseModel;
 
+	  //baseModel 路径
+	  private String baseModelPath;
+
+	  //baseModel 名称
+	  private String baseModelName;
+
+	  private NameCollectionBean nameBean;
+
+	  //压缩后的文件地址
+	  private String zipFileName;
+
+	  //基础类字段
+	  private List<String> baseFiledList;
+
+	  //表注释
+	  private String tableRemarks;
 
 	//准备配置信息数据
 	public ModelGeneratorConfig(TableConfigBean bean) {
+		//设置baseModel
+		if("true".equals(bean.getIsBaseModel())){
+			this.setIsBaseModel(Boolean.TRUE);
+			this.setBaseModelPath(bean.getBaseModelPath());
+			if(StringUtils.isNotEmpty(bean.getBaseModelPath())){
+				String[] baseModelArr = bean.getBaseModelPath().split("\\.");
+				this.baseModelName = baseModelArr[baseModelArr.length - 1];
+			}
+		}else {
+			this.setIsBaseModel(Boolean.FALSE);
+		}
 
 		//设置根路径
 		this.setPath(bean.getPath());
@@ -71,6 +86,8 @@ public class ModelGeneratorConfig {
 		String[] classArray =  bean.getReturnClassPath().split("\\.");
 		this.setReturnClassName(classArray[classArray.length - 1]);
 		this.setReturnClassPath(bean.getReturnClassPath());
+
+		this.setPageCss(bean.getPageCss());
 
 		this.mkdir();
 	}

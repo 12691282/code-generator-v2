@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 import com.gamma.bean.code.NameCollectionBean;
@@ -54,12 +55,22 @@ public class GeneratorToEntityClazzHelper {
 		bw.newLine();
 		bw.newLine();
 		bw.newLine();
-		bw.write("import org.springframework.util.StringUtils;"); 
+		bw.write("import org.springframework.util.StringUtils;");
+		bw.newLine();
+		bw.write("import lombok.Data;");
+		bw.newLine();
+		bw.write("import lombok.ToString;");
+		bw.newLine();
+		bw.write("import java.io.Serializable;");
 		bw.newLine();
 		bw.newLine();
-		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+" bean 实体类");
+		ServiceCodeGeneratorUtil.outputAuthorByName(bw,config.getTableRemarks()+" bean类");
 		bw.newLine();
-		bw.write("public class "+nameBean.getBeanName()+"{");
+		bw.write("@Data");
+		bw.newLine();
+		bw.write("@ToString");
+		bw.newLine();
+		bw.write("public class "+nameBean.getBeanName()+" implements Serializable{");
 		bw.newLine();
 		
 		for(TableDetailBean tableDetail : listBean){
@@ -71,83 +82,8 @@ public class GeneratorToEntityClazzHelper {
 			bw.write("\tprivate String " + tableDetail.getCodeField() + ";");
 			bw.newLine();
 			
-			if(tableDetail.isDateTypeField()){
-				bw.write("\t /** 查询时间对 **/");
-				bw.newLine();
-				bw.write("\tprivate String " + tableDetail.getCodeFieldForStartTime() + ";");
-				bw.newLine();
-				
-				bw.write("\tprivate String " + tableDetail.getCodeFieldForEndTime() + ";");
-				bw.newLine();
-			}
 		}
-	 
-		for(TableDetailBean tableDetail : listBean){
-			String tempField =  tableDetail.getCodeField();
-			String upTempField = tableDetail.getUpWordField();
-			
-			bw.newLine();
-			bw.write("\tpublic void set" + upTempField + "(String  " + tempField + "){");
-			bw.newLine();
-			bw.write("\t\tthis." + tempField + " = " + tempField + ";");
-			bw.newLine();
-			bw.write("\t}");
-			bw.newLine();
-			
-			bw.write("\tpublic String get" + upTempField + "(){");
-			bw.newLine();
-			bw.write("\t\treturn this."+tempField+";");
-			bw.newLine();
-			bw.write("\t}");
-			bw.newLine();
-			
-			if(tableDetail.isDateTypeField()){
-				tableDetail.toWriteGetAndSetMethodForDateType(bw);
-			}
-		}
-		
-		bw.newLine();
-		bw.write("\tpublic void "+nameBean.getBeanPrepareDataMethodName()+"() {");
-		bw.newLine();
 
-		for(TableDetailBean bean : nameBean.getListBean()){
-	
-		}
-		
-		for(TableDetailBean tableDetail : listBean){
-			String upTempField = tableDetail.getUpWordField();
-			
-			bw.write("\t\tif(StringUtils.isEmpty(this.get" + upTempField + "())){");
-			bw.newLine();
-			bw.write("\t\t\tthis.set" + upTempField + "(null);");
-			bw.newLine();
-			bw.write("\t\t}");
-			bw.newLine();
-			
-			//判断时间域
-			if(tableDetail.isDateTypeField()){
-				
-				bw.write("\t\tif(StringUtils.isEmpty(this.get"+upTempField+"Start())){");
-				bw.newLine();
-				bw.write("\t\t\tthis.set"+upTempField+"Start(null);");
-				bw.newLine();
-				bw.write("\t\t}");
-				bw.newLine();
-				bw.write("\t\tif(StringUtils.isEmpty(this.get"+upTempField+"End())){");
-				bw.newLine();
-				bw.write("\t\t\t this.set"+upTempField+"End(null);");
-				bw.newLine();
-				bw.write("\t\t}");
-				bw.newLine();
-			}
-			
-		}
-		bw.newLine();
-		bw.write("\t}"); 
-		bw.newLine();
-		//重写toString方法
-		generatorToString(bw, nameBean.getBeanName(), listBean);
-		
 		bw.write("}");
 		bw.newLine();
 		bw.flush();
@@ -183,8 +119,11 @@ public class GeneratorToEntityClazzHelper {
 		bw.write("import java.io.Serializable;");
 		bw.newLine();
 		bw.newLine();
-		bw.write("import com.petrochina.bd.modules.common.entity.BaseCollaEntity;");
-		bw.newLine();
+		if(config.getIsBaseModel()){
+			bw.write("import " + config.getBaseModelPath());
+			bw.newLine();
+		}
+
 		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+" model 实体类");
 		bw.newLine();
 		bw.write("@Data");
@@ -193,12 +132,30 @@ public class GeneratorToEntityClazzHelper {
 		bw.newLine();
 		bw.write("@TableName(\""+nameBean.getTableName()+"\")");
 		bw.newLine();
-		bw.write("public class "+nameBean.getModelName()+" extends BaseCollaEntity implements Serializable{");
+		String modelHeadString  = "public class "+nameBean.getModelName();
+
+		if(config.getIsBaseModel()){
+			modelHeadString += " extends " + config.getBaseModelName();
+		}
+		bw.write( modelHeadString + " implements Serializable{");
 		bw.newLine();
-		
-		
-		
+
 		for(TableDetailBean tableDetail : listBean){
+
+			boolean isPassed = false;
+			//如果基础基础类侧过滤基础类字段
+			if(config.getIsBaseModel()){
+				for(String baseFiled : config.getBaseFiledList()){
+					if(baseFiled.equalsIgnoreCase(tableDetail.getFiled())){
+						isPassed = true;
+						break;
+					}
+				}
+			}
+
+			if(isPassed){
+				continue;
+			}
 			if(StringUtils.hasText(tableDetail.getComment())){
 				bw.write("\t /**" + tableDetail.getComment() + "**/");
 				bw.newLine();
@@ -208,11 +165,7 @@ public class GeneratorToEntityClazzHelper {
 			bw.write("\tprivate " +  processType(tableDetail.getType()) + " " + tableDetail.getCodeField() + ";");
 			bw.newLine();
 		}
-		
-//		generatorField(bw, listBean);
-		
-//		generatorToString(bw, nameBean.getModelName(), listBean);
-		
+
 		bw.newLine();
 		bw.write("}");
 		bw.newLine();
@@ -220,8 +173,18 @@ public class GeneratorToEntityClazzHelper {
 		bw.close();
 		
 	}
-	
-	
+
+	//base 字段过滤
+//	private static boolean checkBaseParams(String filed) {
+//		for(String item : baseFiledList){
+//			if(item.equalsIgnoreCase(filed)){
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+
+
 	private static void generatorToString(BufferedWriter bw, String name, List<TableDetailBean> listBean)throws IOException {
 		
 		bw.newLine();

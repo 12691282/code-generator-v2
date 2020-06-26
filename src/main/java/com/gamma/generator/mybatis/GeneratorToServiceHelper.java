@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.sql.Timestamp;
 
 import org.joda.time.DateTime;
 import org.springframework.util.StringUtils;
@@ -50,7 +51,7 @@ public class GeneratorToServiceHelper {
 		bw.newLine();
 		bw.write("import com.petrochina.bd.common.utils.PageUtils;");
 		bw.newLine();
-		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+" service 接口");
+		ServiceCodeGeneratorUtil.outputAuthorByName(bw,config.getTableRemarks()+" service 接口");
 		bw.newLine();
 		bw.write("public interface "+nameBean.getServiceName()+"{");
 		bw.newLine();
@@ -125,8 +126,14 @@ public class GeneratorToServiceHelper {
 		bw.write("import org.springframework.beans.BeanUtils;");
 		bw.newLine();
 		bw.write("import lombok.extern.slf4j.Slf4j;");
+
+		if(config.getIsBaseModel()){
+			bw.newLine();
+			bw.write("import java.time.LocalDateTime; ");
+		}
+
 		bw.newLine();
-		ServiceCodeGeneratorUtil.outputAuthorByName(bw,nameBean.getClazzName()+" service 实现类");
+		ServiceCodeGeneratorUtil.outputAuthorByName(bw,config.getTableRemarks()+" service 实现类");
 		bw.write("@Service");
 		bw.newLine();
 		bw.write("@Slf4j");
@@ -140,29 +147,28 @@ public class GeneratorToServiceHelper {
 		bw.write("\tprivate "+nameBean.getMapperName() + " " + mapperObj+";");
 		bw.newLine();
 		bw.newLine();
-		bw.write("\t/**");
+		bw.write("\t/****");
 		bw.newLine();
-		bw.write("\t/*@name 查询");
+		bw.write("\t*@name 查询");
 		bw.newLine();
-		bw.write("\t/*@description 查询");
+		bw.write("\t*@description 查询");
 		bw.newLine();
-		bw.write("\t/* @time    创建时间:"+ DateTime.now().toString("yyyy年MM月dd HH:mm:ss"));
-		bw.write("\t/*@param bean 查询参数");
+		bw.write("\t*@time  创建时间:"+ DateTime.now().toString("yyyy年MM月dd HH:mm:ss"));
 		bw.newLine();
-		bw.write("\t/*@return ***");
+		bw.write("\t*@param bean 查询参数");
 		bw.newLine();
-		bw.write("\t/* @author    李强");
+		bw.write("\t*@return PageUtil");
 		bw.newLine();
-		bw.write("\t/* @history 修订历史（历次修订内容、修订人、修订时间等）");
+		bw.write("\t*@author 李强");
 		bw.newLine();
-		bw.write("\t*/");
+		bw.write("\t*@history 修订历史（历次修订内容、修订人、修订时间等）");
+		bw.newLine();
+		bw.write("\t****/");
 		bw.newLine();
 		bw.write("\t@Override");
 		bw.newLine();
 		bw.write("\tpublic PageUtil "+nameBean.getListMethodName()+"("+nameBean.getBeanName()+" bean){");
-		ServiceCodeGeneratorUtil.outputLogger(bw, "\""+nameBean.getListMethodName()+" bean : \" +  bean.toString()");
-		bw.newLine();
-		bw.write("\t\t"+nameBean.getModelName() + " model = new "+ nameBean.getModelName()+"();");
+		ServiceCodeGeneratorUtil.outputLogger(bw, "\""+ nameBean.getBeanName() +" bean : \" +  bean.toString()");
 		bw.newLine();
 		bw.newLine();
 		bw.write("\t\tPageUtil.startPage();;");
@@ -176,20 +182,21 @@ public class GeneratorToServiceHelper {
 		bw.newLine();
 		bw.write("\t/**");
 		bw.newLine();
-		bw.write("\t/*@name 根据id获取bean对象");
+		bw.write("\t*@name 根据id获取bean对象");
 		bw.newLine();
-		bw.write("\t/*@description 根据id获取bean对象");
+		bw.write("\t*@description 根据id获取bean对象");
 		bw.newLine();
-		bw.write("\t/* @time    创建时间:"+ DateTime.now().toString("yyyy年MM月dd HH:mm:ss"));
-		bw.write("\t/*@param bean 查询参数");
+		bw.write("\t*@time  创建时间:"+ DateTime.now().toString("yyyy年MM月dd HH:mm:ss"));
 		bw.newLine();
-		bw.write("\t/*@return ***");
+		bw.write("\t*@param bean 查询参数");
 		bw.newLine();
-		bw.write("\t/* @author    李强");
+		bw.write("\t*@return "+nameBean.getBeanName());
 		bw.newLine();
-		bw.write("\t/* @history 修订历史（历次修订内容、修订人、修订时间等）");
+		bw.write("\t*@author 李强");
 		bw.newLine();
-		bw.write("\t*/");
+		bw.write("\t*@history 修订历史（历次修订内容、修订人、修订时间等）");
+		bw.newLine();
+		bw.write("\t**/");
 		bw.newLine();
 		bw.write("\t@Override");
 		bw.newLine();
@@ -235,9 +242,8 @@ public class GeneratorToServiceHelper {
 		bw.newLine();
 		bw.write("\t\tBeanUtils.copyProperties(bean, model);");
 		bw.newLine();
-		bw.write("\t\t String uuid = null;");
 		bw.newLine();
-		
+		String uuidStr = null;
 		for(TableDetailBean bean : nameBean.getListBean()){
 			//判断时间域
 			if(bean.isDateTypeField()){
@@ -252,30 +258,38 @@ public class GeneratorToServiceHelper {
 				continue;
 				
 			}
-			if("id".equals(bean.getFiled()) && bean.isVarcharTypeField()){
-				if(!StringUtils.isEmpty(bean.getLength())){
+			if("id".equalsIgnoreCase(bean.getFiled())){
+				if(bean.isVarcharTypeField() && !StringUtils.isEmpty(bean.getLength())){
 					Integer length = Integer.valueOf(bean.getLength());
 					if(length > 32){
-						bw.write("\t\t uuid = IDGeneratorUtil.getUUID();");
+						uuidStr = "\t\t\tString uuid = IDGeneratorUtil.getUUID();";
 					}else{
-						bw.write("\t\t uuid = IDGeneratorUtil.getUUID().substring(0, "+(length-1)+");");
+						uuidStr = "\t\t\tString uuid = IDGeneratorUtil.getUUID().substring(0, "+(length-1)+");";
 					}
-					bw.newLine();
 				}
 			}
 		}
-		
 		bw.write("\t\tif(model.getId() != null){");
 		bw.newLine();
+		if(config.getIsBaseModel()){
+			bw.write("model.setModifyTime(LocalDateTime.now())");
+			bw.newLine();
+		}
+
 		bw.write("\t\t\t"+mapperObj+".updateByPrimaryKey(model);");
 		bw.newLine();
 		bw.write("\t\t}else{");
 		bw.newLine();
-		bw.write("\t\t\tif(uuid != null){");
-		bw.newLine();
-		bw.write("\t\t\t\tmodel.setId(uuid);");
-		bw.newLine();
-		bw.write("\t\t\t}");
+		if(uuidStr != null){
+			bw.newLine();
+			bw.write(uuidStr);
+			bw.newLine();
+			bw.write("\t\t\tmodel.setId(uuid);");
+		}
+		if(config.getIsBaseModel()){
+			bw.write("model.setCreateTime(LocalDateTime.now())");
+			bw.newLine();
+		}
 		bw.newLine();
 		bw.write("\t\t\t"+mapperObj+".insert(model);");
 		bw.newLine();

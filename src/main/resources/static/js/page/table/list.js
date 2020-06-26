@@ -2,10 +2,7 @@ $(document).ready(function(){
    
 	
 	var FunctionObj = {
-			beanPackage : $("#beanPackage"),
-			mapperPackage : $("#mapperPackage"),
-			modelPackage : $("#modelPackage"),
-			xmlPackage : $("#xmlPackage"),
+		    isBaseModel : $("#isBaseModelVal").val(),
 			
 			
 		inital : function(){
@@ -13,17 +10,19 @@ $(document).ready(function(){
 			 this.setWindowsObj();
 			
 			 this.bindEvent();
-			 
-			
-			
+
 		},
 		setWindowsObj : function(){
-			
+
 			window.setToPageCss = function(_val){
 				$("#pageCss").val(_val);
 				return false;
 			}
-			
+			if(this.isBaseModel === 'Y'){
+				$("#checkBaseModel").attr("checked", true);
+				$("[name=isBaseModel]").val(true)
+				$("#baseModelPathDiv").show();
+			}
 		},
 		bindEvent : function(){
 			
@@ -48,9 +47,19 @@ $(document).ready(function(){
 				 var tableName = $(this).parent().prev().text();
 				 self.showTableDetail(tableName)
 			});
-			
-			  
-			
+
+
+			$("#checkBaseModel").on("click", function(){
+				var checked = $(this).is(':checked');
+				if(checked){
+					$("[name=isBaseModel]").val(true)
+					$("#baseModelPathDiv").show();
+				}else {
+					$("[name=isBaseModel]").val(false)
+					$("#baseModelPathDiv").hide();
+				}
+			});
+
 			$("#isBaseBean").change(function(){
 				var checkBox = $(this);
 			    checkBox.val(checkBox[0].checked)
@@ -64,6 +73,7 @@ $(document).ready(function(){
 			
 			
 			$("#generatorToModels").on("click", function(){
+
 				$("#configForm").attr("action", "startToGeneratorModel")
 				$("#configForm").submit();
 			});
@@ -84,8 +94,8 @@ $(document).ready(function(){
                         	 }
                          });
 			});
-			
-			
+
+
 			
 			
 		},

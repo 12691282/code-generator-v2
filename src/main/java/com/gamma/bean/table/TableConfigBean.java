@@ -19,9 +19,11 @@ public class TableConfigBean {
 
 	private String path;
 
-	private Boolean isBaseBean;
+	//是否生成baseModel
+	private String isBaseModel;
 
-	private Boolean isBaseModel;
+	//baseModel 路径
+	private String baseModelPath;
 
 	private String[] tableArr;
 

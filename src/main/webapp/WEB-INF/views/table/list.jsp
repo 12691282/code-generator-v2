@@ -9,7 +9,8 @@
 <title>Code Generator Table</title>
 </head>
 <body>
-
+	<!-- 隐藏参数 -->
+  <input type="hidden" id="isBaseModelVal"  value="${configInfo.isBaseModel}">
 
   <div class="container">
 
@@ -20,11 +21,6 @@
             <div class="container">
               <ul class="nav">
                 <li class="active"><a href="#">数据表</a></li>
-             <!--    <li><a href="#">Projects</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Downloads</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li> -->
               </ul>
             </div>
           </div>
@@ -44,7 +40,8 @@
                 </tr>
               </thead>
               
- 			<form id="configForm" method="post">             
+ 			<form id="configForm" method="post">
+				<input type="hidden"  name="isBaseModel" value="" />
               <tbody>
               <c:forEach items="${list}" var="v"  varStatus="status">
 	               <tr >
@@ -76,23 +73,25 @@
             </div>
             <div class="form-horizontal" style="height: 330px;padding: 15px;">
             <div class="control-group">
-			    <label class="control-label" for="inputEmail">是否生成base Bean</label>
-			    <div class="controls">
-			      <input type="checkbox" id="isBaseBean" name="isBaseBean" value=false />
-			    </div>
-			  </div>
-            
+
             <div class="control-group">
 			    <label class="control-label" for="inputEmail">是否生成base Model</label>
 			    <div class="controls">
-			      <input type="checkbox" id="isBaseModel"  name="isBaseModel" value=false />
+			      <input type="checkbox" id="checkBaseModel" value="" />
 			    </div>
-			  </div>
+			</div>
+
+			<div id="baseModelPathDiv" style="display: none" class="control-group"><!--模块名称-->
+				<label class="control-label" for="inputEmail">base Model 路径</label>
+				<div class="controls">
+					<input type="text" name="baseModelPath" value="${configInfo.baseModelPath}">
+				</div>
+			</div>
 
 			<div class="control-group"><!--模块名称-->
 				<label class="control-label" for="inputEmail">基础模块名称</label>
 				<div class="controls">
-					<input type="text" name="baseModelName" value="">
+					<input type="text" name="baseModelName" value="${configInfo.baseModelName}">
 				</div>
 			</div>
 
@@ -100,14 +99,14 @@
             <div class="control-group"><!--基础路径-->
 			    <label class="control-label" for="inputEmail">base_package</label>
 			    <div class="controls">
-			      <input type="text" name="basePackage" value="com.delta">
+			      <input type="text" name="basePackage" value="${configInfo.basePackage}">
 			    </div>
 			  </div>
             
 			<div class="control-group">
 				<label class="control-label" for="inputEmail">数据层后缀名称(Dao 或 Mapper 或其他)</label>
 				<div class="controls">
-					<input type="text" name="daoNameSuffix" value="dao">
+					<input type="text" name="daoNameSuffix" value="${configInfo.daoNameSuffix}">
 				</div>
 			 </div>
 
@@ -139,7 +138,7 @@
 					 </div>
 				   </label>
 				    <div class="controls">
-				      <input type="text" name="pageCss" value="bootstrap">
+				      <input type="text" name="pageCss" value="element">
 				    </div>
 			 </div>
             
