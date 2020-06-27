@@ -52,6 +52,12 @@ public class NameCollectionBean {
 	  private String tableName;
 	  
 	  private  List<TableDetailBean> listBean;
+
+	/*******************************************************************
+	 * 前端页面名称
+	 */
+	private String editPageName;
+
 	  
 		
 		public NameCollectionBean(String tableName, String daoSuffix) {
@@ -76,6 +82,8 @@ public class NameCollectionBean {
 
 			//设置mybatis 查询id
 			this.setMapperFindByModelMethodName("get"+clazzName+"List");
+
+			this.setEditPageName(lowerHeadWord+"AddModal");
 		}
 
 

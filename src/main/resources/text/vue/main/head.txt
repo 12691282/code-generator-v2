@@ -1,0 +1,19 @@
+<template>
+  <div class="procurement-price-wrapper module-wrapper">
+    <h3 class="module-title">功能名称</h3>
+    <!-- 查询条件 -->
+    <el-form ref="queryForm" :rules="queryRules" :model="queryForm" label-width="120px" size="mini">
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="查询名称：" prop="name">
+            <el-input class="module-input" v-model="queryForm.name" clearable size="mini"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-button size="mini" style="margin-left: 30px;" @click="formQuery">查询</el-button>
+          <el-button type="primary" size="mini" @click="addRow">新增</el-button>
+          <el-button type="primary" size="mini" @click="editRow" :disabled="!currentRow || currentRow['status'] === '30'">修改</el-button>
+          <el-button type="warning" size="mini" @click="disableRow" :disabled="!currentRow || currentRow['status'] === '30'">停用</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
