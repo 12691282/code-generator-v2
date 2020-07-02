@@ -102,7 +102,7 @@
 			      <input type="text" name="basePackage" value="${configInfo.basePackage}">
 			    </div>
 			  </div>
-            
+
 			<div class="control-group">
 				<label class="control-label" for="inputEmail">数据层后缀名称(Dao 或 Mapper 或其他)</label>
 				<div class="controls">
@@ -119,10 +119,10 @@
                 </div>
 
 			  <div class="control-group">
-			  
+
 				  <label class="control-label" for="inputEmail">
 				     <div class="dropdown">
-						<button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
+						<button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
 								data-toggle="dropdown">
 							   页面样式
 							<span class="caret"></span>
@@ -141,7 +141,7 @@
 				      <input type="text" name="pageCss" value="element">
 				    </div>
 			 </div>
-            
+
 			</div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -149,49 +149,47 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
     </div>
- </form>   
+ 		</form>
+	</div>
 </div>
 
+	<!-- 模态框（Modal） -->
+	<div class="modal fade"  style="width: 800px;"  id="databaseInfoModal" tabindex="-1" role="dialog"  aria-hidden="true">
+		<div class="modal-dialog"  >
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">数据库配置</h4>
+				</div>
+				<div class="modal-body form-horizontal">
 
-   
-     <!-- 模态框（Modal） -->
-<div class="modal fade" style="width: 800px;" id="databaseInfoModal" tabindex="-1" role="dialog"  aria-hidden="true">
+					<div class="control-group">
+						<label class="control-label" for="inputEmail" style="margin-left: -80px;">数据库地址</label>
+						<div class="controls">
+							<input type="text" id="databaseUrl" style="width: 600px; margin-left: -80px;" value="${dbBean.url}">
+						</div>
+					</div>
 
-    <div class="modal-dialog"  >
-        <div class="modal-content" >
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">数据库配置</h4>
-            </div>
-            <div class="modal-body form-horizontal">
-            
-            <div class="control-group">
-			    <label class="control-label" for="inputEmail" style="margin-left: -80px;">数据库地址</label>
-			    <div class="controls">
-			      <input type="text" id="databaseUrl" style="width: 600px; margin-left: -80px;" value="${dbBean.url}">
-			    </div>
-			  </div>
-            
-              <div class="control-group">
-			    <label class="control-label" style="margin-left: -80px;" for="inputEmail">用户名</label>
-			    <div class="controls">
-			      <input type="text" style="margin-left: -80px;" id="databaseUsername" value="${dbBean.username}">
-			    </div>
-			  </div>
-			  
-			  <div class="control-group">
-			    <label class="control-label" style="margin-left: -80px;" for="inputEmail">密码</label>
-			    <div class="controls">
-			      <input type="text"  style="margin-left: -80px;" id="databasePassword" value="${dbBean.password}">
-			    </div>
-			  </div>
-			</div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-    <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="confirmDatabaseInfo">确定</button>
-    </div>
+					<div class="control-group">
+						<label class="control-label" style="margin-left: -80px;" for="inputEmail">用户名</label>
+						<div class="controls">
+							<input type="text" style="margin-left: -80px;" id="databaseUsername" value="${dbBean.username}">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" style="margin-left: -80px;" for="inputEmail">密码</label>
+						<div class="controls">
+							<input type="text"  style="margin-left: -80px;" id="databasePassword" value="${dbBean.password}">
+						</div>
+					</div>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			<button type="button" class="btn btn-primary" id="confirmDatabaseInfo">确定</button>
+		</div>
 </div>
 
     
