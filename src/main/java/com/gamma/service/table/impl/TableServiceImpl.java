@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import com.gamma.tools.FileTools;
 import com.gamma.tools.ServiceCodeGeneratorUtil;
 
 @Service
+@Slf4j
 public class TableServiceImpl extends BaseService implements TableService{
 
 
@@ -42,7 +44,7 @@ public class TableServiceImpl extends BaseService implements TableService{
 	
 	@Override
 	public List getList(DatabaseBean bean) {
-		super.getLogger().info("getList");
+		log.info("getList");
 		List<String> list = new ArrayList<String>();
 		Connection connection = null;
 		PreparedStatement pstate = null;
@@ -78,8 +80,8 @@ public class TableServiceImpl extends BaseService implements TableService{
 
 	@Override
 	public List<TableDetailBean> getDetailByName(String tableName, DatabaseBean dbBean) {
-		
-		super.getLogger().info("getDetailByName tableName :" + tableName);
+
+		log.info("getDetailByName tableName :" + tableName);
 		
 	
 		Connection connection = null;
@@ -162,7 +164,7 @@ public class TableServiceImpl extends BaseService implements TableService{
 		ModelGeneratorConfig config = new ModelGeneratorConfig(bean);
 		Connection connection = null;
 		String[] tableArr = bean.getTableArr();
-		super.getLogger().info("startGeneratorModel config.getPath() : " + config.getPath() + " config.getZipFileName() " + config.getZipFileName());
+		log.info("startGeneratorModel config.getPath() : " + config.getPath() + " config.getZipFileName() " + config.getZipFileName());
 
 		//服务端代码生成
 		try {

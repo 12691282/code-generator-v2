@@ -9,11 +9,13 @@ import com.gamma.bean.table.DatabaseBean;
 
 public class DataSourceHelper {
 	
-	public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";  
+	public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+
+	public static final String H2_DRIVER = "org.h2.Driver";
 
 	public static Connection connectToDatabase(DatabaseBean bean) throws Exception {
 
-		Class.forName(MYSQL_DRIVER);//指定连接类型
+		Class.forName(bean.getDriver());//指定连接类型
 		Properties props =new Properties();
 		props.setProperty("user", bean.getUsername());
 		props.setProperty("password",  bean.getPassword());

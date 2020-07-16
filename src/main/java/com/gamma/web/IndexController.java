@@ -17,7 +17,7 @@ public class IndexController extends BaseController{
 	public void toIndex(HttpServletResponse response){
 		
 	   try {
-		   response.sendRedirect("/table/list");
+		   response.sendRedirect("/generator/list");
 	   } catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
