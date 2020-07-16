@@ -109,11 +109,12 @@
 		    <artifactId>joda-time</artifactId>
 		</dependency>
 
-          <!-- 嵌入式数据库 -->
+          <!-- 嵌入式数据库-->
           <dependency>
               <groupId>com.h2database</groupId>
               <artifactId>h2</artifactId>
-              <scope>runtime</scope>
+              <scope>system</scope>
+              <systemPath>${project.basedir}/src/main/resources/h2-1.4.193.jar</systemPath>
           </dependency>
 
       <dependency>
