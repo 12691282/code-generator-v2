@@ -109,6 +109,13 @@
 		    <artifactId>joda-time</artifactId>
 		</dependency>
 
+          <!-- 嵌入式数据库 -->
+          <dependency>
+              <groupId>com.h2database</groupId>
+              <artifactId>h2</artifactId>
+              <scope>runtime</scope>
+          </dependency>
+
       <dependency>
           <groupId>org.projectlombok</groupId>
           <artifactId>lombok</artifactId>
