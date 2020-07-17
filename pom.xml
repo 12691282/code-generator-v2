@@ -113,8 +113,7 @@
           <dependency>
               <groupId>com.h2database</groupId>
               <artifactId>h2</artifactId>
-              <scope>system</scope>
-              <systemPath>${project.basedir}/src/main/resources/h2-1.4.193.jar</systemPath>
+              <scope>runtime</scope>
           </dependency>
 
       <dependency>
