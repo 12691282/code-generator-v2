@@ -27,9 +27,6 @@ public class GeneratorController extends BaseController{
 	@Autowired
 	private GeneratorService generatorService;
 	
-
-
-
 	@RequestMapping("list")
 	public String getList(Model model){
 		List list = generatorService.getList();
