@@ -7,6 +7,11 @@ import com.gamma.tools.DataSourceHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,13 +40,28 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         bean.setPassword(password);
         bean.setUsername(username);
         bean.setDriver(driver);
+        List<String> list = new ArrayList<String>();
+        Connection connection = null;
+        PreparedStatement pstate;
         try {
-            DataSourceHelper.connectToDatabase(bean);
+            connection = DataSourceHelper.connectToDatabase(bean);
+            pstate = connection.prepareStatement("SELECT table_name  FROM  generator_table_info");
+            ResultSet rs = pstate.executeQuery();
+            while(rs.next()){
+                list.add(rs.getString(1));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
         return null;
     }
-//
 }

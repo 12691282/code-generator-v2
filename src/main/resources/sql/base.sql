@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `generator_table_info`;
 CREATE TABLE `generator_table_info`  (
-  `generat_id` int(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `generat_id` varchar(64) NOT NULL COMMENT '编号',
   `table_name` varchar(200)  COMMENT '表名称',
   `table_comment` varchar(500)  COMMENT '表描述',
   `class_name` varchar(100)  COMMENT '实体类名称',
@@ -16,7 +16,7 @@ CREATE TABLE `generator_table_info`  (
 
 DROP TABLE IF EXISTS `generator_table_column`;
 CREATE TABLE `generator_table_column`  (
-  `column_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `column_id` varchar(64) NOT NULL COMMENT '编号',
   `table_id` varchar(64)  COMMENT '归属表编号',
   `column_name` varchar(200)  COMMENT '列名称',
   `column_comment` varchar(500)  COMMENT '列描述',
