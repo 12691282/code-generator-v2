@@ -10,12 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -64,7 +60,7 @@ public class JdbcUtil implements InitializingBean {
             Table table = clazz.getAnnotation(Table.class);
             String tableName = table.value();
             String sqlStart = "SELECT ";
-            String sqlEnd = "From "+ tableName;
+            String sqlEnd = "FROM "+ tableName;
             Field[] filedArr = clazz.getDeclaredFields();
             for (Field f : filedArr) {
                 Column column = f.getAnnotation(Column.class);
@@ -142,5 +138,49 @@ public class JdbcUtil implements InitializingBean {
         items[0] = (byte) ((char) items[0] - 'a' + 'A');
         return new String(items);
     }
+
+    /********************************/
+
+    public static List<Map> connectAndGet(DatabaseBean bean) {
+        Connection connection = null;
+        PreparedStatement pstate;
+        List<Map> resultList = new LinkedList<>();
+        try {
+            connection =  DataSourceHelper.connectToDatabase(bean);
+            pstate = connection.prepareStatement("show tables");
+            ResultSet rs = pstate.executeQuery();
+            while(rs.next()){
+                Map tableDetail = new HashMap();
+                String tableName = rs.getString(1);
+                tableDetail.put("tableName", tableName);
+                DatabaseMetaData dbmd = connection.getMetaData();
+                ResultSet tableRet = dbmd.getTables(null, "%",tableName,new String[]{"TABLE"});
+
+                while (tableRet.next()) {
+                    String remarks = tableRet.getString("REMARKS");       //表备注
+                    log.info(remarks);
+                    tableDetail.put("remarks", remarks);
+                    break;
+                }
+                resultList.add(tableDetail);
+            }
+
+        }catch (Exception e){
+            log.error(e.getMessage());
+            e.printStackTrace();
+            return null;
+        }finally {
+            try {
+                if(connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultList;
+    }
+
+
 
 }

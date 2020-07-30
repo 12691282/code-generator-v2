@@ -11,6 +11,7 @@ CREATE TABLE `generator_table_info`  (
   `function_author` varchar(50)  COMMENT '生成功能作者',
   `options` varchar(1000)  COMMENT '其它生成选项',
   `remark` varchar(500)  COMMENT '备注',
+  `create_time` varchar(30)   COMMENT '创建时间',
   PRIMARY KEY (`generat_id`)
 );
 

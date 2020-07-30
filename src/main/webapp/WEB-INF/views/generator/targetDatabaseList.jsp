@@ -9,13 +9,12 @@
 <title>Code Generator Table</title>
 </head>
 <body>
-	<!-- 隐藏参数 -->
-  <input type="hidden" id="isBaseModelVal"  value="${configInfo.isBaseModel}">
+
 
   <div class="container">
 
       <div class="masthead">
-        <h3 class="muted">代码生成系统 - 前后分离版本-v2</h3>
+        <h3 class="muted">代码生成系统</h3>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
@@ -26,51 +25,44 @@
           </div>
         </div><!-- /.navbar -->
       </div>
-		<div>
-			<button class="btn btn-default" data-toggle="modal" data-target="#databaseInfoModal">连接数据库</button>
-			<button class="btn btn-default" data-toggle="modal" data-target="#configInfoModal" >配置信息</button>
-			<button class="btn btn-info" id="generatorToModels" >生成模块</button>
-		</div>
+      <button class="btn btn-success" data-toggle="modal" onclick="javascript:window.location.href='list'" data-target="#databaseInfoModal">返回列表</button>
+      <button class="btn btn-default" data-toggle="modal" id="importTableInfo"  >导入</button>
+			<h3>${tableName} 导入数据库列表</h3>
  			 <table class="table table-hover">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th style="width: 800px;">表名</th>
-                  <th align="right">操作</th>
+                  <th>表名称</th>
+                  <th>表描述</th>
                 </tr>
               </thead>
               <tbody>
-                 <tbody>
-                 <c:forEach items="${list}" var="v"  varStatus="status">
-                     <tr >
-                         <td>
-                             <input type="checkbox" name="tableArr" value="${v}"> ${status.index + 1}
-                         </td>
-                         <td >${v}</td>
-                         <td><button class="btn btn-success" type="button">查看</button></td>
-                     </tr>
-                 </c:forEach>
-                 </tbody>
-             </table>
+              <c:forEach items="${list}" var="obj"  varStatus="status">
+	               <tr >
+                       <td>
+                           <input type="checkbox" name="tableArr" value="${obj.tableName}"> ${status.index + 1}
+                       </td>
+	                  <td>${obj.tableName}</td>
+	                  <td>${obj.remarks}</td>
+	               </tr>
+              </c:forEach>
               </tbody>
             </table>
-
       <hr>
-
+      <input type="hidden" id="url" value="${dataBaseUrl}">
+      <input type="hidden" id="driver" value="${dataBaseDriver}">
+      <input type="hidden" id="username" value="${dataBaseUsername}">
+      <input type="hidden" id="password" value="${dataBasePassword}">
       <div class="footer">
         <p>&copy; lion spring boot gamma - v2 2020</p>
       </div>
 
     </div> <!-- /container -->
-
-
-
-    
 <!-- js 加载 -->
  <script type="text/javascript" src="/js/plus/jquery/jquery-1.12.4.min.js"></script>
  <script type="text/javascript" src="/js/plus/bootstrap/js/bootstrap.min.js"></script>
  <!-- 本页面js -->
- <script type="text/javascript" src="/js/page/table/list.js"></script>
+ <script type="text/javascript" src="/js/page/generator/targetDatabaseList.js"></script>
 
 </body>
 </html>

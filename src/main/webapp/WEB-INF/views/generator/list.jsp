@@ -15,7 +15,7 @@
   <div class="container">
 
       <div class="masthead">
-        <h3 class="muted">代码生成系统 - 前后分离版本-v2</h3>
+        <h3 class="muted">代码生成系统 - use velocity version-2</h3>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
@@ -27,16 +27,18 @@
         </div><!-- /.navbar -->
       </div>
 		<div>
-			<button class="btn btn-default" data-toggle="modal" data-target="#databaseInfoModal">连接数据库</button>
+			<button class="btn btn-default" data-toggle="modal" data-target="#databaseInfoModal">导入目标数据</button>
 			<button class="btn btn-default" data-toggle="modal" data-target="#configInfoModal" >配置信息</button>
-			<button class="btn btn-info" id="generatorToModels" >生成模块</button>
+			<button class="btn btn-info" id="generatorToModels" >生成代码</button>
 		</div>
  			 <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th style="width: 800px;">表名</th>
-                  <th align="right">操作</th>
+					<th>#</th>
+                    <th style="width: 300px;">表名</th>
+					<th style="width: 300px;">表描述</th>
+					<th style="width: 300px;">创建时间</th>
+                    <th align="right">操作</th>
                 </tr>
               </thead>
               
@@ -45,16 +47,18 @@
               <tbody>
               <c:forEach items="${list}" var="v"  varStatus="status">
 	               <tr >
-	               	  <td>
-						  <input type="checkbox" name="tableArr" value="${v}"> ${status.index + 1}
+	               	   <td>
+						  <input type="checkbox" name="tableArr" value="${v.generatId}"> ${status.index + 1}
 	               	   </td>
-	                  <td >${v}</td>
+	                   <td >${v.tableName}</td>
+					   <td >${v.tableComment}</td>
+					   <td >${v.createTime}</td>
 	                  <td><button class="btn btn-success" type="button">查看</button></td>
+					  <td><button class="btn btn-info" type="button">生成代码</button></td>
 	               </tr>
               </c:forEach>
               </tbody>
             </table>
-
       <hr>
 
       <div class="footer">
@@ -118,38 +122,37 @@
                     </div>
                 </div>
 
-			  <div class="control-group">
+				  <div class="control-group">
 
-				  <label class="control-label" for="inputEmail">
-				     <div class="dropdown">
-						<button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
-								data-toggle="dropdown">
-							   页面样式
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-							<li role="presentation">
-								<a role="menuitem" tabindex="1" onmouseup="setToPageCss('elementUI')" href="#">bootstrap</a>
-							</li>
-							<li role="presentation">
-								<a role="menuitem" tabindex="-1" onmouseup="setToPageCss('iviewUI')"  href="#">暂缺</a>
-							</li>
-						</ul>
-					 </div>
-				   </label>
-				    <div class="controls">
-				      <input type="text" name="pageCss" value="element">
-				    </div>
-			 </div>
-
-			</div>
+					  <label class="control-label" for="inputEmail">
+						 <div class="dropdown">
+							<button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
+									data-toggle="dropdown">
+								   页面样式
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+								<li role="presentation">
+									<a role="menuitem" tabindex="1" onmouseup="setToPageCss('elementUI')" href="#">bootstrap</a>
+								</li>
+								<li role="presentation">
+									<a role="menuitem" tabindex="-1" onmouseup="setToPageCss('iviewUI')"  href="#">暂缺</a>
+								</li>
+							</ul>
+						 </div>
+					   </label>
+						<div class="controls">
+						  <input type="text" name="pageCss" value="element">
+						</div>
+				 </div>
+			  </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
-    <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-    </div>
- 		</form>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+		</div>
+ 	</form>
 	</div>
 </div>
 
@@ -162,27 +165,36 @@
 					<h4 class="modal-title">数据库配置</h4>
 				</div>
 				<div class="modal-body form-horizontal">
+					<form  id="connectDataBaseForm"  method="post">
+							<div class="control-group">
+								<label class="control-label" for="inputEmail" style="margin-left: -80px;">数据库地址</label>
+								<div class="controls">
+									<input type="text" name="url" style="width: 600px; margin-left: -80px;" value="${dataBaseUrl}">
+								</div>
+							</div>
 
-					<div class="control-group">
-						<label class="control-label" for="inputEmail" style="margin-left: -80px;">数据库地址</label>
-						<div class="controls">
-							<input type="text" id="databaseUrl" style="width: 600px; margin-left: -80px;" value="${dbBean.url}">
-						</div>
-					</div>
+							<div class="control-group">
+								<label class="control-label" style="margin-left: -80px;" for="inputEmail">数据库驱动名</label>
+								<div class="controls">
+									<input type="text" style="margin-left: -80px;" name="driver" value="${dataBaseDriver}">
+								</div>
+							</div>
 
-					<div class="control-group">
-						<label class="control-label" style="margin-left: -80px;" for="inputEmail">用户名</label>
-						<div class="controls">
-							<input type="text" style="margin-left: -80px;" id="databaseUsername" value="${dbBean.username}">
-						</div>
-					</div>
 
-					<div class="control-group">
-						<label class="control-label" style="margin-left: -80px;" for="inputEmail">密码</label>
-						<div class="controls">
-							<input type="text"  style="margin-left: -80px;" id="databasePassword" value="${dbBean.password}">
-						</div>
-					</div>
+							<div class="control-group">
+								<label class="control-label" style="margin-left: -80px;" for="inputEmail">用户名</label>
+								<div class="controls">
+									<input type="text" style="margin-left: -80px;" name="username" value="${dataBaseUsername}">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label" style="margin-left: -80px;" for="inputEmail">密码</label>
+								<div class="controls">
+									<input type="text"  style="margin-left: -80px;" name="password" value="${dataBasePassword}">
+								</div>
+							</div>
+					</form>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal -->
@@ -197,7 +209,7 @@
  <script type="text/javascript" src="/js/plus/jquery/jquery-1.12.4.min.js"></script>
  <script type="text/javascript" src="/js/plus/bootstrap/js/bootstrap.min.js"></script>
  <!-- 本页面js -->
- <script type="text/javascript" src="/js/page/table/list.js"></script>
+ <script type="text/javascript" src="/js/page/generator/list.js"></script>
 
 </body>
 </html>

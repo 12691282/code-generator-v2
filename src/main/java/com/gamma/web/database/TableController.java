@@ -25,15 +25,19 @@ public class TableController extends BaseController{
 	
 	@Autowired
 	private TableService tableService;
-	
-    @Value("${spring.datasource.username}")
+
+	@Value("${generateConfig.target.dataBase.username}")
     private String username;
 
-    @Value("${spring.datasource.password}")
+    @Value("${generateConfig.target.dataBase.password}")
     private String password;
 
-    @Value("${spring.datasource.url}")
+	@Value("${generateConfig.target.dataBase.url}")
     private String url;
+
+	//目标数据库驱动
+	@Value("${generateConfig.target.dataBase.driver}")
+	private String driver;
 
 	//基础路径
 	@Value("${generateConfig.basePackage}")
@@ -59,6 +63,7 @@ public class TableController extends BaseController{
 	@RequestMapping("connectDatabase")
 	@ResponseBody
 	public Map connectDatabase(HttpServletRequest request,DatabaseBean bean){
+		bean.setDriver(driver);
 		
 		bean = tableService.connectDatabase(bean);
 		if(bean == null){
@@ -80,6 +85,8 @@ public class TableController extends BaseController{
 			bean.setUrl(url);
 			bean.setPassword(password);
 			bean.setUsername(username);
+			bean.setDriver(driver);
+
 			HttpSession session = request.getSession();
 			session.setAttribute(session.getId(), bean);
 		}

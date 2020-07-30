@@ -51,4 +51,9 @@ public class GeneratorTableInfoEntity {
     @Column("remark")
     private String remark;
 
+    //备注
+    @Column("create_time")
+    private String createTime;
+
+
 }

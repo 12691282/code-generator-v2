@@ -9,5 +9,6 @@ public class DatabaseBean {
 	private String username; 
 	private String password;
 	private String driver;
+	private String tableNameStr;
  
 }
