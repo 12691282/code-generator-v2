@@ -49,10 +49,10 @@
               </tbody>
             </table>
       <hr>
-      <input type="hidden" id="url" value="${dataBaseUrl}">
-      <input type="hidden" id="driver" value="${dataBaseDriver}">
-      <input type="hidden" id="username" value="${dataBaseUsername}">
-      <input type="hidden" id="password" value="${dataBasePassword}">
+      <input type="hidden" id="dataBaseUrl" value="${dataBaseUrl}">
+      <input type="hidden" id="dataBaseDriver" value="${dataBaseDriver}">
+      <input type="hidden" id="dataBaseUsername" value="${dataBaseUsername}">
+      <input type="hidden" id="dataBasePassword" value="${dataBasePassword}">
       <div class="footer">
         <p>&copy; lion spring boot gamma - v2 2020</p>
       </div>

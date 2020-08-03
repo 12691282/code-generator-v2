@@ -30,7 +30,7 @@ $(document).ready(function(){
 				var tableNameStr = '';
 				checkboxArr.each(function (index,ele) {
 					if(index > 0){
-						tableNameStr =   tableNameStr + ',' ele.value;
+						tableNameStr =   tableNameStr + ',' + ele.value;
 					}else {
 						tableNameStr =  ele.value;
 					}
@@ -39,7 +39,7 @@ $(document).ready(function(){
 				var driver = $("#dataBaseDriver").val();
 				var username = $("#dataBaseUsername").val();
 				var password = $("#dataBasePassword").val();
-
+				debugger
 				$.post("importTableInfo",
 					{"url":url, "username": username, "password":password,"driver":driver, "tableNameStr":tableNameStr},
 					function(result){
