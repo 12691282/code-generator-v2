@@ -2,6 +2,7 @@ package com.gamma.web.database;
 
 import com.gamma.base.BaseController;
 import com.gamma.bean.table.DatabaseBean;
+import com.gamma.service.entity.GeneratorTableInfoEntity;
 import com.gamma.service.table.GeneratorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class GeneratorController extends BaseController{
 	@PostMapping("connectTargetDataBase")
 	public String connectTargetDataBase(Model model, DatabaseBean bean){
 		log.info("bean {}", bean);
-		List list = generatorService.connectTargetDataBase(bean);
+		List<GeneratorTableInfoEntity> list = generatorService.connectTargetDataBase(bean);
 		if(list == null){
 			return "redirect:/generator/list";
 		}

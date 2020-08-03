@@ -1,6 +1,7 @@
 package com.gamma.service.table;
 
 import com.gamma.bean.table.DatabaseBean;
+import com.gamma.service.entity.GeneratorTableInfoEntity;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface GeneratorService {
      * @param bean
      * @return
      */
-    List connectTargetDataBase(DatabaseBean bean);
+    List<GeneratorTableInfoEntity> connectTargetDataBase(DatabaseBean bean);
 
     /**
      * 链接数据库和导入数据

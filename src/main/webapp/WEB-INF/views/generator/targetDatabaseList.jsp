@@ -43,7 +43,7 @@
                            <input type="checkbox" name="tableArr" value="${obj.tableName}"> ${status.index + 1}
                        </td>
 	                  <td>${obj.tableName}</td>
-	                  <td>${obj.remarks}</td>
+	                  <td>${obj.remark}</td>
 	               </tr>
               </c:forEach>
               </tbody>

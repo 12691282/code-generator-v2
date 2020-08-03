@@ -48,48 +48,6 @@ public class ServiceCodeGeneratorUtil {
 		return temp.substring(0,1).toUpperCase()+temp.substring(1);
 	}
 
-//	private static void outputBaseModel(ModelGeneratorConfig config) throws IOException{
-//		File beanFile = new File(config.getPath(),"BaseModel.java");
-//		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(beanFile)));
-//		bw.write("package " + config.getBeanPackage() + ";");
-//		bw.newLine();
-//		bw.write("import java.io.Serializable;");
-//		ServiceCodeGeneratorUtil.outputAuthor(bw,"model父类");
-//		bw.newLine();
-//		bw.write("@SuppressWarnings(\"serial\")");
-//		bw.newLine();
-//		bw.write("public class BaseModel implements Serializable{");
-//		bw.newLine();
-//		bw.write("\t/**主键**/");
-//		bw.newLine();
-//		bw.write("\tprivate String id;");
-//		bw.newLine();
-//		// 生成get 和 set方法
-//
-//		bw.write("\tpublic String getId(){");
-//		bw.newLine();
-//		bw.write("\t\treturn this.id;");
-//		bw.newLine();
-//		bw.write("\t}");
-//		bw.newLine();
-//		bw.newLine();
-//
-//		bw.write("\tpublic void setId(String id){");
-//		bw.newLine();
-//		bw.write("\t\tthis.id;");
-//		bw.newLine();
-//		bw.write("\t}");
-//		bw.newLine();
-//		bw.newLine();
-//
-//		bw.write("}");
-//		bw.newLine();
-//		bw.flush();
-//		bw.close();
-//
-//	}
-
-
 
 	/**
 	 * 更改table的名字
@@ -117,50 +75,20 @@ public class ServiceCodeGeneratorUtil {
 		
 		return sb.toString();
 	}
-	
-	
 
-//	public static void outputBaseBean( ModelGeneratorConfig config) throws IOException {
-//
-//		File beanFile = new File(config.getPath(),"BaseBean.java");
-//		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(beanFile)));
-//		bw.write("package " + config.getBeanPackage() + ";");
-//		bw.newLine();
-//		bw.write("import java.io.Serializable;");
-//		ServiceCodeGeneratorUtil.outputAuthor(bw,"排序基类");
-//		bw.newLine();
-//		bw.write("@SuppressWarnings(\"serial\")");
-//		bw.newLine();
-//		bw.write("public class BaseBean implements Serializable{");
-//		bw.newLine();
-//		bw.write("\t/**排序**/");
-//		bw.newLine();
-//		bw.write("\tprivate String orderSql;");
-//		bw.newLine();
-//		// 生成get 和 set方法
-//
-//		bw.write("\tpublic String getOrderSql(){");
-//		bw.newLine();
-//		bw.write("\t\treturn this.orderSql;");
-//		bw.newLine();
-//		bw.write("\t}");
-//		bw.newLine();
-//		bw.newLine();
-//
-//		bw.write("\tpublic void setOrderSql(String orderSql){");
-//		bw.newLine();
-//		bw.write("\t\tthis.orderSql=orderSql;");
-//		bw.newLine();
-//		bw.write("\t}");
-//		bw.newLine();
-//		bw.newLine();
-//
-//		bw.write("}");
-//		bw.newLine();
-//		bw.flush();
-//		bw.close();
-//	}
-	
+	public static String getBusinessName(String tableName) {
+		String[] tables = tableName.split("_");
+		return tables[tables.length - 1];
+	}
+
+
+	public static String setLengthByType(String type) {
+		if(type.indexOf("(") != -1){
+			return type.substring(type.indexOf("(")+1, type.indexOf(")")) ;
+		}
+		return "";
+	}
+
 	
 	public static void outputLogger(BufferedWriter bw,String text) throws IOException{
 		bw.newLine();
@@ -204,7 +132,5 @@ public class ServiceCodeGeneratorUtil {
 		bw.write("\t\t\t<p>&copy; lion 2017</p>");bw.newLine();
 		bw.write("\t\t</div>");bw.newLine();
 	}
-
-
 
 }

@@ -139,48 +139,5 @@ public class JdbcUtil implements InitializingBean {
         return new String(items);
     }
 
-    /********************************/
-
-    public static List<Map> connectAndGet(DatabaseBean bean) {
-        Connection connection = null;
-        PreparedStatement pstate;
-        List<Map> resultList = new LinkedList<>();
-        try {
-            connection =  DataSourceHelper.connectToDatabase(bean);
-            pstate = connection.prepareStatement("show tables");
-            ResultSet rs = pstate.executeQuery();
-            while(rs.next()){
-                Map tableDetail = new HashMap();
-                String tableName = rs.getString(1);
-                tableDetail.put("tableName", tableName);
-                DatabaseMetaData dbmd = connection.getMetaData();
-                ResultSet tableRet = dbmd.getTables(null, "%",tableName,new String[]{"TABLE"});
-
-                while (tableRet.next()) {
-                    String remarks = tableRet.getString("REMARKS");       //表备注
-                    log.info(remarks);
-                    tableDetail.put("remarks", remarks);
-                    break;
-                }
-                resultList.add(tableDetail);
-            }
-
-        }catch (Exception e){
-            log.error(e.getMessage());
-            e.printStackTrace();
-            return null;
-        }finally {
-            try {
-                if(connection != null){
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return resultList;
-    }
-
-
 
 }
