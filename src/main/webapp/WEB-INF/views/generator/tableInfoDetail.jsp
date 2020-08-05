@@ -14,7 +14,7 @@
   <div class="container">
 
       <div class="masthead">
-        <h3 class="muted">代码生成系统</h3>
+        <h3 class="muted">生成配置详情</h3>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
@@ -26,7 +26,6 @@
         </div><!-- /.navbar -->
       </div>
       <button class="btn btn-success" data-toggle="modal" onclick="javascript:window.location.href='list'" data-target="#databaseInfoModal">返回列表</button>
-      <button class="btn btn-default" data-toggle="modal" id="importTableInfo"  >导入</button>
 			<h3>${tableName} </h3>
  			 <table class="table table-hover">
               <thead>
@@ -49,10 +48,7 @@
               </tbody>
             </table>
       <hr>
-      <input type="hidden" id="dataBaseUrl" value="${dataBaseUrl}">
-      <input type="hidden" id="dataBaseDriver" value="${dataBaseDriver}">
-      <input type="hidden" id="dataBaseUsername" value="${dataBaseUsername}">
-      <input type="hidden" id="dataBasePassword" value="${dataBasePassword}">
+
       <div class="footer">
         <p>&copy; lion spring boot gamma - v2 2020</p>
       </div>
@@ -62,7 +58,6 @@
  <script type="text/javascript" src="/js/plus/jquery/jquery-1.12.4.min.js"></script>
  <script type="text/javascript" src="/js/plus/bootstrap/js/bootstrap.min.js"></script>
  <!-- 本页面js -->
- <script type="text/javascript" src="/js/page/generator/targetDatabaseList.js"></script>
 
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.gamma.web.database;
 
 import com.gamma.base.BaseController;
 import com.gamma.bean.table.DatabaseBean;
+import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
 import com.gamma.service.table.GeneratorService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Map;
@@ -59,12 +61,23 @@ public class GeneratorController extends BaseController{
 		return "generator/targetDatabaseList";
 	}
 	@PostMapping("importTableInfo")
+	@ResponseBody
 	public Map importTableInfo(DatabaseBean bean){
 		log.info("bean {}", bean);
-
 		generatorService.connectAndImport(bean);
-
 		return super.successInfo("导入成功");
+	}
+
+	@PostMapping("tableInfoDetail")
+	public String tableInfoDetail(Model model, String tableName){
+		log.info("tableName {}", tableName);
+		GeneratorTableInfoEntity infoEntity = generatorService.getTableInfoDetail(tableName);
+		List<GeneratorTableColumnEntity> columnList = generatorService.getTableColumnListById(infoEntity.getGeneratId());
+
+		model.addAttribute("infoEntity", infoEntity);
+		model.addAttribute("columnList", columnList);
+
+		return "generator/tableInfoDetail";
 	}
 
 

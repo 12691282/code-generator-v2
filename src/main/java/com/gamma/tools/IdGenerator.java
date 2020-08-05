@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class IdGenerator {
 
-    private long workerId = 0;
+    private static long workerId = 0;
 
     @PostConstruct
     void init() {
@@ -52,7 +52,7 @@ public class IdGenerator {
      *
      * @return
      */
-    public String simpleUUID() {
+    public static String simpleUUID() {
         return IdUtil.simpleUUID();
     }
 
@@ -61,13 +61,13 @@ public class IdGenerator {
      *
      * @return
      */
-    public String randomUUID() {
+    public static String randomUUID() {
         return IdUtil.randomUUID();
     }
 
-    private Snowflake snowflake = IdUtil.createSnowflake(workerId, 1);
+    private static Snowflake snowflake = IdUtil.createSnowflake(workerId, 1);
 
-    public synchronized long snowflakeId() {
+    public synchronized static long snowflakeId() {
         return snowflake.nextId();
     }
 

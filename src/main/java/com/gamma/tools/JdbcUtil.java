@@ -3,6 +3,7 @@ package com.gamma.tools;
 import com.gamma.annotation.Column;
 import com.gamma.annotation.Table;
 import com.gamma.bean.table.DatabaseBean;
+import com.gamma.service.entity.GeneratorTableInfoEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ public class JdbcUtil implements InitializingBean {
     private static String url;
 
     private static String driver;
+
 
     @Value("${spring.datasource.username}")
     public void setUsername(String username) {
@@ -51,52 +53,11 @@ public class JdbcUtil implements InitializingBean {
         bean.setDriver(driver);
     }
 
-    public static <T> List<T> queryList(Class<T> clazz){
+    public static <T> List<T> getList(Class<T> clazz){
         List<T> resultList = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement pstate;
-        try {
-            connection = DataSourceHelper.connectToDatabase(bean);
-            Table table = clazz.getAnnotation(Table.class);
-            String tableName = table.value();
-            String sqlStart = "SELECT ";
-            String sqlEnd = "FROM "+ tableName;
-            Field[] filedArr = clazz.getDeclaredFields();
-            for (Field f : filedArr) {
-                Column column = f.getAnnotation(Column.class);
-                sqlStart += " " + column.value()+",";
-            }
-            sqlStart = sqlStart.substring(0,sqlStart.length()-1);
-            String sql = sqlStart + " " + sqlEnd;
-            log.info("sql : {}",sql);
-            pstate = connection.prepareStatement(sql);
-            ResultSet rs = pstate.executeQuery();
-            List<String> fieldNameList = getFieldName(filedArr);
-            T newClazz;
-            while(rs.next()){
-                newClazz  = clazz.newInstance();
-                for(int i=0,size=fieldNameList.size(); i<size;  i++){
-                    String fieldName = getMethodName(fieldNameList.get(i));
-                    // 赋值给bean对象对应的值
-                    Method get_Method = clazz.getMethod("get" + fieldName);  //获取getMethod方法
-                    Method set_Method = clazz.getMethod("set" + fieldName, get_Method.getReturnType());//获得属性set方法
-                    Object objValue = getValueByType(get_Method.getReturnType().getName(), rs, i+1);
-                    set_Method.invoke(newClazz, objValue);
-                }
-                resultList.add(newClazz);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                if(connection != null){
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        String sql = getQuerySql(clazz);
+        log.info("sql : {}",sql);
+        setAndGetList(clazz, sql, resultList);
         return resultList;
     }
 
@@ -137,6 +98,122 @@ public class JdbcUtil implements InitializingBean {
         byte[] items = filedName.getBytes();
         items[0] = (byte) ((char) items[0] - 'a' + 'A');
         return new String(items);
+    }
+
+
+
+    public static  void  insert(Object object){
+        Connection connection = null;
+        try {
+            connection = DataSourceHelper.connectToDatabase(bean);
+            Class<?> clazz = object.getClass();
+            Table table =  clazz.getAnnotation(Table.class);
+            String insertColumns = "INSERT INTO " +  table.value() + " (" ;
+
+            String insertValues = ") VALUES (" ;
+
+            Field[] filedArr = clazz.getDeclaredFields();
+            for (Field field : filedArr) {
+                Column column = field.getAnnotation(Column.class);
+                insertColumns +=  column.value()+",";
+                field.setAccessible(true);
+                // 获取此字段的名称
+                Object value = field.get(object);
+                if(value != null){
+                    insertValues +=  "'" +value + "',";
+                }else {
+                    insertValues +=   " NULL,";
+                }
+            }
+            insertColumns = insertColumns.substring(0,insertColumns.length()-1);
+            insertValues = insertValues.substring(0,insertValues.length()-1) + ")";
+
+            String sql = insertColumns + insertValues;
+            log.info(" insert sql : {}",sql);
+            connection.setAutoCommit(false);//表示开启事务；
+            connection.prepareStatement(sql).execute();
+            connection.commit();//表示提交事务；
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }finally {
+            try {
+                if(connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public static <T> List queryListByEntity(Object entity) {
+        List<T> resultList = new ArrayList();
+        Class clazz = entity.getClass();
+        String sql = getQuerySql(clazz);
+        log.info("sql : {}",sql);
+        setAndGetList(clazz, sql,resultList);
+        return resultList;
+    }
+
+
+    private static <T> String getQuerySql(Class<T> clazz) {
+        Table table = clazz.getAnnotation(Table.class);
+        String tableName = table.value();
+        String sqlStart = "SELECT ";
+        String sqlEnd = "FROM "+ tableName;
+        Field[] filedArr = clazz.getDeclaredFields();
+        for (Field f : filedArr) {
+            Column column = f.getAnnotation(Column.class);
+            sqlStart += " " + column.value()+",";
+        }
+        sqlStart = sqlStart.substring(0,sqlStart.length()-1);
+        return  sqlStart + " " + sqlEnd;
+    }
+
+
+    private static <T> void setAndGetList(Class<T> clazz, String sql, List<T> resultList) {
+
+        Connection connection = null;
+        PreparedStatement pstate;
+        try {
+            connection = DataSourceHelper.connectToDatabase(bean);
+
+            pstate = connection.prepareStatement(sql);
+            ResultSet rs = pstate.executeQuery();
+            Field[] filedArr = clazz.getDeclaredFields();
+            List<String> fieldNameList = getFieldName(filedArr);
+            T newClazz;
+            while(rs.next()){
+                newClazz  = clazz.newInstance();
+                for(int i=0,size=fieldNameList.size(); i<size;  i++){
+                    String fieldName = getMethodName(fieldNameList.get(i));
+                    // 赋值给bean对象对应的值
+                    Method get_Method = clazz.getMethod("get" + fieldName);  //获取getMethod方法
+                    Method set_Method = clazz.getMethod("set" + fieldName, get_Method.getReturnType());//获得属性set方法
+                    Object objValue = getValueByType(get_Method.getReturnType().getName(), rs, i+1);
+                    set_Method.invoke(newClazz, objValue);
+                }
+                resultList.add(newClazz);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

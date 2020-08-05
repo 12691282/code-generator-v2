@@ -156,9 +156,6 @@ public class TableServiceImpl extends BaseService implements TableService{
 		return "";
 	}
 
-	@Value("#{'${generateConfig.baseModelFiled}'.split(',')}")
-	private List<String> baseFiledList;
-
 	@Override
 	public String startGeneratorModel(TableConfigBean bean, DatabaseBean dbBean) {
 		ModelGeneratorConfig config = new ModelGeneratorConfig(bean);
@@ -171,9 +168,6 @@ public class TableServiceImpl extends BaseService implements TableService{
 			connection =  DataSourceHelper.connectToDatabase(dbBean);
 
 			//读取表注释
-
-				config.setBaseFiledList(baseFiledList);
-			
 				for(String table : tableArr){
 
 					DatabaseMetaData dbmd = connection.getMetaData();

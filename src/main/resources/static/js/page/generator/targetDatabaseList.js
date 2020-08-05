@@ -39,14 +39,13 @@ $(document).ready(function(){
 				var driver = $("#dataBaseDriver").val();
 				var username = $("#dataBaseUsername").val();
 				var password = $("#dataBasePassword").val();
-				debugger
 				$.post("importTableInfo",
 					{"url":url, "username": username, "password":password,"driver":driver, "tableNameStr":tableNameStr},
 					function(result){
 						var info = result.info;
 						if(info == "1"){
 							alert("导入成功!");
-
+							window.location.reload();
 						}
 					});
 

@@ -98,7 +98,7 @@ $(document).ready(function(){
 			
 		},
 		showTableDetail : function(_tableName){
-			$(window).attr('location','detail?tableName='+_tableName);
+			$(window).attr('location','tableInfoDetail?tableName='+_tableName);
 		}
 			
 			

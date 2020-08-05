@@ -1,6 +1,7 @@
 package com.gamma.service.table;
 
 import com.gamma.bean.table.DatabaseBean;
+import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface GeneratorService {
      * @param bean
      */
     void connectAndImport(DatabaseBean bean);
+
+    GeneratorTableInfoEntity getTableInfoDetail(String tableName);
+
+    List<GeneratorTableColumnEntity> getTableColumnListById(String generatId);
 }

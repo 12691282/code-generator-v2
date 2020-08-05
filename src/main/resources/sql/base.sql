@@ -31,7 +31,7 @@ CREATE TABLE `generator_table_column`  (
   `is_edit` char(1)  COMMENT '是否编辑字段（1是）',
   `is_list` char(1)  COMMENT '是否列表字段（1是）',
   `is_query` char(1)  COMMENT '是否查询字段（1是）',
-  `query_type` varchar(200) DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
+  `query_type` varchar(200) COMMENT '查询方式（等于、不等于、大于、小于、范围）',
   `html_type` varchar(200)  COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`column_id`)
