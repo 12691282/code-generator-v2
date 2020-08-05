@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,10 +69,10 @@ public class GeneratorController extends BaseController{
 		return super.successInfo("导入成功");
 	}
 
-	@PostMapping("tableInfoDetail")
+	@GetMapping("tableInfoDetail")
 	public String tableInfoDetail(Model model, String tableName){
 		log.info("tableName {}", tableName);
-		GeneratorTableInfoEntity infoEntity = generatorService.getTableInfoDetail(tableName);
+ 		GeneratorTableInfoEntity infoEntity = generatorService.getTableInfoDetail(tableName);
 		List<GeneratorTableColumnEntity> columnList = generatorService.getTableColumnListById(infoEntity.getGeneratId());
 
 		model.addAttribute("infoEntity", infoEntity);

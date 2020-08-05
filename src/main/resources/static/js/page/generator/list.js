@@ -38,7 +38,7 @@ $(document).ready(function(){
 			  });
 			
 			$(".btn-success").on("click", function(){
-				 var tableName = $(this).parent().prev().text();
+				 var tableName = $(this).val();
 				 self.showTableDetail(tableName)
 			});
 
@@ -74,21 +74,6 @@ $(document).ready(function(){
 			
 			
 			$("#confirmDatabaseInfo").on("click", function(){
-
-				// var url = $("#dataBaseUrl").val();
-				// var driver = $("#dataBaseDriver").val();
-				// var username = $("#dataBaseUsername").val();
-				// var password = $("#dataBasePassword").val();
-				 // $.post("connectTargetDataBase",
-                 //         {"url":url, "username": username, "password":password, "driver":driver},
-                 //         function(result){
-                 //        	 var info = result.info;
-                 //        	 if(info == "1"){
-                 //        		 alert("数据库连接成功!");
-                 //        		 $(location).attr('href', 'list');
-                 //        	 }
-                 //         });
-
 				$("#connectDataBaseForm").attr("action", "connectTargetDataBase")
 				$("#connectDataBaseForm").submit();
 			});

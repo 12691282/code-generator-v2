@@ -53,7 +53,7 @@
 	                   <td >${v.tableName}</td>
 					   <td >${v.tableComment}</td>
 					   <td >${v.createTime}</td>
-	                  <td><button class="btn btn-success" type="button">查看</button></td>
+	                  <td><button class="btn btn-success" type="button" value="${v.tableName}">查看</button></td>
 					  <td><button class="btn btn-info" type="button">生成代码</button></td>
 	               </tr>
               </c:forEach>

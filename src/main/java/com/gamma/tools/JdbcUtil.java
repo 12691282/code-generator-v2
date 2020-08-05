@@ -152,11 +152,44 @@ public class JdbcUtil implements InitializingBean {
         }
     }
 
-
+    /**
+     * 根据实体参数读取列表
+     * @param entity
+     * @param <T>
+     * @return
+     */
     public static <T> List queryListByEntity(Object entity) {
         List<T> resultList = new ArrayList();
         Class clazz = entity.getClass();
         String sql = getQuerySql(clazz);
+
+        Field[] filedArr = clazz.getDeclaredFields();
+        String conditionSql = "";
+        int index = 0;
+        for (Field field : filedArr) {
+            Column column = field.getAnnotation(Column.class);
+            field.setAccessible(true);
+            // 获取此字段的名称
+            Object value = null;
+            try {
+                value = field.get(entity);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            if(value != null){
+                if(index > 0){
+                    conditionSql +=  " AND ";
+                }
+                conditionSql +=  column.value() + " =  '" + value + "'";
+                index++;
+            }
+
+
+        }
+        if(!conditionSql.isEmpty()){
+            sql += " WHERE " + conditionSql;
+        }
         log.info("sql : {}",sql);
         setAndGetList(clazz, sql,resultList);
         return resultList;
@@ -214,6 +247,7 @@ public class JdbcUtil implements InitializingBean {
                 e.printStackTrace();
             }
         }
+        log.info("result list size {}", resultList.size());
     }
 
 

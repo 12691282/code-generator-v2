@@ -259,7 +259,9 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
 
     @Override
     public List<GeneratorTableColumnEntity> getTableColumnListById(String generatId) {
-        return null;
+        GeneratorTableColumnEntity entity = new GeneratorTableColumnEntity();
+        entity.setTableId(generatId);
+        return JdbcUtil.queryListByEntity(entity);
     }
 
 
