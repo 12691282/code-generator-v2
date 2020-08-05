@@ -14,12 +14,12 @@
   <div class="container">
 
       <div class="masthead">
-        <h3 class="muted">生成配置详情</h3>
+        <h3 class="muted">代码生成系统</h3>
         <div class="navbar">
           <div class="navbar-inner">
             <div class="container">
               <ul class="nav">
-                <li class="active"><a href="#">导入数据库列表</a></li>
+                <li class="active"><a href="#">生成配置详情</a></li>
               </ul>
             </div>
           </div>
