@@ -26,4 +26,6 @@ public interface GeneratorService {
     GeneratorTableInfoEntity getTableInfoDetail(String tableName);
 
     List<GeneratorTableColumnEntity> getTableColumnListById(String generatId);
+
+    void updateTableInfoEntity(GeneratorTableInfoEntity entity);
 }

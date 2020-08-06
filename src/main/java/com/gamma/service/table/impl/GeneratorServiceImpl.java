@@ -263,7 +263,10 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         return JdbcUtil.queryListByEntity(entity);
     }
 
-
+    @Override
+    public void updateTableInfoEntity(GeneratorTableInfoEntity entity) {
+        JdbcUtil.updateById(entity);
+    }
 
 
 }

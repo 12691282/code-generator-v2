@@ -81,7 +81,7 @@
                   <div class="form-group">
                       <label>备注</label>
                       <textarea type="text" style="margin-left: 14px;width: 326px;height: 64px;" class="form-control" name="remark"
-                                placeholder="备注" value="${infoEntity.remark}" ></textarea>
+                                placeholder="备注" >${infoEntity.remark}</textarea>
                   </div>
               </div>
           <br/>

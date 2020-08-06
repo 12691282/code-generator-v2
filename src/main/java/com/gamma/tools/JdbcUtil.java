@@ -88,6 +88,30 @@ public class JdbcUtil implements InitializingBean {
             connection = DataSourceHelper.connectToDatabase(bean);
             Class<?> clazz = object.getClass();
             Table table =  clazz.getAnnotation(Table.class);
+            String sql = "UPDATE " + table.value() + " SET ";
+            String conditionSql = "  WHERE ";
+            Field[] filedArr = clazz.getDeclaredFields();
+            for (Field field : filedArr) {
+                Column column = field.getAnnotation(Column.class);
+                PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
+                field.setAccessible(true);
+
+                // 获取此字段的名称
+                Object value =  field.get(object);
+
+                if(primaryKey != null && primaryKey.isKey()){
+                    conditionSql +=  column.value() + " = '" + value +"'";
+                }
+                else  if(value != null){
+                    sql +=  column.value() + " =  '" + value + "',";
+                }
+            }
+            sql = sql.substring(0,sql.length()-1) + conditionSql;
+            log.info(" update sql : {}",sql);
+            connection.setAutoCommit(false);//表示开启事务；
+            connection.prepareStatement(sql).execute();
+            connection.commit();//表示提交事务；
+
         } catch (Exception e) {
             e.printStackTrace();
             try {

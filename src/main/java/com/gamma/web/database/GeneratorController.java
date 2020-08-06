@@ -87,7 +87,7 @@ public class GeneratorController extends BaseController{
 	@PostMapping("updateTableInfoEntity")
 	public String updateTableInfoEntity(GeneratorTableInfoEntity entity){
 		log.info("entity {}", entity);
-
+		generatorService.updateTableInfoEntity(entity);
 		 return "redirect:/generator/list";
 
 	}
