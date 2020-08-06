@@ -1,7 +1,7 @@
 package com.gamma.web.database;
 
 import com.gamma.base.BaseController;
-import com.gamma.bean.table.DatabaseBean;
+import com.gamma.bean.DatabaseBean;
 import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
 import com.gamma.service.table.GeneratorService;

@@ -1,9 +1,7 @@
-package com.gamma.bean.table;
+package com.gamma.bean;
 
 import lombok.Data;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 
 @Data
 public class TableDetailBean {

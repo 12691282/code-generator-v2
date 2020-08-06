@@ -1,6 +1,6 @@
 package com.gamma.service.table;
 
-import com.gamma.bean.table.DatabaseBean;
+import com.gamma.bean.DatabaseBean;
 import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
 

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.gamma.bean.table.DatabaseBean;
+import com.gamma.bean.DatabaseBean;
 
 public class BaseController {
 

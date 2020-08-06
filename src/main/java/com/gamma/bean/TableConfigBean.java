@@ -1,4 +1,4 @@
-package com.gamma.bean.table;
+package com.gamma.bean;
 
 import lombok.Data;
 import lombok.ToString;

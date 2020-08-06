@@ -2,10 +2,9 @@ package com.gamma.tools;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.util.Properties;
 
-import com.gamma.bean.table.DatabaseBean;
+import com.gamma.bean.DatabaseBean;
 
 public class DataSourceHelper {
 	

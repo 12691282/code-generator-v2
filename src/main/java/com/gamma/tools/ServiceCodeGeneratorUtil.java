@@ -1,42 +1,17 @@
 package com.gamma.tools;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
 import org.joda.time.DateTime;
 
-import com.gamma.config.ModelGeneratorConfig;
-import com.gamma.generator.mybatis.GeneratorToControllerHelper;
-import com.gamma.generator.mybatis.GeneratorToEntityClazzHelper;
-import com.gamma.generator.mybatis.GeneratorToMapperHelper;
-import com.gamma.generator.mybatis.GeneratorToServiceHelper;
 /**
  * 服务端代码生成帮助器
  * @author Administrator
  *
  */
 public class ServiceCodeGeneratorUtil {
-	
-	/**
-	 * 生成后台代码
-	 * @param config
-	 * @throws IOException
-	 */
-	public static void generatorTableToCode(ModelGeneratorConfig config) throws IOException {
-		
-			GeneratorToControllerHelper.outputController(config);
-			
-			GeneratorToServiceHelper.outputService(config);
-			
-			GeneratorToMapperHelper.outputMapper(config);
-			
-			GeneratorToEntityClazzHelper.outputEntityClazz(config);
-		
-	}
 	
 
 	//转换头字母为小写
@@ -89,48 +64,5 @@ public class ServiceCodeGeneratorUtil {
 		return "";
 	}
 
-	
-	public static void outputLogger(BufferedWriter bw,String text) throws IOException{
-		bw.newLine();
-		bw.write("\t\tlog.info("+text+");");
-		bw.newLine();
-	}
-	
-	public static void outputAuthor(BufferedWriter bw,String text) throws IOException{
-		bw.newLine();
-		bw.newLine();
-		bw.write("/**");bw.newLine();
-		bw.write(" *<pre>");bw.newLine();
-		bw.write(" *  " + text);bw.newLine();
-		bw.write(" *  通过 lion gamma generator 生成，禁止使用商业");bw.newLine();
-		bw.write(" *  时间: " +  DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));bw.newLine();
-		bw.write(" *</pre>");bw.newLine();
-		bw.write(" * @author lion");bw.newLine();
-		bw.write(" * @version 1.0");bw.newLine();
-		bw.write("**/");
-		bw.newLine();
-		bw.newLine();
-	}
-
-
-	public static void outputAuthorByName(BufferedWriter bw,String className) throws IOException{
-		bw.newLine();
-		bw.newLine();
-		bw.write("/**");bw.newLine();
-		bw.write(" * @ClassName "+className);bw.newLine();
-		bw.write(" * @Description");bw.newLine();
-		bw.write(" * @Author 李强");bw.newLine();
-		bw.write(" * @Date "+  DateTime.now().toString("yyyy-MM-dd"));bw.newLine();
-		bw.write(" * @version 1.0");bw.newLine();
-		bw.write("**/");
-		bw.newLine();
-		bw.newLine();
-	}
-	
-	public static void outputHtmlPageAuthor(BufferedWriter bw)throws IOException{
-		bw.write("\t\t<div class=\"footer\">");bw.newLine();
-		bw.write("\t\t\t<p>&copy; lion 2017</p>");bw.newLine();
-		bw.write("\t\t</div>");bw.newLine();
-	}
 
 }
