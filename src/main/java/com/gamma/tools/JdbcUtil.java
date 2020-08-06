@@ -1,6 +1,7 @@
 package com.gamma.tools;
 
 import com.gamma.annotation.Column;
+import com.gamma.annotation.PrimaryKey;
 import com.gamma.annotation.Table;
 import com.gamma.bean.table.DatabaseBean;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
@@ -61,18 +62,6 @@ public class JdbcUtil implements InitializingBean {
         return resultList;
     }
 
-    private static Object getValueByType(String name, ResultSet rs, Integer index) throws SQLException {
-        if("java.lang.String".equals(name)){
-            return rs.getString(index);
-        }else if("java.lang.Integer".equals(name)){
-            return rs.getInt(index);
-        }else if("java.lang.Short".equals(name)){
-            return rs.getShort(index);
-        }
-        return null;
-    }
-
-
     /**
      * 获取对象中的所有字段名
      *
@@ -93,17 +82,35 @@ public class JdbcUtil implements InitializingBean {
         return list;
     }
 
-    // 把一个字符串的第一个字母大写、效率是最高的、
-    private static String getMethodName(String filedName) {
-        byte[] items = filedName.getBytes();
-        items[0] = (byte) ((char) items[0] - 'a' + 'A');
-        return new String(items);
+    public static void updateById(Object object){
+
+        Connection connection = null;
+        try {
+            connection = DataSourceHelper.connectToDatabase(bean);
+            Class<?> clazz = object.getClass();
+            Table table =  clazz.getAnnotation(Table.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }finally {
+            try {
+                if(connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
-
-
-    public static  void  insert(Object object){
+    public static  String insert(Object object){
         Connection connection = null;
+        String key = IdGenerator.simpleUUID();
         try {
             connection = DataSourceHelper.connectToDatabase(bean);
             Class<?> clazz = object.getClass();
@@ -115,11 +122,15 @@ public class JdbcUtil implements InitializingBean {
             Field[] filedArr = clazz.getDeclaredFields();
             for (Field field : filedArr) {
                 Column column = field.getAnnotation(Column.class);
+                PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
+
                 insertColumns +=  column.value()+",";
                 field.setAccessible(true);
                 // 获取此字段的名称
                 Object value = field.get(object);
-                if(value != null){
+                if(primaryKey != null && primaryKey.isKey()){
+                    insertValues +=  "'" + key + "',";
+                }else if(value != null){
                     insertValues +=  "'" +value + "',";
                 }else {
                     insertValues +=   " NULL,";
@@ -150,6 +161,7 @@ public class JdbcUtil implements InitializingBean {
                 e.printStackTrace();
             }
         }
+        return key;
     }
 
     /**
@@ -250,5 +262,22 @@ public class JdbcUtil implements InitializingBean {
         log.info("result list size {}", resultList.size());
     }
 
+    private static Object getValueByType(String name, ResultSet rs, Integer index) throws SQLException {
+        if("java.lang.String".equals(name)){
+            return rs.getString(index);
+        }else if("java.lang.Integer".equals(name)){
+            return rs.getInt(index);
+        }else if("java.lang.Short".equals(name)){
+            return rs.getShort(index);
+        }
+        return null;
+    }
 
+
+    // 把一个字符串的第一个字母大写、效率是最高的、
+    private static String getMethodName(String filedName) {
+        byte[] items = filedName.getBytes();
+        items[0] = (byte) ((char) items[0] - 'a' + 'A');
+        return new String(items);
+    }
 }

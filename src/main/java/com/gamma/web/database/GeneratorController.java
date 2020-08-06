@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -61,6 +58,12 @@ public class GeneratorController extends BaseController{
 		this.setPageDetail(model,list);
 		return "generator/targetDatabaseList";
 	}
+
+	/**
+	 * 导入所选数据库表
+	 * @param bean
+	 * @return
+	 */
 	@PostMapping("importTableInfo")
 	@ResponseBody
 	public Map importTableInfo(DatabaseBean bean){
@@ -77,11 +80,17 @@ public class GeneratorController extends BaseController{
 
 		model.addAttribute("infoEntity", infoEntity);
 		model.addAttribute("columnList", columnList);
-
+		model.addAttribute("tableName", tableName);
 		return "generator/tableInfoDetail";
 	}
 
+	@PostMapping("updateTableInfoEntity")
+	public String updateTableInfoEntity(GeneratorTableInfoEntity entity){
+		log.info("entity {}", entity);
 
+		 return "redirect:/generator/list";
+
+	}
 
 	private void setPageDetail(Model model, List list) {
 		model.addAttribute("list", list);

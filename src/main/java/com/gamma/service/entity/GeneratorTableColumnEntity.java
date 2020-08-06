@@ -1,6 +1,7 @@
 package com.gamma.service.entity;
 
 import com.gamma.annotation.Column;
+import com.gamma.annotation.PrimaryKey;
 import com.gamma.annotation.Table;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ public class GeneratorTableColumnEntity {
 
     //编号
     @Column("column_id")
+    @PrimaryKey
     private String columnId;
 
     //归属表编号

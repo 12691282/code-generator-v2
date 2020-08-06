@@ -2,7 +2,6 @@ package com.gamma.service.table.impl;
 
 import com.gamma.base.BaseService;
 import com.gamma.bean.table.DatabaseBean;
-import com.gamma.bean.table.TableDetailBean;
 import com.gamma.common.TypeConstants;
 import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
@@ -15,11 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 
 /***
@@ -39,6 +35,10 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
     //基础模块名称
     @Value("${generateConfig.baseModelName}")
     private String  baseModelName;
+
+    //作者署名
+    @Value("${generateConfig.authorName}")
+    private String  authorName;
 
 
 
@@ -60,7 +60,7 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
                 GeneratorTableInfoEntity tableDetail = new GeneratorTableInfoEntity();
                 String tableName = rs.getString(1);
                 tableDetail.setTableName(tableName);
-                this.setTableRemark(connection, tableDetail);
+                this.setTableComment(connection, tableDetail);
                 resultList.add(tableDetail);
             }
 
@@ -93,16 +93,16 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
                 GeneratorTableInfoEntity tableDetail = new GeneratorTableInfoEntity();
                 tableDetail.setTableName(tableName);
                 //设置remark 和function
-                this.setTableRemark(connection, tableDetail);
+                this.setTableComment(connection, tableDetail);
                 String ClazzName = ServiceCodeGeneratorUtil.changeTableName(tableName);
                 String businessName = ServiceCodeGeneratorUtil.getBusinessName(tableName);
-                tableDetail.setGeneratId(IdGenerator.simpleUUID());
                 tableDetail.setClassName(ClazzName);
                 tableDetail.setBusinessName(businessName);
                 tableDetail.setPackageName(basePackage);
                 tableDetail.setModuleName(baseModelName);
+                tableDetail.setFunctionAuthor(authorName);
                 tableDetail.setCreateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
-                JdbcUtil.insert(tableDetail);
+                String tdKey = JdbcUtil.insert(tableDetail);
 
                 String sql =  "SELECT column_name, (case when (is_nullable = 'no' && column_key != 'PRI') then '1' else null end) as is_required," +
                         "(case when column_key = 'PRI' then '1' else '0' end) as is_pk, ordinal_position as sort," +
@@ -116,14 +116,13 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
                 GeneratorTableColumnEntity columnEntity;
                 while(results.next()){
                     columnEntity = new GeneratorTableColumnEntity();
-                    columnEntity.setColumnId(IdGenerator.simpleUUID());
                     columnEntity.setIsRequired(results.getString("is_required"));
                     columnEntity.setIsPk(results.getString("is_pk"));
                     columnEntity.setSort(results.getString("sort"));
                     columnEntity.setColumnComment(results.getString("column_comment"));
                     columnEntity.setIsIncrement(results.getString("is_increment"));
                     columnEntity.setColumnType(results.getString("column_type"));
-                    columnEntity.setTableId(tableDetail.getGeneratId());
+                    columnEntity.setTableId(tdKey);
                     this.initOtherFiled(columnEntity, results);
                     JdbcUtil.insert(columnEntity);
                 }
@@ -237,13 +236,13 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         }
     }
 
-    private void setTableRemark(Connection connection, GeneratorTableInfoEntity tableDetail) throws SQLException {
+    private void setTableComment(Connection connection, GeneratorTableInfoEntity tableDetail) throws SQLException {
 
         DatabaseMetaData dbmd = connection.getMetaData();
         ResultSet tableRet = dbmd.getTables(null, "%",tableDetail.getTableName(),new String[]{"TABLE"});
         while (tableRet.next()) {
             String remark = tableRet.getString("REMARKS");       //表备注
-            tableDetail.setRemark(remark);
+            tableDetail.setTableComment(remark);
             tableDetail.setFunctionName(remark);
             break;
         }
