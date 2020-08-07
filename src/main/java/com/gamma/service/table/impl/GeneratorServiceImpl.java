@@ -31,7 +31,6 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
     @Value("${generateConfig.basePackage}")
     private String  basePackage;
 
-
     //基础模块名称
     @Value("${generateConfig.baseModelName}")
     private String  baseModelName;
@@ -191,7 +190,6 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
             {
                 entity.setJavaType(TypeConstants.JAVA_FILED_TYPE_LONG);
             }
-
         }
 
         if(!noShowFiledList.stream().anyMatch (str -> str.equalsIgnoreCase(columnName)) && !entity.isPrimaryKey()){

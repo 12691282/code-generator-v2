@@ -28,7 +28,6 @@
       </div>
 		<div>
 			<button class="btn btn-default" data-toggle="modal" data-target="#databaseInfoModal">导入目标数据</button>
-			<button class="btn btn-default" data-toggle="modal" data-target="#configInfoModal" >配置信息</button>
 			<button class="btn btn-info" id="generatorToModels" >生成代码</button>
 		</div>
  			 <table class="table table-hover">
@@ -41,9 +40,6 @@
                     <th align="right">操作</th>
                 </tr>
               </thead>
-              
- 			<form id="configForm" method="post">
-				<input type="hidden"  name="isBaseModel" value="" />
               <tbody>
               <c:forEach items="${list}" var="v"  varStatus="status">
 	               <tr >
@@ -68,49 +64,6 @@
     </div> <!-- /container -->
 
 
-	<div class="modal fade" tabindex="-1" id="configInfoModal" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">信息配置</h4>
-				</div>
-				<div class="modal-body">
-
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">base Model 路径</label>
-							<div class="controls">
-								<input type="text" name="baseModelPath" style="width: 450px" value="${configInfo.baseModelPath}">
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">基础模块名称</label>
-							<div class="controls">
-								<input type="text" name="baseModelName" style="width: 450px" value="${configInfo.baseModelName}">
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">数据层后缀名称(Dao 或 Mapper 或其他)</label>
-							<div class="controls">
-								<input type="text" name="daoNameSuffix" style="width: 450px" value="${configInfo.daoNameSuffix}">
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">返回类全路径</label>
-							<div class="controls">
-								<input type="text" name="returnClassPath" style="width: 450px" value="com.delta.common.utils.SystemHttpResponse">
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-				</div>
-				</form>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
 
 	<div class="modal fade" tabindex="-1" id="databaseInfoModal" role="dialog">
 		<div class="modal-dialog" role="document">
@@ -120,37 +73,38 @@
 					<h4 class="modal-title">数据库配置</h4>
 				</div>
 				<div class="modal-body">
-					<form  id="connectDataBaseForm"  style="margin-left: 80px;" method="post">
+					<form  method="post" action="connectTargetDataBase">
 						<div class="control-group">
-							<label class="control-label" for="inputEmail" style="margin-left: -80px;">数据库地址</label>
+							<label class="control-label" for="inputEmail">数据库地址</label>
 							<div class="controls">
-								<input type="text" name="url" style="width: 580px; margin-left: -80px;" value="${dataBaseUrl}">
+								<textarea name="url" style="width: 580px;height: 70px;">${dataBaseUrl}</textarea>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" style="margin-left: -80px;" for="inputEmail">数据库驱动名</label>
+							<label class="control-label" for="inputEmail">数据库驱动名</label>
 							<div class="controls">
-								<input type="text" style="margin-left: -80px;" name="driver" value="${dataBaseDriver}">
+								<input type="text"  name="driver" value="${dataBaseDriver}">
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" style="margin-left: -80px;" for="inputEmail">用户名</label>
+							<label class="control-label" for="inputEmail">用户名</label>
 							<div class="controls">
-								<input type="text" style="margin-left: -80px;" name="username" value="${dataBaseUsername}">
+								<input type="text"  name="username" value="${dataBaseUsername}">
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" style="margin-left: -80px;" for="inputEmail">密码</label>
+							<label class="control-label"  for="inputEmail">密码</label>
 							<div class="controls">
-								<input type="text" style="margin-left: -80px;"  name="password" value="${dataBasePassword}">
+								<input type="text" name="password" value="${dataBasePassword}">
 							</div>
 						</div>
-					</form>
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="confirmDatabaseInfo">确定</button>
+					<button type="submit" class="btn btn-primary" >确定</button>
 				</div>
+				</form>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->

@@ -23,7 +23,6 @@ public class GeneratorController extends BaseController{
 	@Autowired
 	private GeneratorService generatorService;
 
-
 	//目标数据库配置
 	@Value("${generateConfig.target.dataBase.url}")
 	private String dataBaseUrl;
@@ -85,11 +84,11 @@ public class GeneratorController extends BaseController{
 	}
 
 	@PostMapping("updateTableInfoEntity")
-	public String updateTableInfoEntity(GeneratorTableInfoEntity entity){
+	@ResponseBody
+	public Map updateTableInfoEntity(GeneratorTableInfoEntity entity){
 		log.info("entity {}", entity);
 		generatorService.updateTableInfoEntity(entity);
-		 return "redirect:/generator/list";
-
+		return super.successInfo("保存成功");
 	}
 
 	private void setPageDetail(Model model, List list) {

@@ -31,14 +31,13 @@ public class GeneratorTableColumnEntity {
     @Column("column_type")
     private String columnType;
 
-    //JAVA字段名
+    //JAVA字段类型
     @Column("java_type")
     private String javaType;
 
     //JAVA字段名
     @Column("java_field")
     private String javaField;
-
 
     //是否主键（1是）
     @Column("is_pk")
@@ -51,10 +50,6 @@ public class GeneratorTableColumnEntity {
     //是否必填（1是）
     @Column("is_required")
     private String isRequired;
-
-    //生成功能作者
-    @Column("is_insert")
-    private String isInsert;
 
     //其它生成选项 是否编辑
     @Column("is_edit")

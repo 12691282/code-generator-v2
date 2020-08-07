@@ -31,12 +31,12 @@
       <ul class="nav nav-tabs nav-event-clazz">
           <li role="presentation" value="baseInfo" ><a href="#">基本信息</a>
           </li>
-          <li role="presentation" value="filedInfo" class="active" ><a href="#">字段信息</a>
+          <li role="presentation" value="filedInfo"  class="active" ><a href="#">字段信息</a>
           </li>
       </ul>
-      <div class="content-event-clazz" id="baseInfo">
+      <div class="content-event-clazz" id="baseInfo"  style="display: none">
           <br/>
-          <form id="tableInfoEntity" method="post" action="updateTableInfoEntity">
+          <form id="tableInfoEntityForm" method="post" >
               <input type="hidden" name="generatId" value="${infoEntity.generatId}">
               <div class="form-inline">
                   <div class="form-group">
@@ -85,11 +85,54 @@
                   </div>
               </div>
           <br/>
-          <button type="submit" class="btn btn-default">确定</button>
+          <button type="button" class="btn btn-default" id="confirmTableInfo" >确定</button>
           </form>
       </div>
-       <div class="content-event-clazz" id="filedInfo"  style="display: none">
-          2
+       <div class="content-event-clazz" id="filedInfo" >
+           <table class="table table-hover">
+               <thead>
+               <tr>
+                   <th>#</th>
+                   <th style="width:300px;">列名称</th>
+                   <th style="width:300px;">列描述</th>
+                   <th style="width:300px;">列类型</th>
+                   <th style="width:300px;">JAVA字段类型</th>
+                   <th style="width:300px;">JAVA字段名</th>
+                   <th style="width:30px;">是否主键</th>
+                   <th style="width:30px;">是否自增</th>
+                   <th style="width:30px;">是否必填</th>
+                   <th style="width:30px;">是否编辑</th>
+                   <th style="width:30px;">是否查询字段</th>
+                   <th style="width:100px;">查询方式</th>
+                   <th style="width:300px;">显示类型</th>
+                   <th style="width:10px;">排序</th>
+                   <th align="right">操作</th>
+               </tr>
+               </thead>
+               <tbody>
+               <c:forEach items="${columnList}" var="v"  varStatus="status">
+                   <tr >
+                       <td>
+                           <input type="checkbox" name="tableArr" value="${v.columnId}">
+                       </td>
+                       <td >${v.columnName}</td>
+                       <td >${v.columnComment}</td>
+                       <td >${v.columnType}</td>
+                       <td >${v.javaType}</td>
+                       <td >${v.javaField}</td>
+                       <td >${v.isPk == 1 ? '是': '否'}</td>
+                       <td >${v.isIncrement == 1 ? '是': '否'}</td>
+                       <td >${v.isRequired == 1 ? '是': '否'}</td>
+                       <td >${v.isEdit == 1 ? '是': '否' }</td>
+                       <td >${v.isQuery == 1 ? '是': '否'}</td>
+                       <td >${v.queryType}</td>
+                       <td >${v.htmlType}</td>
+                       <td >${v.sort}</td>
+                       <td><button class="btn btn-success" type="button" value="${v.columnName}">查看</button></td>
+                   </tr>
+               </c:forEach>
+               </tbody>
+           </table>
       </div>
 
       <div class="footer">

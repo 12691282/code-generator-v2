@@ -42,29 +42,6 @@ $(document).ready(function(){
 				 self.showTableDetail(tableName)
 			});
 
-
-			$("#checkBaseModel").on("click", function(){
-				var checked = $(this).is(':checked');
-				if(checked){
-					$("[name=isBaseModel]").val(true)
-					$("#baseModelPathDiv").show();
-				}else {
-					$("[name=isBaseModel]").val(false)
-					$("#baseModelPathDiv").hide();
-				}
-			});
-
-			$("#isBaseBean").change(function(){
-				var checkBox = $(this);
-			    checkBox.val(checkBox[0].checked)
-				 
-			});
-			 
-			 $("#isBaseModel").change(function(){
-				 var checkBox = $(this);
-				    checkBox.val(checkBox[0].checked)
-			});
-			
 			
 			$("#generatorToModels").on("click", function(){
 
@@ -73,10 +50,10 @@ $(document).ready(function(){
 			});
 			
 			
-			$("#confirmDatabaseInfo").on("click", function(){
-				$("#connectDataBaseForm").attr("action", "connectTargetDataBase")
-				$("#connectDataBaseForm").submit();
-			});
+			// $("#confirmDatabaseInfo").on("click", function(){
+			// 	$("#connectDataBaseForm").attr("action", "connectTargetDataBase")
+			// 	$("#connectDataBaseForm").submit();
+			// });
 
 
 			
