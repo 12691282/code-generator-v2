@@ -26,6 +26,7 @@ CREATE TABLE `generator_table_column`  (
   `java_field` varchar(200)  COMMENT 'JAVA字段名',
   `is_pk` char(1)  COMMENT '是否主键（1是）',
   `is_increment` char(1)  COMMENT '是否自增（1是）',
+  `is_list_show` char(1)  COMMENT '是否列表展示字段（1是）',
   `is_required` char(1)  COMMENT '是否必填（1是）',
   `is_edit` char(1)  COMMENT '是否编辑字段（1是）',
   `is_query` char(1)  COMMENT '是否查询字段（1是）',

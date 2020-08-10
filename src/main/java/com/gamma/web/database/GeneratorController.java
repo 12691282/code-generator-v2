@@ -5,6 +5,7 @@ import com.gamma.bean.DatabaseBean;
 import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
 import com.gamma.service.table.GeneratorService;
+import com.gamma.tools.JdbcUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,16 +76,32 @@ public class GeneratorController extends BaseController{
 	@Value("#{'${generateConfig.javaTypeConfig}'.split(',')}")
 	private List<String> javaTypeList;
 
+    /** 查询方法配置 */
+    @Value("#{'${generateConfig.queryMethodConfig}'.split(',')}")
+    private List<String> queryMethodList;
+
+    /** 页面输入类型配置 */
+    @Value("#{'${generateConfig.htmlInputTypeConfig}'.split(',')}")
+    private List<String>  htmlInputTypeList;
+
 	@GetMapping("tableInfoDetail")
 	public String tableInfoDetail(Model model, String tableName){
 		log.info("tableName {}", tableName);
  		GeneratorTableInfoEntity infoEntity = generatorService.getTableInfoDetail(tableName);
+
+ 		if(infoEntity == null){
+            return "redirect:/generator/list";
+        }
+
 		List<GeneratorTableColumnEntity> columnList = generatorService.getTableColumnListById(infoEntity.getGeneratId());
 
 		model.addAttribute("infoEntity", infoEntity);
 		model.addAttribute("columnList", columnList);
 		model.addAttribute("tableName", tableName);
 		model.addAttribute("javaTypeList", javaTypeList);
+        model.addAttribute("queryMethodList", queryMethodList);
+        model.addAttribute("htmlInputTypeList", htmlInputTypeList);
+
 		return "generator/tableInfoDetail";
 	}
 
@@ -95,6 +112,15 @@ public class GeneratorController extends BaseController{
 		generatorService.updateTableInfoEntity(entity);
 		return super.successInfo("保存成功");
 	}
+
+
+    @PostMapping("updateTableColumnInfo")
+    @ResponseBody
+    public Map updateTableColumnInfo(GeneratorTableColumnEntity entity){
+        log.info("entity {}", entity);
+        JdbcUtil.updateById(entity);
+        return super.successInfo("保存成功");
+    }
 
 	private void setPageDetail(Model model, List list) {
 		model.addAttribute("list", list);

@@ -33,6 +33,35 @@ $(document).ready(function(){
 				});
 			})
 
+			var columnClazz = $(".column-event-clazz");
+			columnClazz.find("button").on("click", function () {
+				var but = $(this);
+				var params = {
+					"columnId": but.val()
+				}
+				var tdList = but.parent().parent().find(".column-value-clazz");
+				for(var i=0; i<tdList.length; i++){
+					var tdEl = tdList[i]
+					var type = tdEl.type;
+					if(type == "checkbox"){
+						params[tdEl.name] = $(tdEl).is(":checked") ? "1" : "0";
+					}else{
+						params[tdEl.name] = tdEl.value;
+					}
+				}
+
+				$.ajax({
+					type: "POST",//方法类型
+					dataType: "json",//预期服务器返回的数据类型
+					url: "updateTableColumnInfo" ,//url
+					data: params,
+					success: function (result) {
+						alert(result.data)
+					}
+				});
+
+
+			});
 
 
 

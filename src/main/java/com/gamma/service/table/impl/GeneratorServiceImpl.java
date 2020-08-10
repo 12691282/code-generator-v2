@@ -157,6 +157,8 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         String columnName =  results.getString("column_name");
         entity.setColumnName(columnName);
         entity.setJavaField(StringTools.toCamelCase(columnName));
+        entity.setQueryType("=");//默认等于查询方式
+        entity.setIsListShow("1");//默认列表展示字段
         String typeStr = this.getDbType(columnType);
         if(TypeConstants.COLUMN_TYPE_STR.contains(typeStr)){
 
@@ -251,7 +253,7 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         GeneratorTableInfoEntity entity = new GeneratorTableInfoEntity();
         entity.setTableName(tableName);
         List<GeneratorTableInfoEntity> list = JdbcUtil.queryListByEntity(entity);
-        return list.get(0);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     @Override

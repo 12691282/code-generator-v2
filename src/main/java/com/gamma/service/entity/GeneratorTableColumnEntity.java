@@ -51,6 +51,11 @@ public class GeneratorTableColumnEntity {
     @Column("is_required")
     private String isRequired;
 
+
+    //是否列表展示字段（1是）
+    @Column("is_list_show")
+    private String isListShow;
+
     //其它生成选项 是否编辑
     @Column("is_edit")
     private String isEdit;
