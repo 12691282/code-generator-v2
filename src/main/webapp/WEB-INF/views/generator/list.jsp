@@ -28,7 +28,7 @@
       </div>
 		<div>
 			<button class="btn btn-default" data-toggle="modal" data-target="#databaseInfoModal">导入目标数据</button>
-			<button class="btn btn-info" id="generatorToModels" >生成代码</button>
+			<button class="btn btn-info" id="toGeneratorCode" >生成代码</button>
 		</div>
  			 <table class="table table-hover">
               <thead>
@@ -44,13 +44,13 @@
               <c:forEach items="${list}" var="v"  varStatus="status">
 	               <tr >
 	               	   <td>
-						  <input type="checkbox" name="tableArr" value="${v.generatId}"> ${status.index + 1}
+						  <input type="checkbox" name="tableArr" value="${v.tableName}"> ${status.index + 1}
 	               	   </td>
 	                   <td >${v.tableName}</td>
 					   <td >${v.tableComment}</td>
 					   <td >${v.createTime}</td>
 	                  <td><button class="btn btn-success" type="button" value="${v.tableName}">查看</button></td>
-					  <td><button class="btn btn-info" type="button">生成代码</button></td>
+					  <td><button class="btn btn-info" type="button" value="${v.tableName}" >生成代码</button></td>
 	               </tr>
               </c:forEach>
               </tbody>

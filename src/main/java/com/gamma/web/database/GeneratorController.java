@@ -122,7 +122,22 @@ public class GeneratorController extends BaseController{
         return super.successInfo("保存成功");
     }
 
-	private void setPageDetail(Model model, List list) {
+    /**
+     * 生成和下载代码
+     * @param model
+     * @param tableNameArr
+     */
+    @PostMapping("toGeneratorAndDownload")
+    public String toGeneratorAndDownload(String tableNameArr){
+        log.info("tableNameArr {}", tableNameArr);
+        String[] tableArr = tableNameArr.split(",");
+
+
+        return "redirect:/generator/list";
+    }
+
+
+    private void setPageDetail(Model model, List list) {
 		model.addAttribute("list", list);
 		model.addAttribute("dataBaseUrl", dataBaseUrl);
 		model.addAttribute("dataBaseDriver", dataBaseDriver);

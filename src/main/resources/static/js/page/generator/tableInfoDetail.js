@@ -33,8 +33,7 @@ $(document).ready(function(){
 				});
 			})
 
-			var columnClazz = $(".column-event-clazz");
-			columnClazz.find("button").on("click", function () {
+            $(".column-event-clazz").find("button").on("click", function () {
 				var but = $(this);
 				var params = {
 					"columnId": but.val()
@@ -49,7 +48,6 @@ $(document).ready(function(){
 						params[tdEl.name] = tdEl.value;
 					}
 				}
-
 				$.ajax({
 					type: "POST",//方法类型
 					dataType: "json",//预期服务器返回的数据类型
@@ -59,8 +57,6 @@ $(document).ready(function(){
 						alert(result.data)
 					}
 				});
-
-
 			});
 
 
