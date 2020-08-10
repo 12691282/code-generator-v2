@@ -116,19 +116,31 @@
                            <input type="checkbox" name="tableArr" value="${v.columnId}">
                        </td>
                        <td >${v.columnName}</td>
-                       <td >${v.columnComment}</td>
+                       <td ><input type="text" name="columnComment" value="${v.columnComment}"></td>
                        <td >${v.columnType}</td>
-                       <td >${v.javaType}</td>
-                       <td >${v.javaField}</td>
-                       <td >${v.isPk == 1 ? '是': '否'}</td>
-                       <td >${v.isIncrement == 1 ? '是': '否'}</td>
-                       <td >${v.isRequired == 1 ? '是': '否'}</td>
-                       <td >${v.isEdit == 1 ? '是': '否' }</td>
-                       <td >${v.isQuery == 1 ? '是': '否'}</td>
-                       <td >${v.queryType}</td>
+                       <td >
+                           <select name="javaType">
+                               <c:forEach items="${javaTypeList}" var="jType" >
+                                   <option value="${jType}" <c:if test="${jType == v.javaType}">selected</c:if>>${jType}</option>
+                               </c:forEach>
+                           </select>
+                       </td>
+                       <td ><input type="text" name="javaField" value="${v.javaField}"></td>
+                       <td ><input type="checkbox"  name="isPk" <c:if test="${v.isPk == 1}">checked</c:if>></td>
+                       <td ><input type="checkbox"  name="isIncrement" <c:if test="${v.isIncrement == 1}">checked</c:if>></td>
+                       <td ><input type="checkbox"  name="isRequired" <c:if test="${v.isRequired == 1}">checked</c:if>></td>
+                       <td ><input type="checkbox"  name="isEdit" <c:if test="${v.isEdit == 1}">checked</c:if>></td>
+                       <td ><input type="checkbox"  name="isQuery" <c:if test="${v.isQuery == 1}">checked</c:if>></td>
+                       <td >
+                           <select name="javaType">
+                               <c:forEach items="${javaTypeList}" var="jType" >
+                                   <option value="${jType}" <c:if test="${jType == v.queryType}">selected</c:if>>${jType}</option>
+                               </c:forEach>
+                           </select>
+                       </td>
                        <td >${v.htmlType}</td>
                        <td >${v.sort}</td>
-                       <td><button class="btn btn-success" type="button" value="${v.columnName}">查看</button></td>
+                       <td><button class="btn btn-success" type="button" value="${v.columnName}">保存</button></td>
                    </tr>
                </c:forEach>
                </tbody>

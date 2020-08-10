@@ -71,6 +71,11 @@ public class GeneratorController extends BaseController{
 		return super.successInfo("导入成功");
 	}
 
+
+    /** 页面不需要显示的列表字段 */
+    @Value("#{'${generateConfig.javaTypeConfig}'.split(',')}")
+    private List<String> javaTypeList;
+
 	@GetMapping("tableInfoDetail")
 	public String tableInfoDetail(Model model, String tableName){
 		log.info("tableName {}", tableName);
@@ -80,6 +85,7 @@ public class GeneratorController extends BaseController{
 		model.addAttribute("infoEntity", infoEntity);
 		model.addAttribute("columnList", columnList);
 		model.addAttribute("tableName", tableName);
+        model.addAttribute("javaTypeList", javaTypeList);
 		return "generator/tableInfoDetail";
 	}
 
