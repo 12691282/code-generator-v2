@@ -8,7 +8,12 @@ import com.gamma.bean.DatabaseBean;
 
 public class DataSourceHelper {
 	
+	public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+
+	public static final String H2_DRIVER = "org.h2.Driver";
+
 	public static Connection connectToDatabase(DatabaseBean bean) throws Exception {
+
 		Class.forName(bean.getDriver());//指定连接类型
 		Properties props =new Properties();
 		props.setProperty("user", bean.getUsername());
@@ -16,6 +21,7 @@ public class DataSourceHelper {
 		props.setProperty("remarks", "true"); //设置可以获取remarks信息
 		props.setProperty("useInformationSchema", "true");//设置可以获取tables remarks信息
         return DriverManager.getConnection(bean.getUrl(), props);
+        	 
 	}
 		
 }

@@ -1,26 +1,15 @@
 package com.gamma.base;
 
+import com.gamma.bean.DatabaseBean;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-
-import com.gamma.bean.DatabaseBean;
-
+@Slf4j
 public class BaseController {
 
-	protected Logger logger = null; 
-	
-	public BaseController(){
-		  logger = Logger.getLogger(getClass().getName());
-	}
-	
-	public Logger getLogger(){
-		return logger;
-	}
-	
 	protected Map failureInfo(Object data) {
 		Map info = new HashMap();
 		info.put("info", "0");
