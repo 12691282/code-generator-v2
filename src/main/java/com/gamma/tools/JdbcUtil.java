@@ -61,26 +61,6 @@ public class JdbcUtil implements InitializingBean {
         return resultList;
     }
 
-    /**
-     * 获取对象中的所有字段名
-     *
-     * @param cls
-     * @return
-     */
-    private static List<String> getFieldName( Field[] field) {
-        List<String> list = new ArrayList<>();
-        // 循环此字段数组，获取属性的值
-        for (int i = 0; i < field.length && field.length > 0; i++) {
-            // 值为 true 则指示反射的对象在使用时应该取消 Java 语言访问检查.
-            field[i].setAccessible(true);
-            // field[i].getName() 获取此字段的名称
-            // field[i].get(object) 获取指定对象上此字段的值
-            String name = field[i].getName();
-            list.add(name);
-        }
-        return list;
-    }
-
     public static void updateById(Object object){
 
         Connection connection = null;
@@ -93,6 +73,9 @@ public class JdbcUtil implements InitializingBean {
             Field[] filedArr = clazz.getDeclaredFields();
             for (Field field : filedArr) {
                 Column column = field.getAnnotation(Column.class);
+                if(column == null){
+                    continue;
+                }
                 PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
                 field.setAccessible(true);
 
@@ -145,6 +128,9 @@ public class JdbcUtil implements InitializingBean {
             Field[] filedArr = clazz.getDeclaredFields();
             for (Field field : filedArr) {
                 Column column = field.getAnnotation(Column.class);
+                if(column == null){
+                    continue;
+                }
                 PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
 
                 insertColumns +=  column.value()+",";
@@ -203,6 +189,9 @@ public class JdbcUtil implements InitializingBean {
         int index = 0;
         for (Field field : filedArr) {
             Column column = field.getAnnotation(Column.class);
+            if(column == null){
+                continue;
+            }
             field.setAccessible(true);
             // 获取此字段的名称
             Object value = null;
@@ -239,6 +228,9 @@ public class JdbcUtil implements InitializingBean {
         Field[] filedArr = clazz.getDeclaredFields();
         for (Field f : filedArr) {
             Column column = f.getAnnotation(Column.class);
+            if(column == null){
+                continue;
+            }
             sqlStart += " " + column.value()+",";
         }
         sqlStart = sqlStart.substring(0,sqlStart.length()-1);
@@ -256,17 +248,26 @@ public class JdbcUtil implements InitializingBean {
             pstate = connection.prepareStatement(sql);
             ResultSet rs = pstate.executeQuery();
             Field[] filedArr = clazz.getDeclaredFields();
-            List<String> fieldNameList = getFieldName(filedArr);
             T newClazz;
+            int valueIndex = 1;
             while(rs.next()){
                 newClazz  = clazz.newInstance();
-                for(int i=0,size=fieldNameList.size(); i<size;  i++){
-                    String fieldName = getMethodName(fieldNameList.get(i));
-                    // 赋值给bean对象对应的值
-                    Method get_Method = clazz.getMethod("get" + fieldName);  //获取getMethod方法
-                    Method set_Method = clazz.getMethod("set" + fieldName, get_Method.getReturnType());//获得属性set方法
-                    Object objValue = getValueByType(get_Method.getReturnType().getName(), rs, i+1);
-                    set_Method.invoke(newClazz, objValue);
+                valueIndex = 1;
+                for(int i = 0; i<filedArr.length; i++){
+
+                    Field field = filedArr[i];
+                    field.setAccessible(true);
+                    Column column = field.getAnnotation(Column.class);
+                    if(column != null){
+                        //  获取此字段的名称
+                        String fieldName = getMethodName(field.getName());
+                        // 赋值给bean对象对应的值
+                        Method get_Method = clazz.getMethod("get" + fieldName);  //获取getMethod方法
+                        Method set_Method = clazz.getMethod("set" + fieldName, get_Method.getReturnType());//获得属性set方法
+                        Object objValue = getValueByType(get_Method.getReturnType().getName(), rs, valueIndex);
+                        set_Method.invoke(newClazz, objValue);
+                        valueIndex++;
+                    }
                 }
                 resultList.add(newClazz);
             }
