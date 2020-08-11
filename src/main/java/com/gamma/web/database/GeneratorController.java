@@ -131,7 +131,7 @@ public class GeneratorController extends BaseController{
     public String toGeneratorAndDownload(String tableNameArr){
         log.info("tableNameArr {}", tableNameArr);
         String[] tableArr = tableNameArr.split(",");
-
+		byte[] codeByte = generatorService.getGeneratorByte(tableArr);
 
         return "redirect:/generator/list";
     }

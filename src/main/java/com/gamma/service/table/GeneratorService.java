@@ -28,4 +28,11 @@ public interface GeneratorService {
     List<GeneratorTableColumnEntity> getTableColumnListById(String generatId);
 
     void updateTableInfoEntity(GeneratorTableInfoEntity entity);
+
+    /**
+     * 生成字节数组
+     * @param tableArr
+     * @return
+     */
+    byte[] getGeneratorByte(String[] tableArr);
 }

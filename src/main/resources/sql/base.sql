@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS `generator_table_column`;
 CREATE TABLE `generator_table_column`  (
   `column_id` varchar(64) NOT NULL COMMENT '编号',
   `table_id` varchar(64)  COMMENT '归属表编号',
-  `column_name` varchar(200)  COMMENT '列名称',
+  `column_name` varchar(50)  COMMENT '列名称',
   `column_comment` varchar(500)  COMMENT '列描述',
   `column_type` varchar(100)  COMMENT '列类型',
   `java_type` varchar(500)  COMMENT 'JAVA类型',

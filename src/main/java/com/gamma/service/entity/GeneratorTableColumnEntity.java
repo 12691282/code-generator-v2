@@ -4,6 +4,9 @@ import com.gamma.annotation.Column;
 import com.gamma.annotation.PrimaryKey;
 import com.gamma.annotation.Table;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 @Table("generator_table_column")
 @Data
@@ -72,6 +75,11 @@ public class GeneratorTableColumnEntity {
     @Column("html_type")
     private String htmlType;
 
+    /**
+     * 不展示列表
+     */
+    private List<String> noShowFiledList;
+
     //排序
     @Column("sort")
     private String sort;
@@ -81,5 +89,14 @@ public class GeneratorTableColumnEntity {
             return true;
         }
         return false;
+    }
+
+    public void setNoShowList(List<String> noShowFiledList) {
+        this.noShowFiledList = noShowFiledList;
+    }
+
+    public Boolean isSuperColumn() {
+        return StringUtils.equalsAnyIgnoreCase(this.getJavaField(),
+                this.getNoShowFiledList().toArray(new String[this.getNoShowFiledList().size()]));
     }
 }

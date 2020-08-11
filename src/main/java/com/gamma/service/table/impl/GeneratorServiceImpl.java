@@ -8,14 +8,24 @@ import com.gamma.service.entity.GeneratorTableInfoEntity;
 import com.gamma.service.table.GeneratorService;
 import com.gamma.tools.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.sql.*;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 /***
@@ -38,6 +48,11 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
     //作者署名
     @Value("${generateConfig.authorName}")
     private String  authorName;
+
+    /** 页面不需要显示的列表字段 */
+    @Value("#{'${generateConfig.noShowFiled}'.split(',')}")
+    private List<String> noShowFiledList;
+
 
 
 
@@ -146,10 +161,6 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         }
 
     }
-
-    /** 页面不需要显示的列表字段 */
-    @Value("#{'${generateConfig.noShowFiled}'.split(',')}")
-    private List<String> noShowFiledList;
 
     private void initOtherFiled(GeneratorTableColumnEntity entity,  ResultSet results) throws SQLException {
 
@@ -266,6 +277,76 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
     @Override
     public void updateTableInfoEntity(GeneratorTableInfoEntity entity) {
         JdbcUtil.updateById(entity);
+    }
+
+    @Override
+    public byte[] getGeneratorByte(String[] tableArr) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+
+        //初始化模板
+        VelocityTools.initVelocity();
+
+        for (String tableName : tableArr)
+        {
+           this.toGeneratorCodeZip(tableName, zip);
+        }
+        IOUtils.closeQuietly(zip);
+        return outputStream.toByteArray();
+    }
+
+    private void toGeneratorCodeZip(String tableName, ZipOutputStream zip) {
+        GeneratorTableInfoEntity entity = this.getTableInfoDetail(tableName);
+        if(entity == null){
+            return;
+        }
+        List<GeneratorTableColumnEntity> columnEntityList =  getTableColumnListById(entity.getGeneratId());
+        entity.setColumnList(columnEntityList);
+        entity.setPkColumn();
+        entity.setImportList(noShowFiledList);
+
+        VelocityContext context = VelocityTools.prepareContext(entity);
+
+        // 包路径
+        String packageName = entity.getPackageName();
+        // 模块名
+        String moduleName = entity.getModuleName();
+        // 大写类名
+        String className = entity.getClassName();
+        // 业务名称
+        String businessName = entity.getBusinessName();
+
+        String javaPath = VelocityTools.PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
+        String mybatisPath = VelocityTools.MYBATIS_PATH + "/" + moduleName;
+
+        this.toFillContent(VelocityTools.templateJavaPathConfig,zip,context,javaPath, className);
+        this.toFillContent(VelocityTools.templateMapperPathConfig,zip,context,mybatisPath, className);
+        this.toFillContent(VelocityTools.templateVuePathConfig,zip,context,"vue", moduleName, businessName);
+    }
+
+    private void toFillContent(String[][] templateJavaPathConfig, ZipOutputStream zip, VelocityContext context, String... params) {
+        for(String[] templateInfo : templateJavaPathConfig){
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            String templateNamePath = templateInfo[0];
+            Template template = VelocityTools.getTemplate(templateNamePath);
+            template.merge(context, sw);
+            String fileName = String.format(templateInfo[1], params);
+            try
+            {
+                // 添加到zip
+                zip.putNextEntry(new ZipEntry(fileName));
+                IOUtils.write(sw.toString(), zip, VelocityTools.UTF8);
+                IOUtils.closeQuietly(sw);
+                zip.flush();
+                zip.closeEntry();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                log.error("渲染模板失败，表名：" + fileName, e);
+            }
+        }
     }
 
 

@@ -40,7 +40,7 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-        
+
 		
 		<!-- jsp 依赖  开始-->
 		<!--引入springboot 内嵌tomcat对jsp的解析包-->
@@ -84,7 +84,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-        
+
        <!-- 时间处理类 -->
          <dependency>
 		    <groupId>joda-time</groupId>
@@ -118,6 +118,11 @@
           <version>3.9</version>
       </dependency>
 
+		<!--io常用工具类 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 
       <dependency>
           <groupId>cn.hutool</groupId>

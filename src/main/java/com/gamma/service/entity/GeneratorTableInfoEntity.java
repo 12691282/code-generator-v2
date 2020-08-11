@@ -3,7 +3,13 @@ package com.gamma.service.entity;
 import com.gamma.annotation.Column;
 import com.gamma.annotation.PrimaryKey;
 import com.gamma.annotation.Table;
+import com.gamma.common.TypeConstants;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Table("generator_table_info")
 @Data
@@ -56,6 +62,59 @@ public class GeneratorTableInfoEntity {
     //备注
     @Column("create_time")
     private String createTime;
+    /**
+     * 导入类列表
+     */
+    Set<String> importList;
+
+    /** 主键类 */
+    private GeneratorTableColumnEntity pkColumn;
+
+    /** 字段列表 */
+    private List<GeneratorTableColumnEntity> columnList;
+
+    public String getPackagePrefix() {
+        int lastIndex = packageName.lastIndexOf(".");
+        String basePackage = StringUtils.substring(packageName, 0, lastIndex);
+        return basePackage;
+    }
+
+    /**
+     * 设置主键列信息
+     */
+    public void setPkColumn()
+    {
+        for (GeneratorTableColumnEntity column : this.columnList)
+        {
+            if (column.isPrimaryKey())
+            {
+                this.setPkColumn(column);
+                break;
+            }
+        }
+        if (this.getPkColumn() == null)
+        {
+            this.setPkColumn(this.getColumnList().get(0));
+        }
+    }
 
 
+    public void setImportList(List<String> noShowFiledList) {
+        this.importList = new HashSet();
+        for (GeneratorTableColumnEntity column : this.columnList)
+        {
+            column.setNoShowList(noShowFiledList);
+            Boolean isNoShow = column.isSuperColumn();
+
+            if (isNoShow && TypeConstants.JAVA_FILED_TYPE_DATE.equals(column.getJavaType()))
+            {
+                importList.add("java.util.Date");
+            }
+            else if (!isNoShow && TypeConstants.JAVA_FILED_TYPE_BIGDECIMAL.equals(column.getJavaType()))
+            {
+                importList.add("java.math.BigDecimal");
+            }
+        }
+
+    }
 }
