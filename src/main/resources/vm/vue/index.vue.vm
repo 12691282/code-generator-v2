@@ -229,14 +229,16 @@ export default {
   created() {
     this.getList();
   },
+ #set($http="$http")## 设置 $http vue对象
   methods: {
     /** 查询${functionName}列表 */
     getList() {
         this.loading = true;
-        this.\$http({
-            ## url: this.\$http.adornUrl("/${moduleName}/${businessName}/list"),
-            ## method: 'get',
-            ## data:this.\$http.adornParams(this.queryParams)
+        let url = "/${moduleName}/${businessName}/list";
+        this.${http}({
+             url: this.${http}.adornUrl(url),
+             method: 'get',
+             data:this.${http}.adornParams(this.queryParams)
         }).then(({data}) => {
             this.${businessName}List = data.rows;
             this.total = data.total;
@@ -283,11 +285,11 @@ export default {
     handleUpdate(row) {
       this.reset();
       const ${pkColumn.javaField} = row.${pkColumn.javaField} || this.ids
-      this.\$http({
+      this.${http}({
          url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
          method: 'get'
       }).then(({data}) => {
-         this.form = response.data;
+         this.form = data.data;
          this.open = true;
          this.title = "修改${functionName}";
       })
@@ -298,11 +300,10 @@ export default {
       this.#[[$]]#refs["form"].validate(valid => {
         if (valid) {
           if (this.form.${pkColumn.javaField} != undefined) {
-
                 this.\$http({
-                    url: "/${moduleName}/${businessName}",
-                    method: 'put',
-                    data: this.\$http.adornParams(this.form)
+                   url: "/${moduleName}/${businessName}",
+                   method: 'put',
+                   data: this.${http}.adornParams(this.form)
                 }).then(({data}) => {
                     if(data.code === 200) {
                       this.msgSuccess("修改成功");
@@ -313,10 +314,10 @@ export default {
 
           } else {
 
-              this.\$http({
+              this.${http}({
                   url: "/${moduleName}/${businessName}",
                   method: 'put',
-                  data: this.\$http.adornParams(this.form)
+                  data: this.${http}.adornParams(this.form)
               }).then(({data}) => {
                   if (response.code === 200) {
                       this.msgSuccess("新增成功");
@@ -337,7 +338,7 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-            this.\$http({
+            this.${http}({
                url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField}s,
                method: 'delete'
             }).then(({data}) => {
