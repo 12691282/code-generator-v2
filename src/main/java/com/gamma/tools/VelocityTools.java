@@ -62,7 +62,7 @@ public class VelocityTools {
         velocityContext.put("BusinessName", StringUtils.capitalize(entity.getBusinessName()));
         velocityContext.put("businessName", businessName);
         velocityContext.put("basePackage", entity.getPackagePrefix());
-        velocityContext.put("packageName", packageName);
+        velocityContext.put("packageName", packageName+"."+moduleName);
         velocityContext.put("author", entity.getFunctionAuthor());
         velocityContext.put("datetime", DateTools.getDate());
         velocityContext.put("pkColumn", entity.getPkColumn());
@@ -86,7 +86,7 @@ public class VelocityTools {
             {"vm/java/domain.java.vm" , "%s/domain/%s.java"},
             {"vm/java/mapper.java.vm", "%s/mapper/%sMapper.java"},
             {"vm/java/service.java.vm", "%s/service/I%sService.java"},
-            {"vm/java/serviceImpl.java.vm", "%s/service/I%sService.java"},
+            {"vm/java/serviceImpl.java.vm", "%s/service/Impl/I%sServiceImpl.java"},
             {"vm/java/controller.java.vm", "%s/controller/%sController.java"},
     };
 

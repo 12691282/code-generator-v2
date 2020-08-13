@@ -2,8 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
 #foreach($column in $columns)
-#if($column.query)
-#set($dictType=$column.dictType)
+#if($column.isQueryField())
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
@@ -21,23 +20,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-#elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)
+#elseif($column.htmlType == "textarea")
       <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable size="small">
-          <el-option
-            v-for="dict in ${column.javaField}Options"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
-      </el-form-item>
-#elseif(($column.htmlType == "select" || $column.htmlType == "radio") && $dictType)
-      <el-form-item label="${comment}" prop="${column.javaField}">
-        <el-select v-model="queryParams.${column.javaField}" placeholder="请选择${comment}" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
-        </el-select>
-      </el-form-item>
+         <el-input v-model="queryParams.${column.javaField}"
+            placeholder="请输入${comment}"
+            clearable
+            size="small"
+            type="textarea"
+            @keyup.enter.native="handleQuery"
+         />
+     </el-form-item>
 #elseif($column.htmlType == "datetime")
       <el-form-item label="${comment}" prop="${column.javaField}">
         <el-date-picker clearable size="small" style="width: 200px"
@@ -86,15 +78,6 @@
           v-hasPermi="['${moduleName}:${businessName}:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['${moduleName}:${businessName}:export']"
-        >导出</el-button>
-      </el-col>
     </el-row>
 
     <el-table v-loading="loading" :data="${businessName}List" @selection-change="handleSelectionChange">
@@ -107,17 +90,15 @@
 #else
 #set($comment=$column.columnComment)
 #end
-#if($column.pk)
+#if($column.isPrimaryKey())
       <el-table-column label="${comment}" align="center" prop="${javaField}" />
-#elseif($column.list && $column.htmlType == "datetime")
+#elseif($column.isListShow() && $column.htmlType == "datetime")
       <el-table-column label="${comment}" align="center" prop="${javaField}" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.${javaField}, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-#elseif($column.list && "" != $column.dictType)
-      <el-table-column label="${comment}" align="center" prop="${javaField}" :formatter="${javaField}Format" />
-#elseif($column.list && "" != $javaField)
+#elseif($column.isListShow() && "" != $javaField)
       <el-table-column label="${comment}" align="center" prop="${javaField}" />
 #end
 #end
@@ -154,53 +135,17 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 #foreach($column in $columns)
 #set($field=$column.javaField)
-#if($column.insert && !$column.pk)
-#if(($column.usableColumn) || (!$column.superColumn))
+#if($column.isNoEdit() && !$column.isPrimaryKey())
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
 #set($comment=$column.columnComment.substring(0, $parentheseIndex))
 #else
 #set($comment=$column.columnComment)
 #end
-#set($dictType=$column.dictType)
+
 #if($column.htmlType == "input")
         <el-form-item label="${comment}" prop="${field}">
           <el-input v-model="form.${field}" placeholder="请输入${comment}" />
-        </el-form-item>
-#elseif($column.htmlType == "select" && "" != $dictType)
-        <el-form-item label="${comment}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
-            <el-option
-              v-for="dict in ${field}Options"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              #if($column.javaType == "Integer" || $column.javaType == "Long"):value="parseInt(dict.dictValue)"#else:value="dict.dictValue"#end
-
-            ></el-option>
-          </el-select>
-        </el-form-item>
-#elseif($column.htmlType == "select" && $dictType)
-        <el-form-item label="${comment}">
-          <el-select v-model="form.${field}" placeholder="请选择${comment}">
-            <el-option label="请选择字典生成" value="" />
-          </el-select>
-        </el-form-item>
-#elseif($column.htmlType == "radio" && "" != $dictType)
-        <el-form-item label="${comment}">
-          <el-radio-group v-model="form.${field}">
-            <el-radio
-              v-for="dict in ${field}Options"
-              :key="dict.dictValue"
-              #if($column.javaType == "Integer" || $column.javaType == "Long"):label="parseInt(dict.dictValue)"#else:label="dict.dictValue"#end
-
-            >{{dict.dictLabel}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-#elseif($column.htmlType == "radio" && $dictType)
-        <el-form-item label="${comment}">
-          <el-radio-group v-model="form.${field}">
-            <el-radio label="1">请选择字典生成</el-radio>
-          </el-radio-group>
         </el-form-item>
 #elseif($column.htmlType == "datetime")
         <el-form-item label="${comment}" prop="${field}">
@@ -218,7 +163,6 @@
 #end
 #end
 #end
-#end
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -229,7 +173,6 @@
 </template>
 
 <script>
-import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName}, export${BusinessName} } from "@/api/${moduleName}/${businessName}";
 
 export default {
   name: "${BusinessName}",
@@ -251,26 +194,13 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-#foreach ($column in $columns)
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else
-#set($comment=$column.columnComment)
-#end
-#if(${column.dictType} != '')
-      // $comment字典
-      ${column.javaField}Options: [],
-#end
-#end
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
 #foreach ($column in $columns)
-#if($column.query)
+#if($column.isQueryField())
         $column.javaField: undefined#if($velocityCount != $columns.size()),#end
-
 #end
 #end
       },
@@ -279,7 +209,7 @@ export default {
       // 表单校验
       rules: {
 #foreach ($column in $columns)
-#if($column.required)
+#if($column.isRequiredField())
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
 #set($comment=$column.columnComment.substring(0, $parentheseIndex))
@@ -298,38 +228,21 @@ export default {
   },
   created() {
     this.getList();
-#foreach ($column in $columns)
-#if(${column.dictType} != '')
-    this.getDicts("${column.dictType}").then(response => {
-      this.${column.javaField}Options = response.data;
-    });
-#end
-#end
   },
   methods: {
     /** 查询${functionName}列表 */
     getList() {
-      this.loading = true;
-      list${BusinessName}(this.queryParams).then(response => {
-        this.${businessName}List = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+        this.loading = true;
+        this.\$http({
+            ## url: this.\$http.adornUrl("/${moduleName}/${businessName}/list"),
+            ## method: 'get',
+            ## data:this.\$http.adornParams(this.queryParams)
+        }).then(({data}) => {
+            this.${businessName}List = data.rows;
+            this.total = data.total;
+            this.loading = false;
+        })
     },
-#foreach ($column in $columns)
-#if(${column.dictType} != '')
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
-#if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
-#else
-#set($comment=$column.columnComment)
-#end
-    // $comment字典翻译
-    ${column.javaField}Format(row, column) {
-      return this.selectDictLabel(this.${column.javaField}Options, row.${column.javaField});
-    },
-#end
-#end
     // 取消按钮
     cancel() {
       this.open = false;
@@ -339,13 +252,7 @@ export default {
     reset() {
       this.form = {
 #foreach ($column in $columns)
-#if($column.htmlType == "radio")
-        $column.javaField: "0"#if($velocityCount != $columns.size()),#end
-
-#else
         $column.javaField: undefined#if($velocityCount != $columns.size()),#end
-
-#end
 #end
       };
       this.resetForm("form");
@@ -376,32 +283,48 @@ export default {
     handleUpdate(row) {
       this.reset();
       const ${pkColumn.javaField} = row.${pkColumn.javaField} || this.ids
-      get${BusinessName}(${pkColumn.javaField}).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改${functionName}";
-      });
+      this.\$http({
+         url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
+         method: 'get'
+      }).then(({data}) => {
+         this.form = response.data;
+         this.open = true;
+         this.title = "修改${functionName}";
+      })
+
     },
     /** 提交按钮 */
     submitForm: function() {
       this.#[[$]]#refs["form"].validate(valid => {
         if (valid) {
           if (this.form.${pkColumn.javaField} != undefined) {
-            update${BusinessName}(this.form).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-              }
-            });
+
+                this.\$http({
+                    url: "/${moduleName}/${businessName}",
+                    method: 'put',
+                    data: this.\$http.adornParams(this.form)
+                }).then(({data}) => {
+                    if(data.code === 200) {
+                      this.msgSuccess("修改成功");
+                      this.open = false;
+                      this.getList();
+                    }
+                })
+
           } else {
-            add${BusinessName}(this.form).then(response => {
-              if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
-              }
-            });
+
+              this.\$http({
+                  url: "/${moduleName}/${businessName}",
+                  method: 'put',
+                  data: this.\$http.adornParams(this.form)
+              }).then(({data}) => {
+                  if (response.code === 200) {
+                      this.msgSuccess("新增成功");
+                      this.open = false;
+                      this.getList();
+                  }
+              })
+
           }
         }
       });
@@ -414,24 +337,14 @@ export default {
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return del${BusinessName}(${pkColumn.javaField}s);
-        }).then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
-        }).catch(function() {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有${functionName}数据项?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return export${BusinessName}(queryParams);
-        }).then(response => {
-          this.download(response.msg);
-        }).catch(function() {});
+            this.\$http({
+               url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField}s,
+               method: 'delete'
+            }).then(({data}) => {
+               this.getList();
+               this.msgSuccess("删除成功");
+            })
+        })
     }
   }
 };

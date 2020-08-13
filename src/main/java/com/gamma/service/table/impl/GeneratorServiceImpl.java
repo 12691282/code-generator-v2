@@ -20,10 +20,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.*;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -301,22 +299,22 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
             return;
         }
         List<GeneratorTableColumnEntity> columnEntityList =  getTableColumnListById(entity.getGeneratId());
-        entity.setColumnList(columnEntityList);
-        entity.setPkColumn();
-        entity.setImportList(noShowFiledList);
+
+        entity.changeColumnToVo(columnEntityList);
 
         VelocityContext context = VelocityTools.prepareContext(entity);
 
-        // 包路径
-        String packageName = entity.getPackageName();
         // 模块名
         String moduleName = entity.getModuleName();
+        // 包路径
+        String packageName = entity.getPackageName();
+
         // 大写类名
         String className = entity.getClassName();
         // 业务名称
         String businessName = entity.getBusinessName();
 
-        String javaPath = VelocityTools.PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
+        String javaPath = VelocityTools.PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/")+"/"+moduleName;
         String mybatisPath = VelocityTools.MYBATIS_PATH + "/" + moduleName;
 
         this.toFillContent(VelocityTools.templateJavaPathConfig,zip,context,javaPath, className);

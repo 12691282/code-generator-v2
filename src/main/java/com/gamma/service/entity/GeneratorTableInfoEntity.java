@@ -4,9 +4,13 @@ import com.gamma.annotation.Column;
 import com.gamma.annotation.PrimaryKey;
 import com.gamma.annotation.Table;
 import com.gamma.common.TypeConstants;
+import com.gamma.service.mapper.TableColumnMapper;
+import com.gamma.service.vo.GeneratorTableColumnVO;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.mapstruct.factory.Mappers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,10 +72,10 @@ public class GeneratorTableInfoEntity {
     Set<String> importList;
 
     /** 主键类 */
-    private GeneratorTableColumnEntity pkColumn;
+    private GeneratorTableColumnVO pkColumn;
 
     /** 字段列表 */
-    private List<GeneratorTableColumnEntity> columnList;
+    private List<GeneratorTableColumnVO> columnList;
 
     public String getPackagePrefix() {
         int lastIndex = packageName.lastIndexOf(".");
@@ -79,42 +83,31 @@ public class GeneratorTableInfoEntity {
         return basePackage;
     }
 
-    /**
-     * 设置主键列信息
-     */
-    public void setPkColumn()
-    {
-        for (GeneratorTableColumnEntity column : this.columnList)
-        {
-            if (column.isPrimaryKey())
-            {
-                this.setPkColumn(column);
-                break;
+
+    public void changeColumnToVo(List<GeneratorTableColumnEntity> columnEntityList) {
+        this.importList = new HashSet();
+        this.columnList = new ArrayList<>();
+        for (GeneratorTableColumnEntity column : columnEntityList){
+            GeneratorTableColumnVO columnVO = TableColumnMapper.INSTANCE.entityToVo(column);
+            if (columnVO.isPrimaryKey()){
+                this.setPkColumn(columnVO);
             }
+
+            if (columnVO.isNoEdit()){
+                if ( TypeConstants.JAVA_FILED_TYPE_DATE.equals(columnVO.getJavaType()))
+                {
+                    importList.add("java.util.Date");
+                }
+                else if (TypeConstants.JAVA_FILED_TYPE_BIGDECIMAL.equals(columnVO.getJavaType()))
+                {
+                    importList.add("java.math.BigDecimal");
+                }
+            }
+            columnList.add(columnVO);
         }
         if (this.getPkColumn() == null)
         {
             this.setPkColumn(this.getColumnList().get(0));
         }
-    }
-
-
-    public void setImportList(List<String> noShowFiledList) {
-        this.importList = new HashSet();
-        for (GeneratorTableColumnEntity column : this.columnList)
-        {
-            column.setNoShowList(noShowFiledList);
-            Boolean isNoShow = column.isSuperColumn();
-
-            if (isNoShow && TypeConstants.JAVA_FILED_TYPE_DATE.equals(column.getJavaType()))
-            {
-                importList.add("java.util.Date");
-            }
-            else if (!isNoShow && TypeConstants.JAVA_FILED_TYPE_BIGDECIMAL.equals(column.getJavaType()))
-            {
-                importList.add("java.math.BigDecimal");
-            }
-        }
-
     }
 }

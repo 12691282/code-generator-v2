@@ -126,7 +126,7 @@
                     <td ><input class="column-value-clazz" type="checkbox"  name="isEdit" <c:if test="${v.isEdit == 1}">checked</c:if>></td>
                     <td ><input class="column-value-clazz" type="checkbox"  name="isQuery" <c:if test="${v.isQuery == 1}">checked</c:if>></td>
                     <td >
-                        <select class="column-value-clazz" name="queryType"  style="width:40px;">
+                        <select class="column-value-clazz" name="queryType"  style="width:90px;">
                             <c:forEach items="${queryMethodList}" var="queryMethod" >
                                 <option value="${queryMethod}" <c:if test="${queryMethod == v.queryType}">selected</c:if>>${queryMethod}</option>
                             </c:forEach>

@@ -7,12 +7,15 @@ import com.gamma.service.entity.GeneratorTableInfoEntity;
 import com.gamma.service.table.GeneratorService;
 import com.gamma.tools.JdbcUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -128,12 +131,15 @@ public class GeneratorController extends BaseController{
      * @param tableNameArr
      */
     @PostMapping("toGeneratorAndDownload")
-    public String toGeneratorAndDownload(String tableNameArr){
+    public void toGeneratorAndDownload(HttpServletResponse response, String tableNameArr) throws IOException {
         log.info("tableNameArr {}", tableNameArr);
         String[] tableArr = tableNameArr.split(",");
 		byte[] codeByte = generatorService.getGeneratorByte(tableArr);
-
-        return "redirect:/generator/list";
+		response.reset();
+		response.setHeader("Content-Disposition", "attachment; filename=\"generatorCode.zip\"");
+		response.addHeader("Content-Length", "" + codeByte.length);
+		response.setContentType("application/octet-stream; charset=UTF-8");
+		IOUtils.write(codeByte, response.getOutputStream());
     }
 
 
