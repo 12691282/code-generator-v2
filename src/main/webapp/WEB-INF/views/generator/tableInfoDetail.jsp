@@ -97,6 +97,8 @@
                 <th>列类型</th>
                 <th>JAVA字段类型</th>
                 <th>JAVA字段名</th>
+                <th>是否主键</th>
+                <th>是否自增</th>
                 <th>是否列表展示字段</th>
                 <th>是否必填</th>
                 <th>是否编辑</th>
@@ -111,7 +113,7 @@
             <c:forEach items="${columnList}" var="v"  varStatus="status">
                 <tr  class="column-event-clazz" >
                     <td >${v.columnName}</td>
-                    <td ><input class="column-value-clazz" type="text" name="columnComment" value="${v.columnComment}"></td>
+                    <td ><input class="column-value-clazz" type="text" name="columnComment" value="${v.columnComment}" style="width:120px;"></td>
                     <td >${v.columnType}</td>
                     <td >
                         <select class="column-value-clazz" name="javaType"  style="width:80px;">
@@ -120,7 +122,9 @@
                             </c:forEach>
                         </select>
                     </td>
-                    <td ><input class="column-value-clazz" type="text" name="javaField" value="${v.javaField}"></td>
+                    <td ><input class="column-value-clazz" type="text" name="javaField" value="${v.javaField}"  style="width:120px;"></td>
+                    <td ><input class="column-value-clazz" type="checkbox"  name="isPk" <c:if test="${v.isPk == 1}">checked</c:if>></td>
+                    <td ><input class="column-value-clazz" type="checkbox"  name="isIncrement" <c:if test="${v.isIncrement == 1}">checked</c:if>></td>
                     <td ><input class="column-value-clazz" type="checkbox"  name="isListShow" value="${v.isListShow}" <c:if test="${v.isListShow == 1}">checked</c:if>></td>
                     <td ><input class="column-value-clazz" type="checkbox"  name="isRequired" value="${v.isRequired}" <c:if test="${v.isRequired == 1}">checked</c:if>></td>
                     <td ><input class="column-value-clazz" type="checkbox"  name="isEdit" <c:if test="${v.isEdit == 1}">checked</c:if>></td>

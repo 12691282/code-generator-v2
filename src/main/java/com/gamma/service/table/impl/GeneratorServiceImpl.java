@@ -167,7 +167,6 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         entity.setColumnName(columnName);
         entity.setJavaField(StringTools.toCamelCase(columnName));
         entity.setQueryType("=");//默认等于查询方式
-        entity.setIsListShow("1");//默认列表展示字段
         String typeStr = this.getDbType(columnType);
         if(TypeConstants.COLUMN_TYPE_STR.contains(typeStr)){
 
@@ -204,6 +203,7 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         }
 
         if(!noShowFiledList.stream().anyMatch (str -> str.equalsIgnoreCase(columnName)) && !entity.isPrimaryKey()){
+            entity.setIsListShow(TypeConstants.REQUIRE);//默认列表展示字段
             entity.setIsEdit(TypeConstants.REQUIRE);
         }
 

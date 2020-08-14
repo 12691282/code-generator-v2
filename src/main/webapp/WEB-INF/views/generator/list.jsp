@@ -28,6 +28,7 @@
       </div>
 		<div>
 			<button class="btn btn-default" data-toggle="modal" data-target="#databaseInfoModal">导入目标数据</button>
+			<button class="btn btn-info" id="parameterConfig" >参数配置</button>
 			<button class="btn btn-info" id="toGeneratorCode" >生成代码</button>
 		</div>
  			 <table class="table table-hover">

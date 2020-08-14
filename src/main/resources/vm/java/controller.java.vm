@@ -57,7 +57,11 @@ public class ${ClassName}Controller
     @PostMapping
     public int add(@RequestBody ${ClassName} ${className})
     {
-        return ${className}Service.insert${ClassName}(${className});
+    #if(!$pkColumn.isIncrementField() && $pkColumn.javaType == "String")
+        #set($AttrName=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
+    ${className}.set$AttrName(java.util.UUID.randomUUID())//设置uuid为主键
+    #end
+    return ${className}Service.insert${ClassName}(${className});
     }
 
     /**

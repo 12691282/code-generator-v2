@@ -1,9 +1,6 @@
 package com.gamma.service.vo;
 
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
 
 @Data
 public class GeneratorTableColumnVO {

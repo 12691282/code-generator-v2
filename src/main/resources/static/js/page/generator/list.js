@@ -59,13 +59,19 @@ $(document).ready(function(){
 					return
 				}
 				self.toGeneratorAndDownload(tableArr)
-
 			});
 
 			$("table").find(".btn-info").on("click", function () {
 				var tableName = $(this).val();
 				self.toGeneratorAndDownload(tableName)
 			});
+
+			//参数配置按钮事件
+			$("#parameterConfig").on("click", function(){
+				$(window).attr('location','tableInfoDetail?tableName=');
+			});
+
+
 
 		},
 		showTableDetail : function(_tableName){
