@@ -69,7 +69,6 @@ public class VelocityTools {
         velocityContext.put("importList", entity.getImportList());
         velocityContext.put("columns", entity.getColumnList());
         velocityContext.put("table", entity);
-
         return velocityContext;
 
     }
@@ -100,8 +99,7 @@ public class VelocityTools {
      * 加载前端代码模板路径，及代码文件路径
      */
     public static String[][] templateVuePathConfig = {
-
-            {"vm/js/api.js.vm", "%s/api/%s/%s.js"},
+//            {"vm/js/api.js.vm", "%s/api/%s/%s.js"},
             {"vm/vue/index.vue.vm", "%s/views/%s/%s/index.vue"}
     };
 
