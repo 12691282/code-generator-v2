@@ -36,4 +36,8 @@ public class TypeConstants {
     /** 需要 */
     public static final String REQUIRE = "1";
 
+
+    /** 分割符号*/
+    public static final String SPLIT_SYMBOL = ",";
+
 }

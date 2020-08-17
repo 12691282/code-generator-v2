@@ -2,27 +2,8 @@ $(document).ready(function(){
    
 	
 	var GeneratorFunctionObj = {
-		    isBaseModel : $("#isBaseModelVal").val(),
-			
-			
 		inital : function(){
-			
-			 this.setWindowsObj();
-			
 			 this.bindEvent();
-
-		},
-		setWindowsObj : function(){
-
-			window.setToPageCss = function(_val){
-				$("#pageCss").val(_val);
-				return false;
-			}
-			if(this.isBaseModel === 'Y'){
-				$("#checkBaseModel").attr("checked", true);
-				$("[name=isBaseModel]").val(true)
-				$("#baseModelPathDiv").show();
-			}
 		},
 		bindEvent : function(){
 			
@@ -66,12 +47,18 @@ $(document).ready(function(){
 				self.toGeneratorAndDownload(tableName)
 			});
 
-			//参数配置按钮事件
-			$("#parameterConfig").on("click", function(){
-				$(window).attr('location','tableInfoDetail?tableName=');
-			});
 
-
+            $("#confirmConfigButto").click(function (){
+                $.ajax({
+                    type: "POST",//方法类型
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "saveConfig" ,//url
+                    data: $('#confirmConfigForm').serialize(),
+                    success: function (result) {
+                        alert(result.data)
+                    }
+                });
+            })
 
 		},
 		showTableDetail : function(_tableName){

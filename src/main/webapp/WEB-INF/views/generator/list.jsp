@@ -28,7 +28,7 @@
       </div>
 		<div>
 			<button class="btn btn-default" data-toggle="modal" data-target="#databaseInfoModal">导入目标数据</button>
-			<button class="btn btn-info" id="parameterConfig" >参数配置</button>
+			<button class="btn btn-info" data-toggle="modal" data-target="#parameterConfigModal">参数配置</button>
 			<button class="btn btn-info" id="toGeneratorCode" >生成代码</button>
 		</div>
  			 <table class="table table-hover">
@@ -66,52 +66,117 @@
 
 
 
-	<div class="modal fade" tabindex="-1" id="databaseInfoModal" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title">数据库配置</h4>
-				</div>
-				<div class="modal-body">
-					<form  method="post" action="connectTargetDataBase">
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">数据库地址</label>
-							<div class="controls">
-								<textarea name="url" style="width: 580px;height: 70px;">${dataBaseUrl}</textarea>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">数据库驱动名</label>
-							<div class="controls">
-								<input type="text"  name="driver" value="${dataBaseDriver}">
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label" for="inputEmail">用户名</label>
-							<div class="controls">
-								<input type="text"  name="username" value="${dataBaseUsername}">
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label"  for="inputEmail">密码</label>
-							<div class="controls">
-								<input type="text" name="password" value="${dataBasePassword}">
-							</div>
-						</div>
+    <div class="modal fade" tabindex="-1" id="databaseInfoModal" role="dialog"> <!-- modal 开始 -->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">数据库配置</h4>
+                </div>
+                <div class="modal-body">
+                    <form  method="post" action="connectTargetDataBase">
+                        <div class="control-group">
+                            <label class="control-label" >数据库地址</label>
+                            <div class="controls">
+                                <textarea name="url" style="width: 580px;height: 70px;">${dataBaseUrl}</textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >数据库驱动名</label>
+                            <div class="controls">
+                                <input type="text"  name="driver" value="${dataBaseDriver}">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >用户名</label>
+                            <div class="controls">
+                                <input type="text"  name="username" value="${dataBaseUsername}">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label"  >密码</label>
+                            <div class="controls">
+                                <input type="text" name="password" value="${dataBasePassword}">
+                            </div>
+                        </div>
 
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="submit" class="btn btn-primary" >确定</button>
-				</div>
-				</form>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" >确定</button>
+                </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- modal 结束 -->
 
-    
-<!-- js 加载 -->
+
+
+    <div class="modal fade" tabindex="-1" id="parameterConfigModal" role="dialog"> <!-- modal 开始 -->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width: 400px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">参数配置</h4>
+                </div>
+                <form id="confirmConfigForm">
+                <input type="hidden"  name="id" value="${config.id}">
+                <div class="modal-body">
+                        <div class="control-group">
+                            <label class="control-label" >包路径</label>
+                            <div class="controls">
+                                <input type="text"  name="basePackage" value="${config.basePackage}">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >模块名</label>
+                            <div class="controls">
+                                <input type="text"  name="baseModelName" value="${config.baseModelName}">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" >作者名</label>
+                            <div class="controls">
+                                <input type="text"  name="authorName" value="${config.authorName}">
+                            </div>
+                        </div>
+                        <div>请用符号 , 分割数据</div>
+                        <div class="control-group">
+                            <label class="control-label">不显示字段</label>
+                            <div class="controls">
+                                <textarea name="noShowFiled" style="width: 380px;height: 70px;">${config.noShowFiled}</textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">java类型</label>
+                            <div class="controls">
+                                <textarea name="javaTypeConfig" style="width: 380px;height: 70px;">${config.javaTypeConfig}</textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">查询方法</label>
+                            <div class="controls">
+                                <textarea name="queryMethodConfig" style="width: 380px;height: 70px;">${config.queryMethodConfig}</textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">页面输入类型</label>
+                            <div class="controls">
+                                <textarea name="htmlInputTypeConfig" style="width: 380px;height: 70px;">${config.htmlInputTypeConfig}</textarea>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirmConfigButto" >确定</button>
+                </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- modal 结束 -->
+
+
+    <!-- js 加载 -->
  <script type="text/javascript" src="/js/plus/jquery/jquery-1.12.4.min.js"></script>
  <script type="text/javascript" src="/js/plus/bootstrap/js/bootstrap.min.js"></script>
  <!-- 本页面js -->

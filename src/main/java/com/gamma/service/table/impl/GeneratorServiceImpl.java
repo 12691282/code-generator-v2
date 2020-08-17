@@ -3,23 +3,25 @@ package com.gamma.service.table.impl;
 import com.gamma.base.BaseService;
 import com.gamma.bean.DatabaseBean;
 import com.gamma.common.TypeConstants;
+import com.gamma.service.entity.GeneratorConfigEntity;
 import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
 import com.gamma.service.table.GeneratorService;
 import com.gamma.tools.*;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -33,26 +35,10 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @Slf4j
-public class GeneratorServiceImpl  extends BaseService implements GeneratorService {
-
-    //基础模块名称
-    @Value("${generateConfig.basePackage}")
-    private String  basePackage;
-
-    //基础模块名称
-    @Value("${generateConfig.baseModelName}")
-    private String  baseModelName;
-
-    //作者署名
-    @Value("${generateConfig.authorName}")
-    private String  authorName;
+public class GeneratorServiceImpl extends BaseService implements GeneratorService {
 
     /** 页面不需要显示的列表字段 */
-    @Value("#{'${generateConfig.noShowFiled}'.split(',')}")
     private List<String> noShowFiledList;
-
-
-
 
     @Override
     public List getList() {
@@ -101,6 +87,9 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
         try {
             connection =  DataSourceHelper.connectToDatabase(bean);
             String[] tableNameArr = bean.getTableNameStr().split(",");
+
+            GeneratorConfigEntity config = this.getConfigInfo();
+            this.noShowFiledList = Arrays.asList(config.getNoShowFiledList());
             for(String tableName : tableNameArr){
                 GeneratorTableInfoEntity tableDetail = new GeneratorTableInfoEntity();
                 tableDetail.setTableName(tableName);
@@ -110,9 +99,9 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
                 String businessName = ServiceCodeGeneratorUtil.getBusinessName(tableName);
                 tableDetail.setClassName(ClazzName);
                 tableDetail.setBusinessName(businessName);
-                tableDetail.setPackageName(basePackage);
-                tableDetail.setModuleName(baseModelName);
-                tableDetail.setFunctionAuthor(authorName);
+                tableDetail.setPackageName(config.getBasePackage());
+                tableDetail.setModuleName(config.getBaseModelName());
+                tableDetail.setFunctionAuthor(config.getAuthorName());
                 tableDetail.setCreateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
                 String tdKey = JdbcUtil.insert(tableDetail);
 
@@ -346,6 +335,14 @@ public class GeneratorServiceImpl  extends BaseService implements GeneratorServi
             }
         }
     }
+
+
+    @Override
+    public GeneratorConfigEntity getConfigInfo() {
+        List<GeneratorConfigEntity>  list =  JdbcUtil.getList(GeneratorConfigEntity.class);
+        return list.get(0);
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.gamma.service.table;
 
 import com.gamma.bean.DatabaseBean;
+import com.gamma.service.entity.GeneratorConfigEntity;
 import com.gamma.service.entity.GeneratorTableColumnEntity;
 import com.gamma.service.entity.GeneratorTableInfoEntity;
 
@@ -35,4 +36,6 @@ public interface GeneratorService {
      * @return
      */
     byte[] getGeneratorByte(String[] tableArr);
+
+    GeneratorConfigEntity getConfigInfo();
 }

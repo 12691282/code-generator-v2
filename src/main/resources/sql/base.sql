@@ -35,3 +35,17 @@ CREATE TABLE `generator_table_column`  (
   `sort` int(11) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`column_id`)
 );
+
+
+DROP TABLE IF EXISTS `generator_config_info`;
+CREATE TABLE `generator_config_info`  (
+  `id` varchar(64) NOT NULL COMMENT '编号',
+  `base_package` varchar(100)  COMMENT '包路径',
+  `base_model_name` varchar(100)  COMMENT '模块名',
+  `author_name` varchar(100)  COMMENT '作者名',
+  `no_show_filed` varchar(100)  COMMENT '不显示字段',
+  `java_type_config` varchar(100)  COMMENT 'java类型',
+  `query_method_config` varchar(100)  COMMENT '查询方法',
+  `html_input_type_config` varchar(100)  COMMENT '页面输入类型',
+  PRIMARY KEY (`id`)
+);
