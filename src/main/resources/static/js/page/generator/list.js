@@ -17,13 +17,36 @@ $(document).ready(function(){
 				    checkBox.prop("checked",!checkBox[0].checked);
 			  
 			  });
-			
-			$(".btn-success").on("click", function(){
-				 var tableName = $(this).val();
-				 self.showTableDetail(tableName)
+
+			//删除按钮事件
+			$("tbody").find(".btn-danger").on("click", function () {
+				var recordIteamId = $(this).val();
+				$.get("deleteById",
+					{"id":recordIteamId},
+					function(result){
+						var info = result.info;
+						if(info == "1"){
+							alert("删除成功!");
+							window.location.reload();
+						}
+					});
+
 			});
 
-			
+			//查看按钮事件
+			$("tbody").find(".btn-success").on("click", function () {
+				var tableName = $(this).val();
+				self.showTableDetail(tableName)
+
+			});
+
+			//生成代码按钮事件
+			$("table").find(".btn-info").on("click", function () {
+				var tableName = $(this).val();
+				self.toGeneratorAndDownload(tableName)
+			});
+
+
 			$("#toGeneratorCode").on("click", function(){
 				var checkedEL = $("input:checked");
 				var tableArr = "";
@@ -41,12 +64,6 @@ $(document).ready(function(){
 				}
 				self.toGeneratorAndDownload(tableArr)
 			});
-
-			$("table").find(".btn-info").on("click", function () {
-				var tableName = $(this).val();
-				self.toGeneratorAndDownload(tableName)
-			});
-
 
             $("#confirmConfigButto").click(function (){
                 $.ajax({

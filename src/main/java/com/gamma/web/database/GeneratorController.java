@@ -145,6 +145,19 @@ public class GeneratorController extends BaseController{
 		IOUtils.write(codeByte, response.getOutputStream());
     }
 
+	@GetMapping("deleteById")
+	@ResponseBody
+	public Map deleteById(String id){
+		log.info("id {}", id);
+		JdbcUtil.deleteById(GeneratorTableInfoEntity.class,id);
+		GeneratorTableColumnEntity columnEntity = new GeneratorTableColumnEntity();
+		columnEntity.setTableId(id);
+		JdbcUtil.deleteByCondition(columnEntity);
+
+		return super.successInfo("保存成功");
+	}
+
+
 
     private void setPageDetail(Model model, List list) {
 		model.addAttribute("list", list);

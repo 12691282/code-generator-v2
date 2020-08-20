@@ -4,7 +4,10 @@ import com.gamma.annotation.Column;
 import com.gamma.annotation.PrimaryKey;
 import com.gamma.annotation.Table;
 import com.gamma.bean.DatabaseBean;
+import com.gamma.service.entity.GeneratorTableColumnEntity;
+import com.gamma.service.entity.GeneratorTableInfoEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,7 +28,6 @@ public class JdbcUtil implements InitializingBean {
     private static String url;
 
     private static String driver;
-
 
     @Value("${spring.datasource.username}")
     public void setUsername(String username) {
@@ -284,6 +286,87 @@ public class JdbcUtil implements InitializingBean {
             }
         }
         log.info("result list size {}", resultList.size());
+    }
+
+
+    public static void deleteByCondition(Object entity) {
+        deleteById(entity, null);
+    }
+
+    public static  void deleteById(Object entity, String id) {
+
+        Connection connection = null;
+        int index = 0;
+        try {
+            connection = DataSourceHelper.connectToDatabase(bean);
+            Class<?> clazz;
+            if(entity instanceof Class){
+                clazz = ((Class)entity);
+            }else {
+                clazz = entity.getClass();
+            }
+            Table table =  clazz.getAnnotation(Table.class);
+            String sql =  "DELETE FROM "+table.value() + " WHERE ";
+            String conditionSql = "";
+
+            Field[] filedArr = clazz.getDeclaredFields();
+            for (Field field : filedArr) {
+                Column column = field.getAnnotation(Column.class);
+                if(column == null){
+                    continue;
+                }
+                field.setAccessible(true);
+                PrimaryKey primaryKey = field.getAnnotation(PrimaryKey.class);
+                if(id != null && primaryKey.isKey() ){
+                    conditionSql =  column.value() + " =  '" + id + "'";
+                    break;
+                }else {
+                    // 获取此字段的名称
+                    Object value = null;
+                    try {
+                        value = field.get(entity);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    if(value != null){
+                        if(index > 0){
+                            conditionSql +=  " AND ";
+                        }
+                        conditionSql +=  column.value() + " =  '" + value + "'";
+                        index++;
+                    }
+                }
+            }
+            if(StringUtils.isEmpty(conditionSql)){
+                log.error("删除条件不能为空！");
+                return;
+            }else {
+               sql +=  conditionSql;
+            }
+
+            log.info(" delete sql : {}",sql);
+            connection.setAutoCommit(false);//表示开启事务；
+            connection.prepareStatement(sql).execute();
+            connection.commit();//表示提交事务；
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }finally {
+            try {
+                if(connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     private static Object getValueByType(String name, ResultSet rs, Integer index) throws SQLException {

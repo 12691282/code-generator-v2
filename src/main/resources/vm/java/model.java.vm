@@ -1,0 +1,38 @@
+package ${packageName}.model;
+
+import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import lombok.Data;
+
+
+/**
+ * ${functionName}对象 ${tableName}
+ *  数据模型
+ * @author ${author}
+ * @date ${datetime}
+ */
+
+@Data
+@TableName("${tableName}")
+public class ${ClassName}Model implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+        /** $column.columnComment **/
+    #if($column.isPrimaryKey())
+    @TableId(value = "${column.columnName}")
+    #else
+    @TableField("${column.columnName}")
+    #end
+    private $column.javaType $column.javaField;
+
+#end
+
+}
