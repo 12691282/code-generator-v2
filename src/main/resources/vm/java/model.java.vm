@@ -1,6 +1,7 @@
 package ${packageName}.model;
 
 import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -13,7 +14,6 @@ import lombok.Data;
 
 /**
  * ${functionName}对象 ${tableName}
- *  数据模型
  * @author ${author}
  * @date ${datetime}
  */
@@ -25,12 +25,16 @@ public class ${ClassName}Model implements Serializable {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-        /** $column.columnComment **/
-    #if($column.isPrimaryKey())
+    /** $column.columnComment **/
+#if($column.isPrimaryKey())
+#if($column.isIncrementField())
+    @TableId(type = IdType.AUTO,value = "${column.columnName}")
+#else
     @TableId(value = "${column.columnName}")
-    #else
+#end
+#else
     @TableField("${column.columnName}")
-    #end
+#end
     private $column.javaType $column.javaField;
 
 #end

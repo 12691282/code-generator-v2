@@ -44,9 +44,7 @@
               <tbody>
               <c:forEach items="${list}" var="v"  varStatus="status">
 	               <tr >
-	               	   <td>
-						  <input type="checkbox" name="tableArr" value="${v.tableName}"> ${status.index + 1}
-	               	   </td>
+	               	   <td><input type="checkbox" name="tableArr" value="${v.tableName}">${status.index + 1}</td>
 	                   <td >${v.tableName}</td>
 					   <td >${v.tableComment}</td>
 					   <td >${v.createTime}</td>
