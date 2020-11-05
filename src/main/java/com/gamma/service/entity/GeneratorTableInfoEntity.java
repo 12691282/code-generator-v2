@@ -19,51 +19,73 @@ import java.util.Set;
 @Data
 public class GeneratorTableInfoEntity {
 
-    //编号
+    /**编号*/
     @Column("generat_id")
     @PrimaryKey
     private String generatId;
-    //表名称
+
+    /**表名称*/
     @Column("table_name")
     private String tableName;
 
-    //表描述
+    /**
+     * 表描述
+     */
     @Column("table_comment")
     private String tableComment;
 
-    //实体类名称
+    /**
+     * 实体类名称
+     */
     @Column("class_name")
     private String className;
 
-    //生成包路径
+
+    /**
+     * 数据库类后缀
+     */
+    @Column("data_base_suffix")
+    private String dataBaseSuffix;
+
+    /**
+     * 原型类后缀
+     */
+    @Column("prototype_class_suffix")
+    private String prototypeClassSuffix;
+
+    /**
+     * 生成包路径
+     */
     @Column("package_name")
     private String packageName;
 
-    //生成模块名
+    /**
+     * 生成模块名
+     */
     @Column("module_name")
     private String moduleName;
 
-    //生成业务名
+    /**生成业务名*/
     @Column("business_name")
     private String businessName;
 
-    //生成功能名
+    /**生成功能名*/
     @Column("function_name")
     private String functionName;
 
-    //生成功能作者
+    /**生成功能作者*/
     @Column("function_author")
     private String functionAuthor;
 
-    //其它生成选项
+    /**其它生成选项*/
     @Column("options")
     private String options;
 
-    //备注
+    /**备注*/
     @Column("remark")
     private String remark;
 
-    //备注
+    /**备注*/
     @Column("create_time")
     private String createTime;
     /**

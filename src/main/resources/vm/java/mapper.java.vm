@@ -1,10 +1,10 @@
-package ${packageName}.mapper;
+package ${packageName}.${daoPackageName};
 
 import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import ${packageName}.domain.${ClassName};
-import ${packageName}.model.${ClassName}Model;
+import ${packageName}.domain.${domainClassName};
+import ${packageName}.${modelPackageName}.${prototypeClassName};
 
 /**
  * ${functionName}Mapper接口
@@ -12,7 +12,7 @@ import ${packageName}.model.${ClassName}Model;
  * @author ${author}
  * @date ${datetime}
  */
-public interface ${ClassName}Mapper extends BaseMapper<${ClassName}Model>
+public interface ${daoClassName} extends BaseMapper<${prototypeClassName}>
 {
     /**
      * 查询${functionName}

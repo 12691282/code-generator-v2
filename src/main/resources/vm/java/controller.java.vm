@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ${packageName}.domain.${ClassName};
-import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.domain.${domainClassName};
+import ${packageName}.service.I${serviceClassName};
 
 
 
@@ -29,16 +29,16 @@ import ${packageName}.service.I${ClassName}Service;
 public class ${ClassName}Controller
 {
     @Autowired
-    private I${ClassName}Service ${className}Service;
+    private I${serviceClassName} ${className}Service;
 
     /**
      * 查询${functionName}列表
      */
     @GetMapping("/list")
-    public List<${ClassName}> list(${ClassName} ${className})
+    public List<${domainClassName}> list(${domainClassName} ${className})
     {
         //startPage(); 分页逻辑
-        List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
+        List<${domainClassName}> list = ${className}Service.select${domainClassName}List(${className});
         return list;
     }
 
@@ -46,31 +46,31 @@ public class ${ClassName}Controller
      * 获取${functionName}详细信息
      */
     @GetMapping(value = "/{${pkColumn.javaField}}")
-    public ${ClassName} getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField})
+    public ${domainClassName} getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField})
     {
-        return ${className}Service.select${ClassName}ById(${pkColumn.javaField});
+        return ${domainClassName}Service.select${domainClassName}ById(${pkColumn.javaField});
     }
 
     /**
      * 新增${functionName}
      */
     @PostMapping
-    public int add(@RequestBody ${ClassName} ${className})
+    public int add(@RequestBody ${domainClassName} ${className})
     {
     #if(!$pkColumn.isIncrementField() && $pkColumn.javaType == "String")
         #set($AttrName=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
     ${className}.set$AttrName(java.util.UUID.randomUUID())//设置uuid为主键
     #end
-    return ${className}Service.insert${ClassName}(${className});
+    return ${className}Service.insert${domainClassName}(${className});
     }
 
     /**
      * 修改${functionName}
      */
     @PutMapping
-    public int edit(@RequestBody ${ClassName} ${className})
+    public int edit(@RequestBody ${domainClassName} ${className})
     {
-        return ${className}Service.update${ClassName}(${className});
+        return ${className}Service.update${domainClassName}(${className});
     }
 
     /**
@@ -79,6 +79,6 @@ public class ${ClassName}Controller
 	@DeleteMapping("/{${pkColumn.javaField}s}")
     public int remove(@PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s)
     {
-        return ${className}Service.delete${ClassName}ByIds(${pkColumn.javaField}s);
+        return ${className}Service.delete${domainClassName}ByIds(${pkColumn.javaField}s);
     }
 }

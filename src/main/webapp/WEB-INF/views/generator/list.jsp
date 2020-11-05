@@ -133,6 +133,21 @@
                                 <input type="text"  name="baseModelName" value="${config.baseModelName}">
                             </div>
                         </div>
+
+                        <div class="control-group">
+                           <label class="control-label" >数据库类后缀</label>
+                           <div class="controls">
+                               <input type="text"  name="dataBaseSuffix" value="${config.dataBaseSuffix}">
+                           </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >原型类后缀</label>
+                            <div class="controls">
+                                <input type="text"  name="prototypeClassSuffix" value="${config.prototypeClassSuffix}">
+                            </div>
+                        </div>
+
                         <div class="control-group">
                             <label class="control-label" >作者名</label>
                             <div class="controls">

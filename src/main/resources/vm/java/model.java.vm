@@ -1,4 +1,4 @@
-package ${packageName}.model;
+package ${packageName}.${modelPackageName};
 
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -20,12 +20,14 @@ import lombok.Data;
 
 @Data
 @TableName("${tableName}")
-public class ${ClassName}Model implements Serializable {
+public class ${prototypeClassName} implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
-    /** $column.columnComment **/
+    /**
+     * $column.columnComment
+     **/
 #if($column.isPrimaryKey())
 #if($column.isIncrementField())
     @TableId(type = IdType.AUTO,value = "${column.columnName}")

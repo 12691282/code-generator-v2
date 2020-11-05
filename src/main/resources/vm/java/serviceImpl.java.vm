@@ -3,9 +3,9 @@ package ${packageName}.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ${packageName}.mapper.${ClassName}Mapper;
-import ${packageName}.domain.${ClassName};
-import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.${daoPackageName}.${ClassName}Mapper;
+import ${packageName}.domain.${domainClassName};
+import ${packageName}.service.I${serviceClassName};
 
 /**
  * ${functionName}Service业务层处理
@@ -14,7 +14,7 @@ import ${packageName}.service.I${ClassName}Service;
  * @date ${datetime}
  */
 @Service
-public class ${ClassName}ServiceImpl implements I${ClassName}Service 
+public class ${serviceClassName}Impl implements I${serviceClassName}
 {
     @Autowired
     private ${ClassName}Mapper ${className}Mapper;

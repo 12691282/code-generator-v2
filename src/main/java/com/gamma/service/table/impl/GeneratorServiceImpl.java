@@ -99,10 +99,13 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
                 String businessName = ServiceCodeGeneratorUtil.getBusinessName(tableName);
                 tableDetail.setClassName(ClazzName);
                 tableDetail.setBusinessName(businessName);
+                tableDetail.setPrototypeClassSuffix(config.getPrototypeClassSuffix());
+                tableDetail.setDataBaseSuffix(config.getDataBaseSuffix());
                 tableDetail.setPackageName(config.getBasePackage());
                 tableDetail.setModuleName(config.getBaseModelName());
                 tableDetail.setFunctionAuthor(config.getAuthorName());
                 tableDetail.setCreateTime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+
                 String tdKey = JdbcUtil.insert(tableDetail);
 
                 String sql =  "SELECT column_name, (case when (is_nullable = 'no' && column_key != 'PRI') then '1' else null end) as is_required," +
@@ -291,6 +294,9 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
 
         entity.changeColumnToVo(columnEntityList);
 
+        /**
+         * 根据配置信息生成模版对象
+         */
         VelocityContext context = VelocityTools.prepareContext(entity);
 
         // 模块名
@@ -305,6 +311,18 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
 
         String javaPath = VelocityTools.PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/")+"/"+moduleName;
         String mybatisPath = VelocityTools.MYBATIS_PATH + "/" + moduleName;
+
+        String prototypeClassSuffix = StringUtils.uncapitalize(entity.getPrototypeClassSuffix());
+        String modelFileName = className;
+        if(!className.contains(entity.getPrototypeClassSuffix())){
+            modelFileName += entity.getPrototypeClassSuffix();
+        }
+        this.toFillContent(VelocityTools.modelClassPathConfig,zip,context,
+                javaPath, prototypeClassSuffix, modelFileName);
+
+        String dataBaseSuffix = StringUtils.uncapitalize(entity.getDataBaseSuffix());
+        this.toFillContent(VelocityTools.databaseMapperPathConfig,zip,context,
+                javaPath, dataBaseSuffix, className+entity.getDataBaseSuffix());
 
         this.toFillContent(VelocityTools.templateJavaPathConfig,zip,context,javaPath, className);
         this.toFillContent(VelocityTools.templateMapperPathConfig,zip,context,mybatisPath, className);

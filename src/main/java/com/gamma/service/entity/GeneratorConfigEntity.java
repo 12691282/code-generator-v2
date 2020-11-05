@@ -31,6 +31,14 @@ public class GeneratorConfigEntity {
     @Column("base_model_name")
     private String baseModelName;
 
+    //数据库类后缀
+    @Column("data_base_suffix")
+    private String dataBaseSuffix;
+
+    //原型类后缀
+    @Column("prototype_class_suffix")
+    private String prototypeClassSuffix;
+
     //作者名
     @Column("author_name")
     private String authorName;

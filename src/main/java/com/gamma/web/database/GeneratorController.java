@@ -68,6 +68,12 @@ public class GeneratorController extends BaseController{
 	}
 
 
+	/**
+	 * 连接目标数据库
+	 * @param model
+	 * @param bean
+	 * @return
+	 */
 	@PostMapping("connectTargetDataBase")
 	public String connectTargetDataBase(Model model, DatabaseBean bean){
 		log.info("bean {}", bean);
@@ -92,6 +98,12 @@ public class GeneratorController extends BaseController{
 		return super.successInfo("导入成功");
 	}
 
+	/**
+	 * 导出表格的详情配置
+	 * @param model
+	 * @param tableName
+	 * @return
+	 */
 	@GetMapping("tableInfoDetail")
 	public String tableInfoDetail(Model model, String tableName){
 		log.info("tableName {}", tableName);
