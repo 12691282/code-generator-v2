@@ -91,12 +91,13 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
             GeneratorConfigEntity config = this.getConfigInfo();
             this.noShowFiledList = Arrays.asList(config.getNoShowFiledList());
             for(String tableName : tableNameArr){
+                String lowerName = StringUtils.lowerCase(tableName);
                 GeneratorTableInfoEntity tableDetail = new GeneratorTableInfoEntity();
                 tableDetail.setTableName(tableName);
                 //设置remark 和function
                 this.setTableComment(connection, tableDetail);
-                String ClazzName = ServiceCodeGeneratorUtil.changeTableName(tableName);
-                String businessName = ServiceCodeGeneratorUtil.getBusinessName(tableName);
+                String ClazzName = ServiceCodeGeneratorUtil.changeTableName(lowerName);
+                String businessName = ServiceCodeGeneratorUtil.getBusinessName(lowerName);
                 tableDetail.setClassName(ClazzName);
                 tableDetail.setBusinessName(businessName);
                 tableDetail.setPrototypeClassSuffix(config.getPrototypeClassSuffix());

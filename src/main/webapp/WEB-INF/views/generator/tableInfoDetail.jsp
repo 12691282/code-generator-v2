@@ -76,8 +76,16 @@
                     <label>功能名</label>
                     <input type="text" class="form-control"   placeholder="功能名" name="functionName" value="${infoEntity.functionName}" >
                 </div>
+                <div class="form-group" style="margin-left: 20px;">
+                    <label>数据库类后缀</label>
+                    <input type="text" class="form-control"   placeholder="数据库类后缀" name="dataBaseSuffix" value="${infoEntity.dataBaseSuffix}" >
+                </div>
             </div>
             <div class="form-inline" style="margin-top: 15px;">
+                <div class="form-group">
+                    <label>原型类后缀</label>
+                    <input type="text" class="form-control"   placeholder="原型类后缀" name="prototypeClassSuffix" value="${infoEntity.prototypeClassSuffix}" >
+                </div>
                 <div class="form-group">
                     <label>备注</label>
                     <textarea type="text" style="margin-left: 14px;width: 326px;height: 64px;" class="form-control" name="remark"

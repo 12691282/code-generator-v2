@@ -25,7 +25,7 @@ import ${packageName}.service.I${serviceClassName};
  * @date ${datetime}
  */
 @RestController
-@RequestMapping("/${moduleName}/${businessName}")
+@RequestMapping("${moduleName}/${businessName}")
 public class ${ClassName}Controller
 {
     @Autowired
@@ -34,7 +34,7 @@ public class ${ClassName}Controller
     /**
      * 查询${functionName}列表
      */
-    @GetMapping("/list")
+    @GetMapping("list")
     public List<${domainClassName}> list(${domainClassName} ${className})
     {
         //startPage(); 分页逻辑
@@ -45,7 +45,7 @@ public class ${ClassName}Controller
     /**
      * 获取${functionName}详细信息
      */
-    @GetMapping(value = "/{${pkColumn.javaField}}")
+    @GetMapping(value = "{${pkColumn.javaField}}")
     public ${domainClassName} getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField})
     {
         return ${domainClassName}Service.select${domainClassName}ById(${pkColumn.javaField});
@@ -76,7 +76,7 @@ public class ${ClassName}Controller
     /**
      * 删除${functionName}
      */
-	@DeleteMapping("/{${pkColumn.javaField}s}")
+	@DeleteMapping("{${pkColumn.javaField}s}")
     public int remove(@PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s)
     {
         return ${className}Service.delete${domainClassName}ByIds(${pkColumn.javaField}s);

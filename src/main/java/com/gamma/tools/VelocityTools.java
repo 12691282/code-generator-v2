@@ -87,7 +87,7 @@ public class VelocityTools {
 
 
         velocityContext.put("moduleName", moduleName);
-        velocityContext.put("BusinessName", StringUtils.capitalize(entity.getBusinessName()));
+        velocityContext.put("BusinessName", StringUtils.capitalize(entity.getBusinessName()) );
         velocityContext.put("businessName", businessName);
         velocityContext.put("basePackage", entity.getPackagePrefix());
         velocityContext.put("packageName", packageName+"."+moduleName);
@@ -121,7 +121,7 @@ public class VelocityTools {
     public static String[][] templateJavaPathConfig = {
             {"vm/java/domain.java.vm" , "%s/domain/%s.java"},
             {"vm/java/service.java.vm", "%s/service/I%sService.java"},
-            {"vm/java/serviceImpl.java.vm", "%s/service/Impl/I%sServiceImpl.java"},
+            {"vm/java/serviceImpl.java.vm", "%s/service/Impl/%sServiceImpl.java"},
             {"vm/java/controller.java.vm", "%s/controller/%sController.java"},
     };
 
