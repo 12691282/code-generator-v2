@@ -3,7 +3,7 @@ package ${packageName}.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ${packageName}.${daoPackageName}.${ClassName}Mapper;
+import ${packageName}.${daoPackageName}.${daoClassName};
 import ${packageName}.domain.${domainClassName};
 import ${packageName}.service.I${serviceClassName};
 
@@ -14,10 +14,10 @@ import ${packageName}.service.I${serviceClassName};
  * @date ${datetime}
  */
 @Service
-public class ${serviceClassName}Impl implements I${serviceClassName}
+public class ${serviceClassName}Impl implements ${serviceClassName}
 {
     @Autowired
-    private ${ClassName}Mapper ${className}Mapper;
+    private ${daoClassName} ${className}Mapper;
 
     /**
      * 查询${functionName}
@@ -40,6 +40,7 @@ public class ${serviceClassName}Impl implements I${serviceClassName}
     @Override
     public List<${ClassName}> select${ClassName}List(${ClassName} ${className})
     {
+        //startPage(); 分页逻辑
         return ${className}Mapper.select${ClassName}List(${className});
     }
 

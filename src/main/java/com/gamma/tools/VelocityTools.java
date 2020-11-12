@@ -120,7 +120,7 @@ public class VelocityTools {
      */
     public static String[][] templateJavaPathConfig = {
             {"vm/java/domain.java.vm" , "%s/domain/%s.java"},
-            {"vm/java/service.java.vm", "%s/service/I%sService.java"},
+            {"vm/java/service.java.vm", "%s/service/%sService.java"},
             {"vm/java/serviceImpl.java.vm", "%s/service/Impl/%sServiceImpl.java"},
             {"vm/java/controller.java.vm", "%s/controller/%sController.java"},
     };

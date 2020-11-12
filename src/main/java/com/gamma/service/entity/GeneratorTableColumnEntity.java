@@ -3,6 +3,7 @@ package com.gamma.service.entity;
 import com.gamma.annotation.Column;
 import com.gamma.annotation.PrimaryKey;
 import com.gamma.annotation.Table;
+import com.gamma.common.TypeConstants;
 import lombok.Data;
 
 @Table("generator_table_column")
@@ -58,9 +59,14 @@ public class GeneratorTableColumnEntity {
     @Column("is_edit")
     private String isEdit;
 
-    //是否查询字段
+    /**是否查询字段**/
     @Column("is_query")
     private String isQuery;
+
+    /**是否日期字段**/
+    @Column("is_date")
+    private String isDate;
+
 
     //查询方式（等于、不等于、大于、小于、范围）
     @Column("query_type")
@@ -75,7 +81,7 @@ public class GeneratorTableColumnEntity {
     private String sort;
 
     public boolean isPrimaryKey() {
-        if(this.getIsPk() != null && this.getIsPk().equals("1")){
+        if(this.getIsPk() != null && this.getIsPk().equals(TypeConstants.REQUIRE)){
             return true;
         }
         return false;

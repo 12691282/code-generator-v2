@@ -1,6 +1,11 @@
 package com.gamma.service.vo;
 
+import com.gamma.common.TypeConstants;
 import lombok.Data;
+
+/**
+ * 模版使用的vo类
+ */
 
 @Data
 public class GeneratorTableColumnVO {
@@ -40,6 +45,10 @@ public class GeneratorTableColumnVO {
 
     //其它生成选项 是否编辑
     private String isEdit;
+
+    /**是否日期字段**/
+    private String isDate;
+
     //备注
     private String isQuery;
 
@@ -81,18 +90,23 @@ public class GeneratorTableColumnVO {
     }
 
     public boolean isListShow() {
-        if(this.getIsListShow() != null && this.getIsListShow().equals("1")){
+        if(this.getIsListShow() != null && this.getIsListShow().equals(TypeConstants.REQUIRE)){
             return true;
         }
         return false;
     }
 
     public boolean isRequiredField() {
-        if(this.getIsRequired() != null && this.getIsRequired().equals("1")){
+        if(this.getIsRequired() != null && this.getIsRequired().equals(TypeConstants.REQUIRE)){
             return true;
         }
         return false;
     }
 
-
+    public boolean isDateColumn() {
+        if(this.getIsDate() != null && this.getIsDate().equals(TypeConstants.REQUIRE)){
+            return true;
+        }
+        return false;
+    }
 }

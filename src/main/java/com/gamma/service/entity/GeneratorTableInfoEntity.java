@@ -110,22 +110,24 @@ public class GeneratorTableInfoEntity {
         this.importList = new HashSet();
         this.columnList = new ArrayList<>();
         for (GeneratorTableColumnEntity column : columnEntityList){
-            GeneratorTableColumnVO columnVO = TableColumnMapper.INSTANCE.entityToVo(column);
-            if (columnVO.isPrimaryKey()){
-                this.setPkColumn(columnVO);
+            GeneratorTableColumnVO vo = TableColumnMapper.INSTANCE.entityToVo(column);
+            if (vo.isPrimaryKey()){
+                this.setPkColumn(vo);
             }
-
-            if (columnVO.isNoEdit()){
-                if ( TypeConstants.JAVA_FILED_TYPE_DATE.equals(columnVO.getJavaType()))
+            vo.setIsDate(column.getIsDate());
+            if (vo.isNoEdit()){
+                if ( TypeConstants.JAVA_FILED_TYPE_DATE.equals(vo.getJavaType()))
                 {
                     importList.add("java.util.Date");
+                    importList.add("com.fasterxml.jackson.annotation.JsonFormat");
+                    importList.add("org.springframework.format.annotation.DateTimeFormat");
                 }
-                else if (TypeConstants.JAVA_FILED_TYPE_BIGDECIMAL.equals(columnVO.getJavaType()))
+                else if (TypeConstants.JAVA_FILED_TYPE_BIGDECIMAL.equals(vo.getJavaType()))
                 {
                     importList.add("java.math.BigDecimal");
                 }
             }
-            columnList.add(columnVO);
+            columnList.add(vo);
         }
         if (this.getPkColumn() == null)
         {

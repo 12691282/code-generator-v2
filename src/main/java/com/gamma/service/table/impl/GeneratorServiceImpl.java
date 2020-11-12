@@ -126,7 +126,6 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
                     columnEntity.setSort(results.getString("sort"));
                     columnEntity.setColumnComment(results.getString("column_comment"));
                     columnEntity.setIsIncrement(results.getString("is_increment"));
-                    columnEntity.setColumnType(results.getString("column_type"));
                     columnEntity.setTableId(tdKey);
                     this.initOtherFiled(columnEntity, results);
                     JdbcUtil.insert(columnEntity);
@@ -159,6 +158,7 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
         String columnName =  results.getString("column_name");
         entity.setColumnName(columnName);
         entity.setJavaField(StringTools.toCamelCase(columnName));
+        entity.setColumnType(columnType);
         entity.setQueryType("=");//默认等于查询方式
         String typeStr = this.getDbType(columnType);
         if(TypeConstants.COLUMN_TYPE_STR.contains(typeStr)){
@@ -173,6 +173,7 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
         {
             entity.setJavaType(TypeConstants.JAVA_FILED_TYPE_DATE);
             entity.setHtmlType("datetime");
+            entity.setIsDate(TypeConstants.REQUIRE);
         }
         else if (TypeConstants.COLUMN_TYPE_NUMBER.contains(typeStr))
         {
