@@ -1,7 +1,9 @@
 package ${packageName}.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import java.util.List;
-import ${packageName}.domain.${ClassName};
+import ${packageName}.${modelPackageName}.${prototypeClassName};
 
 /**
  * ${functionName}Service接口
@@ -9,15 +11,9 @@ import ${packageName}.domain.${ClassName};
  * @author ${author}
  * @date ${datetime}
  */
-public interface ${serviceClassName}
+public interface ${serviceClassName} extends IService<${prototypeClassName}>
 {
-    /**
-     * 查询${functionName}
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return ${functionName}
-     */
-    ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
+
 
     /**
      * 查询${functionName}列表
@@ -25,37 +21,7 @@ public interface ${serviceClassName}
      * @param ${className} ${functionName}
      * @return ${functionName}集合
      */
-    List<${ClassName}> select${ClassName}List(${ClassName} ${className});
+    PageInfo select${prototypeClassName}List(${prototypeClassName} ${className});
 
-    /**
-     * 新增${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    int insert${ClassName}(${ClassName} ${className});
 
-    /**
-     * 修改${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    int update${ClassName}(${ClassName} ${className});
-
-    /**
-     * 批量删除${functionName}
-     * 
-     * @param ${pkColumn.javaField}s 需要删除的${functionName}ID
-     * @return 结果
-     */
-    int delete${ClassName}ByIds(${pkColumn.javaType}[] ${pkColumn.javaField}s);
-
-    /**
-     * 删除${functionName}信息
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return 结果
-     */
-    int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField});
 }
