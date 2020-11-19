@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 #foreach ($import in $importList)
 import ${import};
 #end
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ import lombok.Data;
 
 @Data
 @TableName("${tableName}")
+@ApiModel(description= "${functionName}")
 public class ${prototypeClassName} implements Serializable {
 
     private static final long serialVersionUID = 1L;
