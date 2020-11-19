@@ -119,7 +119,7 @@ public class VelocityTools {
      *  暂时加 {"vm/sql/sql.vm", "%sMenu.sql"}
      */
     public static String[][] templateJavaPathConfig = {
-            {"vm/java/domain.java.vm" , "%s/domain/%s.java"},
+//            {"vm/java/domain.java.vm" , "%s/domain/%s.java"},
             {"vm/java/service.java.vm", "%s/service/%sService.java"},
             {"vm/java/serviceImpl.java.vm", "%s/service/Impl/%sServiceImpl.java"},
             {"vm/java/controller.java.vm", "%s/controller/%sController.java"},

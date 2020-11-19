@@ -1,11 +1,16 @@
 package ${packageName}.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import com.github.pagehelper.PageInfo;
+import io.renren.common.page.TableSupport;
+import io.renren.common.utils.DatabaseUtils;
 import ${packageName}.${daoPackageName}.${daoClassName};
-import ${packageName}.domain.${domainClassName};
-import ${packageName}.service.I${serviceClassName};
+import ${packageName}.service.${serviceClassName};
+import ${packageName}.${modelPackageName}.${prototypeClassName};
+
+import java.util.List;
 
 /**
  * ${functionName}Service业务层处理
@@ -14,23 +19,9 @@ import ${packageName}.service.I${serviceClassName};
  * @date ${datetime}
  */
 @Service
-public class ${serviceClassName}Impl implements ${serviceClassName}
+public class ${serviceClassName}Impl extends ServiceImpl<${daoClassName}, ${prototypeClassName}>
+                                     implements ${serviceClassName}
 {
-    @Autowired
-    private ${daoClassName} ${className}Mapper;
-
-    /**
-     * 查询${functionName}
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return ${functionName}
-     */
-    @Override
-    public ${ClassName} select${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField})
-    {
-        return ${className}Mapper.select${ClassName}ById(${pkColumn.javaField});
-    }
-
     /**
      * 查询${functionName}列表
      * 
@@ -38,67 +29,14 @@ public class ${serviceClassName}Impl implements ${serviceClassName}
      * @return ${functionName}
      */
     @Override
-    public List<${ClassName}> select${ClassName}List(${ClassName} ${className})
+    public PageInfo select${prototypeClassName}List(${prototypeClassName} ${className})
     {
-        //startPage(); 分页逻辑
-        return ${className}Mapper.select${ClassName}List(${className});
+        TableSupport.startPage();
+        QueryWrapper query = new QueryWrapper();
+        DatabaseUtils.notNullFieldCopy(${className}, query);
+        List<${prototypeClassName}> list =  this.baseMapper.selectList(query);
+        return TableSupport.getPageInfo(list);
     }
 
-    /**
-     * 新增${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    @Override
-    public int insert${ClassName}(${ClassName} ${className})
-    {
-#foreach ($column in $columns)
-#if($column.javaField == 'createTime')
-        ${className}.setCreateTime(DateUtils.getNowDate());
-#end
-#end
-        return ${className}Mapper.insert${ClassName}(${className});
-    }
 
-    /**
-     * 修改${functionName}
-     * 
-     * @param ${className} ${functionName}
-     * @return 结果
-     */
-    @Override
-    public int update${ClassName}(${ClassName} ${className})
-    {
-#foreach ($column in $columns)
-#if($column.javaField == 'updateTime')
-        ${className}.setUpdateTime(DateUtils.getNowDate());
-#end
-#end
-        return ${className}Mapper.update${ClassName}(${className});
-    }
-
-    /**
-     * 批量删除${functionName}
-     * 
-     * @param ${pkColumn.javaField}s 需要删除的${functionName}ID
-     * @return 结果
-     */
-    @Override
-    public int delete${ClassName}ByIds(${pkColumn.javaType}[] ${pkColumn.javaField}s)
-    {
-        return ${className}Mapper.delete${ClassName}ByIds(${pkColumn.javaField}s);
-    }
-
-    /**
-     * 删除${functionName}信息
-     * 
-     * @param ${pkColumn.javaField} ${functionName}ID
-     * @return 结果
-     */
-    @Override
-    public int delete${ClassName}ById(${pkColumn.javaType} ${pkColumn.javaField})
-    {
-        return ${className}Mapper.delete${ClassName}ById(${pkColumn.javaField});
-    }
 }
