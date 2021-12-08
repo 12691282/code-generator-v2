@@ -10,6 +10,7 @@ CREATE TABLE `generator_table_info`  (
   `module_name` varchar(30)  COMMENT '生成模块名',
   `business_name` varchar(30)  COMMENT '生成业务名',
   `function_name` varchar(50)  COMMENT '生成功能名',
+  `domain_name` varchar(30)  COMMENT 'domain名',
   `function_author` varchar(50)  COMMENT '生成功能作者',
   `options` varchar(1000)  COMMENT '其它生成选项',
   `remark` varchar(500)  COMMENT '备注',
