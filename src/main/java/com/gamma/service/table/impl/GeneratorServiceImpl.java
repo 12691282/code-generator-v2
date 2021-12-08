@@ -329,6 +329,7 @@ public class GeneratorServiceImpl extends BaseService implements GeneratorServic
         this.toFillContent(VelocityTools.templateJavaPathConfig,zip,context,javaPath, className);
         this.toFillContent(VelocityTools.templateMapperPathConfig,zip,context,mybatisPath, className);
         this.toFillContent(VelocityTools.templateVuePathConfig,zip,context,"vue", moduleName, businessName);
+        this.toFillContent(VelocityTools.customNameConfig, zip,context, javaPath, entity.getDomainName());
     }
 
     private void toFillContent(String[][] templateJavaPathConfig, ZipOutputStream zip, VelocityContext context, String... params) {
