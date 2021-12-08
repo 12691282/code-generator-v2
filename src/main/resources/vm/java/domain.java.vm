@@ -23,8 +23,12 @@ public class ${domainClassName} implements Serializable {
 #foreach ($column in $columns)
 #if($column.isNoEdit())
     /** $column.columnComment **/
+    @ApiModelProperty("${column.columnComment}")
+#if($column.isDateColumn())
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+#end
     private $column.javaType $column.javaField;
 #end
 #end
-
 }
