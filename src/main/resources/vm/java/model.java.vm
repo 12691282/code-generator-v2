@@ -38,13 +38,8 @@ public class ${prototypeClassName} implements Serializable {
     @TableId(value = "${column.columnName}")
 #end
 #else
-#if($column.isDateColumn())
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-#end
     @TableField("${column.columnName}")
 #end
-    @ApiModelProperty("${column.columnComment}")
     private $column.javaType $column.javaField;
 #end
 }
