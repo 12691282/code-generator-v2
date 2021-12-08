@@ -119,7 +119,6 @@ public class VelocityTools {
      *  暂时加 {"vm/sql/sql.vm", "%sMenu.sql"}
      */
     public static String[][] templateJavaPathConfig = {
-            {"vm/java/domain.java.vm" , "%s/domain/%s.java"},
             {"vm/java/service.java.vm", "%s/service/%sService.java"},
             {"vm/java/serviceImpl.java.vm", "%s/service/Impl/%sServiceImpl.java"},
             {"vm/java/controller.java.vm", "%s/controller/%sController.java"},
@@ -137,6 +136,14 @@ public class VelocityTools {
     public static String[][] templateVuePathConfig = {
 //            {"vm/js/api.js.vm", "%s/api/%s/%s.js"},
             {"vm/vue/index.vue.vm", "%s/views/%s/%s/index.vue"}
+    };
+    
+      /**
+     * 自定义 名称模板
+     *  暂时加 {"vm/java/domain.java.vm, "%s/domain/%s.java"}
+     */
+    public static String[][] customNameConfig = {
+            {"vm/java/domain.java.vm" , "%s/domain/%s.java"},
     };
 
 
