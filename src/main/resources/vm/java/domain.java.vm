@@ -5,6 +5,8 @@ import java.io.Serializable;
 #foreach ($import in $importList)
 import ${import};
 #end
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
