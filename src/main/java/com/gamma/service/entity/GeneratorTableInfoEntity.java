@@ -72,6 +72,11 @@ public class GeneratorTableInfoEntity {
     /**生成功能名*/
     @Column("function_name")
     private String functionName;
+    
+    /** domain名 */
+    @Column("domain_name")
+    private String domainName;
+
 
     /**生成功能作者*/
     @Column("function_author")
