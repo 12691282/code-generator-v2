@@ -87,6 +87,10 @@
                     <input type="text" class="form-control"   placeholder="原型类后缀" name="prototypeClassSuffix" value="${infoEntity.prototypeClassSuffix}" >
                 </div>
                 <div class="form-group">
+                    <label>domain名字</label>
+                    <input type="text" class="form-control"   placeholder="domain名字" name="domainName" value="${infoEntity.domainName}" >
+                </div>     
+                <div class="form-group">
                     <label>备注</label>
                     <textarea type="text" style="margin-left: 14px;width: 326px;height: 64px;" class="form-control" name="remark"
                               placeholder="备注" >${infoEntity.remark}</textarea>
