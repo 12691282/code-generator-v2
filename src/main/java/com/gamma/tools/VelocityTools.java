@@ -68,7 +68,7 @@ public class VelocityTools {
         velocityContext.put("functionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
         velocityContext.put("className", lowNameClassName);
         velocityContext.put("ClassName", ClazzName);
-        velocityContext.put("domainClassName", ClazzName);
+        velocityContext.put("domainClassName", entity.getDomainName());
         velocityContext.put("serviceClassName", serviceClassName);
 
 
